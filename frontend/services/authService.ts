@@ -21,7 +21,7 @@ class AuthService {
    * Authenticate with mobile number and password.
    */
   public async login(payload: LoginPayload): Promise<TokenResponse> {
-    const data = await apiClient.post<TokenResponse>('/api/v1/auth/login', payload);
+    const data = await apiClient.post<TokenResponse>('/auth/login', payload);
 
     if (data?.access_token) {
       await tokenStorage.setAccessToken(data.access_token);
@@ -39,7 +39,7 @@ class AuthService {
    * Register a new member account with credentials.
    */
   public async register(payload: RegisterPayload): Promise<TokenResponse> {
-    const data = await apiClient.post<TokenResponse>('/api/v1/auth/register', payload);
+    const data = await apiClient.post<TokenResponse>('/auth/register', payload);
 
     if (data?.access_token) {
       await tokenStorage.setAccessToken(data.access_token);
@@ -57,7 +57,7 @@ class AuthService {
    * Fetch profile of the currently authenticated member.
    */
   public async getMe(): Promise<UserResponse> {
-    return apiClient.get<UserResponse>('/api/v1/auth/me');
+    return apiClient.get<UserResponse>('/auth/me');
   }
 
   /**
@@ -70,7 +70,7 @@ class AuthService {
     }
 
     try {
-      const data = await apiClient.post<RefreshTokenResponse>('/api/v1/auth/refresh', {
+      const data = await apiClient.post<RefreshTokenResponse>('/auth/refresh', {
         refresh_token: refreshToken,
       });
 
@@ -127,7 +127,7 @@ class AuthService {
    */
   public async logout(): Promise<void> {
     try {
-      await apiClient.post<LogoutResponse>('/api/v1/auth/logout');
+      await apiClient.post<LogoutResponse>('/auth/logout');
     } catch (err) {
       if (__DEV__) console.warn('[AuthService] Logout API request failed (clearing local session anyway):', err);
     } finally {

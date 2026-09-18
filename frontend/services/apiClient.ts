@@ -43,7 +43,10 @@ class ApiClient {
   }
 
   private buildUrl(path: string, params?: Record<string, string | number | boolean | undefined | null>): string {
-    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+    let cleanPath = path.startsWith('/') ? path : `/${path}`;
+    if (this.baseUrl.endsWith('/api/v1') && cleanPath.startsWith('/api/v1/')) {
+      cleanPath = cleanPath.substring('/api/v1'.length);
+    }
     let url = `${this.baseUrl}${cleanPath}`;
 
     if (params) {

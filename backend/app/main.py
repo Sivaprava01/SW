@@ -23,6 +23,13 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     setup_logging()
     logger.info(f"Starting {settings.PROJECT_NAME} backend v{settings.VERSION} (Environment: {settings.ENVIRONMENT})")
     
+    # Initialize and migrate database schema
+    try:
+        from app.core.database import init_db
+        init_db()
+    except Exception as e:
+        logger.error(f"Database schema initialization failed on startup: {e}", exc_info=True)
+
     yield
     
     logger.info(f"Shutting down {settings.PROJECT_NAME} backend cleanly")

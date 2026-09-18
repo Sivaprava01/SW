@@ -62,3 +62,36 @@ def check_db_connection() -> Tuple[bool, str]:
     except Exception as exc:
         logger.error(f"Database readiness ping failed: {exc}", exc_info=True)
         return False, str(exc)
+
+
+def init_db() -> None:
+    """Ensure database schema is created and perform necessary column migrations."""
+    from app.models import Base
+    from app.core.security import hash_password
+
+    # 1. Create tables if not existing
+    Base.metadata.create_all(bind=engine)
+
+    # 2. Add hashed_password column if missing on existing Postgres/SQLite databases
+    with engine.begin() as conn:
+        try:
+            if settings.DATABASE_URL.startswith("postgresql"):
+                conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS hashed_password VARCHAR(255);"))
+            else:
+                try:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN hashed_password VARCHAR(255);"))
+                except Exception:
+                    pass
+        except Exception as e:
+            logger.warning(f"Database column migration note: {e}")
+
+        # 3. Ensure Lakshmi demo user has password hash set if null
+        try:
+            lakshmi_hash = hash_password("lakshmi123")
+            conn.execute(
+                text("UPDATE users SET hashed_password = :pwd_hash WHERE phone_number = '9876543210' AND (hashed_password IS NULL OR hashed_password = '')"),
+                {"pwd_hash": lakshmi_hash}
+            )
+        except Exception as e:
+            logger.warning(f"Demo user password migration note: {e}")
+
