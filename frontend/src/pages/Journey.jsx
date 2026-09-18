@@ -37,7 +37,7 @@ export default function Journey({ onOpenAskSakhi }) {
 
   if (loading || !journey) {
     return (
-      <div className="p-8 text-center text-stone-500 dark:text-stone-400 text-xs font-medium">
+      <div className="p-8 text-center text-stone-500 dark:text-[#A8988A] text-xs font-medium">
         Evaluating your financial stage...
       </div>
     );
@@ -51,14 +51,14 @@ export default function Journey({ onOpenAskSakhi }) {
       {/* Header */}
       <div>
         <div className="flex items-center gap-1.5 mb-1">
-          <span className="text-[11px] font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-0.5 rounded-full border border-orange-200/60 dark:border-orange-800/40">
+          <span className="text-[11px] font-bold text-orange-800 dark:text-[#ffb690] bg-[#fff1e3] dark:bg-[#28211C] px-2.5 py-0.5 rounded-full border border-orange-200/60 dark:border-[#3D332B]">
             Financial Freedom Roadmap
           </span>
         </div>
-        <h2 className="text-xl font-black text-stone-900 dark:text-stone-100 tracking-tight">
+        <h2 className="font-headline text-xl font-black text-[#221a0e] dark:text-[#FFF5EB] tracking-tight">
           Your 7-Stage Journey
         </h2>
-        <p className="text-xs text-stone-500 dark:text-stone-400">
+        <p className="text-xs text-stone-500 dark:text-[#A8988A]">
           Step-by-step guidance tailored to your real surplus and savings
         </p>
       </div>
@@ -76,7 +76,7 @@ export default function Journey({ onOpenAskSakhi }) {
           </span>
         </div>
 
-        <h3 className="text-xl font-black tracking-tight mb-1 text-white">
+        <h3 className="font-headline text-xl font-black tracking-tight mb-1 text-white">
           {journey.current_stage_name}
         </h3>
         <p className="text-xs text-stone-200/90 leading-relaxed mb-4">
@@ -142,7 +142,7 @@ export default function Journey({ onOpenAskSakhi }) {
 
       {/* 7-Stage Interactive Roadmap List */}
       <div className="space-y-2 pt-2">
-        <h4 className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+        <h4 className="text-[11px] font-bold text-stone-500 dark:text-[#A8988A] uppercase tracking-wider">
           Complete Roadmap
         </h4>
 
@@ -155,10 +155,10 @@ export default function Journey({ onOpenAskSakhi }) {
               key={stage.id}
               className={`p-3.5 sm:p-4 rounded-2xl border transition-all ${
                 isCurrent
-                  ? 'bg-orange-50/80 dark:bg-orange-950/40 border-orange-400 dark:border-orange-800 shadow-xs'
+                  ? 'bg-orange-50/80 dark:bg-[#28211C] border-orange-400 dark:border-orange-800/80 shadow-xs'
                   : isDone
-                  ? 'bg-white dark:bg-slate-900 border-amber-100 dark:border-slate-800 opacity-95'
-                  : 'bg-stone-50/60 dark:bg-slate-900/50 border-stone-200 dark:border-slate-800/80 opacity-60'
+                  ? 'bg-white dark:bg-[#1e1b19] border-amber-100 dark:border-[#3D332B] opacity-95'
+                  : 'bg-[#fffaf5]/60 dark:bg-[#14110F]/60 border-stone-200 dark:border-[#28211C] opacity-60'
               }`}
             >
               <div className="flex items-start gap-3">
@@ -172,7 +172,7 @@ export default function Journey({ onOpenAskSakhi }) {
                       {stage.id}
                     </div>
                   ) : (
-                    <div className="w-6 h-6 rounded-full bg-stone-200 dark:bg-slate-800 text-stone-500 dark:text-stone-400 flex items-center justify-center font-bold text-xs">
+                    <div className="w-6 h-6 rounded-full bg-stone-200 dark:bg-[#28211C] text-stone-500 dark:text-[#A8988A] flex items-center justify-center font-bold text-xs">
                       {stage.id}
                     </div>
                   )}
@@ -180,7 +180,7 @@ export default function Journey({ onOpenAskSakhi }) {
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <h4 className={`text-xs sm:text-sm font-bold truncate ${isCurrent ? 'text-orange-950 dark:text-orange-200' : 'text-stone-900 dark:text-stone-100'}`}>
+                    <h4 className={`font-headline text-xs sm:text-sm font-bold truncate ${isCurrent ? 'text-orange-950 dark:text-[#ffb690]' : 'text-[#221a0e] dark:text-[#FFF5EB]'}`}>
                       {stage.name}
                     </h4>
                     {isDone && (
@@ -189,7 +189,7 @@ export default function Journey({ onOpenAskSakhi }) {
                       </span>
                     )}
                     {isCurrent && (
-                      <span className="text-[10px] font-bold text-amber-950 dark:text-amber-300 bg-amber-200 dark:bg-amber-950 px-2 py-0.5 rounded-full shrink-0">
+                      <span className="text-[10px] font-bold text-amber-950 dark:text-amber-300 bg-amber-200 dark:bg-[#28211C] px-2 py-0.5 rounded-full shrink-0 border border-amber-300 dark:border-[#3D332B]">
                         In Progress
                       </span>
                     )}
@@ -199,7 +199,7 @@ export default function Journey({ onOpenAskSakhi }) {
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-[#D4C4B5] mt-1 leading-relaxed">
                     {stage.description}
                   </p>
                 </div>
