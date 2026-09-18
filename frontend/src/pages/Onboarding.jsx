@@ -49,10 +49,6 @@ export default function Onboarding({ onComplete }) {
     { value: 'Other', label: 'Other State / Central' },
   ];
 
-  const handleAgeSelect = (ageVal) => {
-    setFormData((prev) => ({ ...prev, age: parseInt(ageVal, 10) }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (step < 3) {
@@ -209,8 +205,8 @@ export default function Onboarding({ onComplete }) {
                 </div>
               </div>
 
-              {/* Age Input with Editable Number Field & Quick Select Chips */}
-              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3 border border-amber-200/70 dark:border-[#3D332B]">
+              {/* Age Input */}
+              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2 border border-amber-200/70 dark:border-[#3D332B]">
                 <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]" htmlFor="ageInput">
                   {t('onboarding_age_years')}
                 </label>
@@ -225,33 +221,11 @@ export default function Onboarding({ onComplete }) {
                     placeholder="e.g. 28"
                     value={formData.age}
                     onChange={(e) => setFormData({ ...formData, age: e.target.value === '' ? '' : parseInt(e.target.value, 10) || '' })}
-                    className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 px-4 text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden transition"
+                    className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 px-4 text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                   <span className="absolute right-4 text-xs font-bold text-stone-400 pointer-events-none">
                     {language === 'te' ? 'సం.' : language === 'hi' ? 'वर्ष' : 'yrs'}
                   </span>
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-[10px] uppercase tracking-wider text-stone-500 dark:text-[#A8988A] font-bold">
-                    {t('onboarding_quick_age')}
-                  </span>
-                  <div className="grid grid-cols-4 gap-2">
-                    {['25', '28', '35', '45'].map((age) => (
-                      <button
-                        key={age}
-                        type="button"
-                        onClick={() => handleAgeSelect(age)}
-                        className={`py-2 rounded-full text-xs font-bold transition active:scale-95 cursor-pointer border ${
-                          formData.age === parseInt(age, 10)
-                            ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
-                            : 'bg-[#fffaf5] dark:bg-[#28211C] text-stone-700 dark:text-[#D4C4B5] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50'
-                        }`}
-                      >
-                        {age} {formData.age === parseInt(age, 10) && '✓'}
-                      </button>
-                    ))}
-                  </div>
                 </div>
               </div>
 
@@ -371,7 +345,7 @@ export default function Onboarding({ onComplete }) {
                       min="0"
                       value={formData.monthly_income}
                       onChange={(e) => setFormData({ ...formData, monthly_income: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>
                 </div>
@@ -388,7 +362,7 @@ export default function Onboarding({ onComplete }) {
                       min="0"
                       value={formData.monthly_expenses}
                       onChange={(e) => setFormData({ ...formData, monthly_expenses: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>
                 </div>
@@ -426,7 +400,7 @@ export default function Onboarding({ onComplete }) {
                       min="0"
                       value={formData.savings}
                       onChange={(e) => setFormData({ ...formData, savings: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>
                 </div>
@@ -442,7 +416,7 @@ export default function Onboarding({ onComplete }) {
                       min="0"
                       value={formData.debt}
                       onChange={(e) => setFormData({ ...formData, debt: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-rose-700 dark:text-[#ffb599] focus:ring-2 focus:ring-rose-500 focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-rose-700 dark:text-[#ffb599] focus:ring-2 focus:ring-rose-500 focus:outline-hidden [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>
                 </div>
