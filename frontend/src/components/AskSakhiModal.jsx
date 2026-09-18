@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Mic, Send, X, Bot, Sparkles, AlertCircle, Volume2, VolumeX, User as UserIcon } from 'lucide-react';
+import {
+  IconMicrophone,
+  IconSend,
+  IconX,
+  IconSparkles,
+  IconVolume,
+  IconVolumeOff,
+  IconRobot,
+} from '@tabler/icons-react';
 import { api } from '../services/api';
 import { useUser } from '../context/UserContext';
 import { useSpeech } from '../hooks/useSpeech';
@@ -161,24 +169,26 @@ export default function AskSakhiModal({ isOpen, onClose }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="sakhi-dialog-title"
-      className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4"
+      className="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4"
     >
-      <div className="bg-white w-full sm:max-w-md h-[92vh] sm:h-[650px] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
+      <div className="bg-white dark:bg-slate-900 w-full sm:max-w-md h-[92vh] sm:h-[650px] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 border border-amber-100 dark:border-slate-800">
         
-        {/* Header */}
-        <div className="bg-linear-to-r from-emerald-800 to-teal-900 text-white p-4 flex items-center justify-between shadow-xs">
+        {/* Header (Stitch Warm Gradient) */}
+        <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-700 text-white p-4 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20">
-              <Bot size={22} className="text-amber-300" />
+            <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center border border-white/25 shadow-xs font-black text-lg">
+              स
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <h3 id="sakhi-dialog-title" className="font-black text-base tracking-tight">Ask Sakhi</h3>
-                <span className="text-[10px] font-bold bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full">
+                <h3 id="sakhi-dialog-title" className="font-black text-base tracking-tight">
+                  Ask Sakhi
+                </h3>
+                <span className="text-[10px] font-black bg-stone-950 text-amber-300 px-2 py-0.5 rounded-full">
                   AI Companion
                 </span>
               </div>
-              <p className="text-xs text-emerald-200">
+              <p className="text-xs text-orange-100 font-medium">
                 Simple answers about your money & schemes
               </p>
             </div>
@@ -191,27 +201,27 @@ export default function AskSakhiModal({ isOpen, onClose }) {
             aria-label="Close Ask Sakhi"
             className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
-            <X size={20} />
+            <IconX size={20} />
           </button>
         </div>
 
         {/* Live Context Banner */}
         {financialHealth && (
-          <div className="bg-amber-50/90 border-b border-amber-200 px-4 py-2 flex items-center justify-between text-[11px] text-amber-950">
+          <div className="bg-[#fff1e3] dark:bg-slate-800/90 border-b border-amber-200/80 dark:border-slate-800 px-4 py-2 flex items-center justify-between text-[11px] text-stone-800 dark:text-stone-200 font-medium">
             <span>
-              Surplus: <strong>₹{Number(financialHealth.surplus).toLocaleString('en-IN')}</strong>
+              Surplus: <strong className="text-orange-700 dark:text-orange-400">₹{Number(financialHealth.surplus).toLocaleString('en-IN')}</strong>
             </span>
             <span>
-              Debt: <strong>₹{Number(financialHealth.debt).toLocaleString('en-IN')}</strong>
+              Debt: <strong className="text-rose-700 dark:text-rose-400">₹{Number(financialHealth.debt).toLocaleString('en-IN')}</strong>
             </span>
             <span>
-              Savings: <strong>₹{Number(financialHealth.savings).toLocaleString('en-IN')}</strong>
+              Savings: <strong className="text-emerald-700 dark:text-emerald-400">₹{Number(financialHealth.savings).toLocaleString('en-IN')}</strong>
             </span>
           </div>
         )}
 
         {/* Message Feed */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#fffaf5]/50 dark:bg-slate-950/60">
           {messages.map((m, idx) => {
             const isUser = m.sender === 'user';
             const msgId = `ask-msg-${idx}`;
@@ -222,22 +232,22 @@ export default function AskSakhiModal({ isOpen, onClose }) {
                 className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
               >
                 {!isUser && (
-                  <div className="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center shrink-0 text-xs font-bold mt-1 shadow-xs">
+                  <div className="w-8 h-8 rounded-full bg-orange-600 text-white flex items-center justify-center shrink-0 text-xs font-black mt-1 shadow-xs">
                     स
                   </div>
                 )}
                 <div
                   className={`max-w-[85%] rounded-2xl p-3.5 text-xs sm:text-sm leading-relaxed ${
                     isUser
-                      ? 'bg-emerald-600 text-white rounded-br-none shadow-xs font-medium'
-                      : 'bg-white border border-slate-200 text-slate-900 rounded-bl-none shadow-xs'
+                      ? 'bg-orange-600 text-white rounded-br-none shadow-xs font-medium'
+                      : 'bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 text-stone-900 dark:text-stone-100 rounded-bl-none shadow-xs'
                   }`}
                 >
                   <p className="whitespace-pre-line">{m.text}</p>
                   
                   {!isUser && isTtsSupported && (
-                    <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
-                      <span className="text-[10px] text-slate-400 font-medium">
+                    <div className="mt-3 pt-2.5 border-t border-amber-50 dark:border-slate-800 flex items-center justify-between gap-2">
+                      <span className="text-[10px] text-stone-400 dark:text-stone-500 font-medium">
                         Verified calculations
                       </span>
                       <button
@@ -245,18 +255,18 @@ export default function AskSakhiModal({ isOpen, onClose }) {
                         aria-label={isItemSpeaking ? t('stop_listening') : t('listen')}
                         className={`px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer min-h-[38px] border ${
                           isItemSpeaking
-                            ? 'bg-amber-100 text-amber-950 border-amber-300 shadow-xs'
-                            : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-200'
+                            ? 'bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border-amber-300 shadow-xs'
+                            : 'bg-[#fff1e3] dark:bg-slate-800 hover:bg-orange-100 text-orange-900 dark:text-orange-300 border-orange-200 dark:border-slate-700'
                         }`}
                       >
                         {isItemSpeaking ? (
                           <>
-                            <VolumeX size={16} className="text-amber-700" />
+                            <IconVolumeOff size={15} className="text-amber-700" />
                             <span>{t('stop_listening')}</span>
                           </>
                         ) : (
                           <>
-                            <Volume2 size={16} className="text-emerald-700" />
+                            <IconVolume size={15} className="text-orange-700 dark:text-orange-300" />
                             <span>🔊 {t('listen')}</span>
                           </>
                         )}
@@ -270,13 +280,13 @@ export default function AskSakhiModal({ isOpen, onClose }) {
 
           {loading && (
             <div className="flex gap-2.5 items-center">
-              <div className="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center shrink-0 text-xs font-bold animate-pulse">
+              <div className="w-8 h-8 rounded-full bg-orange-600 text-white flex items-center justify-center shrink-0 text-xs font-black animate-pulse">
                 स
               </div>
-              <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-none px-4 py-3 text-xs text-slate-500 flex items-center gap-2">
-                <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full animate-bounce" />
-                <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full animate-bounce [animation-delay:0.4s]" />
+              <div className="bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 rounded-2xl rounded-bl-none px-4 py-3 text-xs text-stone-500 dark:text-stone-400 flex items-center gap-2 shadow-xs">
+                <span className="inline-block w-2 h-2 bg-orange-500 rounded-full animate-bounce" />
+                <span className="inline-block w-2 h-2 bg-orange-500 rounded-full animate-bounce [animation-delay:0.2s]" />
+                <span className="inline-block w-2 h-2 bg-orange-500 rounded-full animate-bounce [animation-delay:0.4s]" />
                 <span className="font-medium">Sakhi is understanding your finances...</span>
               </div>
             </div>
@@ -287,18 +297,18 @@ export default function AskSakhiModal({ isOpen, onClose }) {
 
         {/* STT Notice if user clicks unsupported mic */}
         {sttNotice && (
-          <div className="bg-amber-50 border-t border-amber-200 px-4 py-1.5 text-xs text-amber-900 font-medium">
+          <div className="bg-amber-50 dark:bg-amber-950/80 border-t border-amber-200 dark:border-amber-800 px-4 py-1.5 text-xs text-amber-900 dark:text-amber-300 font-medium">
             ℹ️ {sttNotice}
           </div>
         )}
 
         {/* Quick Question Prompts */}
-        <div className="p-2.5 bg-white border-t border-slate-100 flex gap-1.5 overflow-x-auto no-scrollbar">
+        <div className="p-2.5 bg-white dark:bg-slate-900 border-t border-amber-100 dark:border-slate-800 flex gap-1.5 overflow-x-auto no-scrollbar">
           {currentQuestions.map((q, idx) => (
             <button
               key={idx}
               onClick={() => handleSend(q)}
-              className="text-[11px] font-semibold text-slate-700 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-300 border border-slate-200 px-3 py-1.5 rounded-full whitespace-nowrap transition"
+              className="text-[11px] font-semibold text-stone-700 dark:text-stone-300 bg-[#fffaf5] dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-slate-700 hover:text-orange-800 hover:border-orange-300 border border-amber-100 dark:border-slate-700 px-3 py-1.5 rounded-full whitespace-nowrap transition cursor-pointer"
             >
               {q}
             </button>
@@ -306,18 +316,18 @@ export default function AskSakhiModal({ isOpen, onClose }) {
         </div>
 
         {/* Input Bar */}
-        <div className="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
+        <div className="p-3 bg-white dark:bg-slate-900 border-t border-amber-100 dark:border-slate-800 flex items-center gap-2">
           <button
             type="button"
             onClick={toggleMic}
-            className={`p-2.5 rounded-2xl transition min-h-[44px] min-w-[44px] flex items-center justify-center ${
+            className={`p-2.5 rounded-2xl transition min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer ${
               isListening
                 ? 'bg-rose-500 text-white animate-pulse'
-                : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                : 'bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 text-stone-700 dark:text-stone-300 border border-amber-100 dark:border-slate-700'
             }`}
             title={sttSupported ? "Voice input" : t('voice_not_supported')}
           >
-            <Mic size={18} />
+            <IconMicrophone size={18} />
           </button>
 
           <input
@@ -327,20 +337,19 @@ export default function AskSakhiModal({ isOpen, onClose }) {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             disabled={loading}
-            className="flex-1 text-xs sm:text-sm px-3.5 py-2.5 bg-slate-100 border border-slate-200 rounded-2xl focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
+            className="flex-1 text-xs sm:text-sm px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-2xl text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
           />
 
           <button
             type="button"
             onClick={() => handleSend()}
             disabled={!input.trim() || loading}
-            className="p-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white rounded-2xl shadow-xs transition min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-2.5 bg-orange-600 hover:bg-orange-700 disabled:opacity-40 text-white rounded-2xl shadow-xs transition min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer active:scale-95"
           >
-            <Send size={18} />
+            <IconSend size={18} />
           </button>
         </div>
       </div>
     </div>
   );
 }
-
