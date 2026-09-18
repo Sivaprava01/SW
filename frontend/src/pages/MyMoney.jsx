@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Wallet, ArrowDownLeft, ArrowUpRight, TrendingUp, AlertTriangle, ShieldCheck, Plus, RefreshCw } from 'lucide-react';
+import { Wallet, ArrowDownLeft, ArrowUpRight, TrendingUp, AlertTriangle, ShieldCheck, Plus } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { api } from '../services/api';
 import MoneyCard from '../components/MoneyCard';
@@ -71,40 +71,30 @@ export default function MyMoney() {
             Real-time calculations from your logged income & expenses
           </p>
         </div>
-        <button
-          onClick={() => {
-            fetchTxs();
-            refreshFinancialData();
-          }}
-          className="p-2 text-slate-400 hover:text-emerald-700 bg-slate-100 rounded-xl transition"
-          title="Refresh calculations"
-        >
-          <RefreshCw size={15} />
-        </button>
       </div>
 
       {/* Primary Financial Overview Grid */}
       <div className="grid grid-cols-2 gap-3">
         <MoneyCard
-          title="Monthly Income"
+          title="Income"
           amount={income}
-          subtitle="Aamadni (Inflow)"
+          subtitle="Monthly inflow"
           icon={ArrowDownLeft}
           variant="income"
         />
 
         <MoneyCard
-          title="Monthly Expenses"
+          title="Expense"
           amount={expenses}
-          subtitle="Kharch (Outflow)"
+          subtitle="Monthly outflow"
           icon={ArrowUpRight}
           variant="expense"
         />
 
         <MoneyCard
-          title="Monthly Surplus"
+          title="Surplus"
           amount={surplus}
-          subtitle={surplus >= 0 ? "Left to save & invest" : "Deficit (Expenses exceed income)"}
+          subtitle={surplus >= 0 ? "Left to save & invest" : "Monthly deficit"}
           icon={TrendingUp}
           variant="surplus"
         />
@@ -133,7 +123,7 @@ export default function MyMoney() {
                 ₹{Number(debt).toLocaleString('en-IN')}
               </div>
               <p className="text-xs text-rose-700 mt-0.5">
-                Suggested payment: ~₹{Math.min(surplus, Math.max(1000, Math.round(surplus * 0.5))).toLocaleString('en-IN')}/mo from your surplus
+                Suggested payment: ~₹{Math.min(surplus, Math.max(1000, Math.round(surplus * 0.5))).toLocaleString('en-IN')}/mo from surplus
               </p>
             </div>
           </div>
@@ -144,21 +134,23 @@ export default function MyMoney() {
       {ef && (
         <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-slate-800">
-              Emergency Fund (Suraksha Kavach)
+            <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <span>🛡 Emergency Fund</span>
             </span>
             <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-              {ef.percent_complete}% safe
+              {ef.percent_complete}% complete
             </span>
           </div>
-          <p className="text-xs text-slate-500 mb-2">
-            Recommended 3 months of expenses: <strong>₹{Number(ef.target).toLocaleString('en-IN')}</strong>. Current savings: ₹{Number(ef.current).toLocaleString('en-IN')}.
-          </p>
-          <ProgressBar value={ef.current} max={ef.target} color="bg-teal-600" />
-          <div className="flex justify-between text-[11px] text-slate-400 mt-2">
-            <span>Remaining to reach shield: ₹{Number(ef.remaining).toLocaleString('en-IN')}</span>
-            <span>Target: 3 months</span>
+
+          <div className="text-base font-black text-slate-900 mb-1.5">
+            ₹{Number(ef.current).toLocaleString('en-IN')} <span className="text-xs font-normal text-slate-400">/ ₹{Number(ef.target).toLocaleString('en-IN')}</span>
           </div>
+
+          <ProgressBar value={ef.current} max={ef.target} color="bg-teal-600" />
+          
+          <p className="text-xs text-slate-500 mt-2 font-medium">
+            Build your safety net (3 months of household expenses)
+          </p>
         </div>
       )}
 

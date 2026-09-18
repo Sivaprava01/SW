@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Compass, CheckCircle2, Circle, ArrowRight, ShieldCheck, Sparkles, ChevronRight, Lock } from 'lucide-react';
+import { Compass, CheckCircle2, Circle, ArrowRight, ShieldCheck, Sparkles, ChevronRight, Lock, Volume2, VolumeX } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { api } from '../services/api';
+import { useSpeech } from '../hooks/useSpeech';
 import ProgressBar from '../components/ProgressBar';
 
 export default function Journey({ onOpenAskSakhi }) {
-  const { user, financialHealth } = useUser();
+  const { user, financialHealth, t } = useUser();
+  const { isSpeaking, speakingId, speak, stop, isSupported: isTtsSupported } = useSpeech();
   const [journey, setJourney] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -32,6 +34,9 @@ export default function Journey({ onOpenAskSakhi }) {
       </div>
     );
   }
+
+  const activeMilestoneSpeech = `${journey.current_stage_name}. ${journey.current_stage_description}. Action: ${journey.action_title}. ${journey.action_description}`;
+  const isMilestoneSpeaking = isSpeaking && speakingId === 'active-milestone';
 
   return (
     <div className="space-y-4">
@@ -79,16 +84,44 @@ export default function Journey({ onOpenAskSakhi }) {
           </p>
         </div>
 
-        <div className="mt-4 flex items-center justify-between">
-          <span className="text-xs text-emerald-200">
-            Next up: <strong>{journey.next_stage}</strong>
-          </span>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            {isTtsSupported && (
+              <button
+                type="button"
+                onClick={() => speak(activeMilestoneSpeech, 'active-milestone')}
+                className={`px-3 py-2 text-xs font-bold rounded-xl transition cursor-pointer min-h-[38px] flex items-center gap-1.5 border ${
+                  isMilestoneSpeaking
+                    ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-xs font-black'
+                    : 'bg-white/15 hover:bg-white/25 text-white border-white/20'
+                }`}
+                aria-label={isMilestoneSpeaking ? t('stop_listening') : t('listen')}
+              >
+                {isMilestoneSpeaking ? (
+                  <>
+                    <VolumeX size={14} />
+                    <span>{t('stop_listening')}</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 size={14} />
+                    <span>🔊 {t('listen')}</span>
+                  </>
+                )}
+              </button>
+            )}
+            <span className="text-xs text-emerald-200">
+              Next: <strong>{journey.next_stage}</strong>
+            </span>
+          </div>
+
           {onOpenAskSakhi && (
             <button
               onClick={onOpenAskSakhi}
-              className="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold rounded-xl transition"
+              className="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold rounded-xl transition cursor-pointer min-h-[38px] flex items-center gap-1"
             >
-              Ask Sakhi Advice
+              <Sparkles size={13} />
+              <span>Ask Sakhi Advice</span>
             </button>
           )}
         </div>

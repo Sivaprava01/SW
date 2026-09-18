@@ -134,6 +134,11 @@ export const api = {
     return handleResponse(res);
   },
 
+  async matchSchemesForUser(userId) {
+    const res = await fetch(`${API_BASE}/schemes/match/user/${userId}`);
+    return handleResponse(res);
+  },
+
   // Ask Sakhi AI
   async askSakhi(userId, message, language = 'en') {
     const res = await fetch(`${API_BASE}/ai/chat`, {

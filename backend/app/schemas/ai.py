@@ -16,9 +16,14 @@ class FinancialContextPayload(BaseModel):
     current_journey_stage: str
     emergency_fund: Dict[str, Any]
     primary_goal: Optional[Dict[str, Any]] = None
+    state: Optional[str] = "All India"
+    age: Optional[int] = 30
+    is_shg_member: Optional[bool] = False
+    language: Optional[str] = "en"
 
 class AIChatResponse(BaseModel):
     reply: str
     context_used: Optional[FinancialContextPayload] = None
     suggested_actions: Optional[List[str]] = None
     is_fallback: bool = False
+

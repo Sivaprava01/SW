@@ -3,8 +3,9 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database import get_db
 from app.models.scheme import GovernmentScheme
+from app.models.user import User
 from app.schemas.scheme import SchemeResponse, SchemeMatchRequest, SchemeMatchResponse
-from app.services.scheme_matcher import match_schemes, DISCLAIMER_TEXT
+from app.services.scheme_matcher import match_schemes, match_schemes_for_user, DISCLAIMER_TEXT
 
 router = APIRouter(prefix="/api/schemes", tags=["Government Schemes"])
 
@@ -20,6 +21,20 @@ def get_all_schemes(
     if state and state != "All":
         query = query.filter((GovernmentScheme.state == state) | (GovernmentScheme.state == "Central"))
     return query.all()
+
+@router.get("/match/user/{user_id}", response_model=SchemeMatchResponse)
+def get_schemes_matched_for_user(user_id: str, db: Session = Depends(get_db)):
+    """Matches schemes automatically based on the user's stored profile attributes."""
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    matches = match_schemes_for_user(db, user)
+    return SchemeMatchResponse(
+        matches=matches,
+        total_matched=len(matches),
+        disclaimer=DISCLAIMER_TEXT
+    )
 
 @router.get("/{scheme_id}", response_model=SchemeResponse)
 def get_scheme_by_id(scheme_id: str, db: Session = Depends(get_db)):

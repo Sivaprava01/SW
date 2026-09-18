@@ -9,17 +9,21 @@ if sys.platform == "win32":
 # Add backend to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-
 from app.services.financial_engine import (
     calculate_monthly_surplus,
     calculate_goal_metrics,
     calculate_emergency_fund_metrics,
+    calculate_user_totals,
+    determine_journey_stage,
     JOURNEY_STAGES
 )
 from app.services.scheme_matcher import match_schemes
 from app.schemas.scheme import SchemeMatchRequest
 from app.data.schemes_seed import GOVERNMENT_SCHEMES
 from app.models.scheme import GovernmentScheme
+from app.models.user import User
+from app.models.transaction import Transaction
+from app.models.goal import Goal
 from app.database import Base, SessionLocal, engine
 from app.services.ai_service import generate_fallback_reply
 from app.schemas.ai import FinancialContextPayload
@@ -34,27 +38,118 @@ def test_financial_calculations():
     print(f"Income: ₹{income}, Expenses: ₹{expenses} -> Surplus: ₹{surplus}")
     assert surplus == 5000.0, f"Expected surplus 5000.0, got {surplus}"
 
-    # Test 2: Goal Metrics
+    # Test 2: Goal Metrics Normal
     target = 50000.0
     current = 10000.0
     duration_months = "12"
     goal_res = calculate_goal_metrics(target, current, duration_months)
     print(f"Goal Metrics: {goal_res}")
     assert goal_res["remaining_amount"] == 40000.0
-    assert goal_res["monthly_saving_required"] == 3333.33 or round(goal_res["monthly_saving_required"]) == 3333 or round(goal_res["monthly_saving_required"], 0) == 3334
+    assert goal_res["monthly_saving_required"] in [3333.33, 3334.0, 3333.0] or round(goal_res["monthly_saving_required"]) == 3333
     assert goal_res["percent_complete"] == 20.0
 
-    # Test 3: Emergency Fund
+    # Test 3: Goal Metrics Edge Cases (Target = 0, Target < Current, Negative)
+    edge_goal_1 = calculate_goal_metrics(0.0, 500.0, "12")
+    assert edge_goal_1["percent_complete"] == 100.0
+    assert edge_goal_1["remaining_amount"] == 0.0
+    assert edge_goal_1["monthly_saving_required"] == 0.0
+
+    edge_goal_2 = calculate_goal_metrics(10000.0, 15000.0, "6")
+    assert edge_goal_2["percent_complete"] == 100.0
+    assert edge_goal_2["remaining_amount"] == 0.0
+
+    # Test 4: Emergency Fund Normal & Zero expenses
     ef = calculate_emergency_fund_metrics(expenses, current)
     print(f"Emergency Fund: {ef}")
     assert ef["target"] == 21000.0  # 3 x 7000
     assert ef["remaining"] == 11000.0
     assert ef["percent_complete"] == round((10000 / 21000) * 100, 1)
 
+    ef_zero = calculate_emergency_fund_metrics(0.0, 0.0)
+    assert ef_zero["target"] == 15000.0  # Safe minimum fallback
+    assert ef_zero["percent_complete"] == 0.0
+
     print("Financial Engine calculations verified!\n")
 
+def test_user_totals_and_transactions():
+    print("--- 2. Testing User Totals & Transaction Aggregation ---")
+    Base.metadata.create_all(bind=engine)
+    db = SessionLocal()
+    try:
+        # Create a test user
+        test_user = User(
+            name="Test User",
+            age=30,
+            state="Telangana",
+            monthly_income=10000.0,
+            monthly_expenses=6000.0,
+            savings=5000.0,
+            debt=15000.0
+        )
+        db.add(test_user)
+        db.commit()
+        db.refresh(test_user)
+
+        # 1. Totals before transactions
+        totals_init = calculate_user_totals(db, test_user)
+        assert totals_init["total_income"] == 10000.0
+        assert totals_init["total_expense"] == 6000.0
+        assert totals_init["surplus"] == 4000.0
+
+        # 2. Add an income transaction (+2000) and expense transaction (+1000)
+        tx1 = Transaction(user_id=test_user.id, amount=2000.0, type="income", category="Sales", date="2026-09-18")
+        tx2 = Transaction(user_id=test_user.id, amount=1000.0, type="expense", category="Food", date="2026-09-18")
+        db.add_all([tx1, tx2])
+        db.commit()
+
+        # 3. Totals after transactions
+        totals_after = calculate_user_totals(db, test_user)
+        assert totals_after["total_income"] == 12000.0
+        assert totals_after["total_expense"] == 7000.0
+        assert totals_after["surplus"] == 5000.0
+
+        # Verify base user profile remained untouched
+        db.refresh(test_user)
+        assert test_user.monthly_income == 10000.0
+        assert test_user.monthly_expenses == 6000.0
+
+        print(f"Aggregated Totals: Income ₹{totals_after['total_income']}, Expense ₹{totals_after['total_expense']}, Surplus ₹{totals_after['surplus']}")
+        print("User Totals & Transaction Aggregation verified!\n")
+    finally:
+        db.close()
+
+def test_journey_stage_transitions():
+    print("--- 3. Testing Financial Journey Stage Transitions ---")
+    Base.metadata.create_all(bind=engine)
+    db = SessionLocal()
+    try:
+        # Case A: Stage 1 - Incomplete tracking (0 income or 0 expense)
+        u_stage1 = User(name="S1", age=25, state="Telangana", monthly_income=0.0, monthly_expenses=0.0, savings=0.0, debt=0.0)
+        db.add(u_stage1)
+        db.commit()
+        res1 = determine_journey_stage(db, u_stage1)
+        assert res1["current_stage_id"] == 1, f"Expected Stage 1, got {res1['current_stage_id']}"
+
+        # Case B: Stage 2 - Income & Expenses tracked, but Emergency Fund < 3x expenses
+        u_stage2 = User(name="S2", age=25, state="Telangana", monthly_income=12000.0, monthly_expenses=7000.0, savings=5000.0, debt=0.0)
+        db.add(u_stage2)
+        db.commit()
+        res2 = determine_journey_stage(db, u_stage2)
+        assert res2["current_stage_id"] == 2, f"Expected Stage 2, got {res2['current_stage_id']}"
+
+        # Case C: Stage 3 - Emergency Fund funded (savings >= 21k), but Debt > 0
+        u_stage3 = User(name="S3", age=25, state="Telangana", monthly_income=12000.0, monthly_expenses=7000.0, savings=25000.0, debt=20000.0)
+        db.add(u_stage3)
+        db.commit()
+        res3 = determine_journey_stage(db, u_stage3)
+        assert res3["current_stage_id"] == 3, f"Expected Stage 3, got {res3['current_stage_id']}"
+
+        print("Journey Stage Transitions verified!\n")
+    finally:
+        db.close()
+
 def test_database_and_schemes():
-    print("--- 2. Testing Database and Scheme Matcher ---")
+    print("--- 4. Testing Database and Scheme Matcher ---")
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
@@ -93,7 +188,7 @@ def test_database_and_schemes():
         db.close()
 
 def test_ai_fallback_explanation():
-    print("--- 3. Testing AI Fallback Grounded Explanation ---")
+    print("--- 5. Testing AI Fallback Grounded Explanation ---")
     ctx = FinancialContextPayload(
         name="Lakshmi",
         income=12000,
@@ -119,8 +214,89 @@ def test_ai_fallback_explanation():
 
     print("AI grounded explanations verified!\n")
 
+def test_fastapi_endpoints():
+    print("--- 6. Testing Full FastAPI Endpoints via TestClient ---")
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    client = TestClient(app)
+
+    # 1. Load Demo Lakshmi
+    resp_demo = client.post("/api/users/demo/lakshmi")
+    assert resp_demo.status_code == 200, f"Failed demo load: {resp_demo.text}"
+    demo_user = resp_demo.json()
+    user_id = demo_user["id"]
+    assert demo_user["name"] == "Lakshmi"
+    print(f"Loaded Demo User: {demo_user['name']} (ID: {user_id})")
+
+    # 2. Get Financial Health
+    resp_health = client.get(f"/api/financial-health/{user_id}")
+    assert resp_health.status_code == 200
+    health = resp_health.json()
+    assert health["monthly_income"] >= 12000.0
+    assert health["surplus"] >= 5000.0
+    assert health["savings"] >= 10000.0
+    assert health["debt"] >= 20000.0
+    print(f"Financial Health: Income ₹{health['monthly_income']}, Surplus ₹{health['surplus']}, Stage: {health['journey']['current_stage_name']}")
+
+    # 3. Create Transaction
+    resp_tx = client.post("/api/transactions", json={
+        "user_id": user_id,
+        "amount": 1500.0,
+        "type": "income",
+        "category": "Tailoring Orders",
+        "note": "Bridal blouses",
+        "date": "2026-09-18"
+    })
+    assert resp_tx.status_code == 200
+    tx = resp_tx.json()
+    assert tx["amount"] == 1500.0
+
+    # 4. Create and update Goal
+    resp_goal = client.post("/api/goals", json={
+        "user_id": user_id,
+        "name": "Sewing Machine Upgrade",
+        "category": "Business",
+        "target_amount": 25000.0,
+        "current_amount": 5000.0,
+        "target_date": "10"
+    })
+    assert resp_goal.status_code == 200
+    goal = resp_goal.json()
+    assert goal["remaining_amount"] == 20000.0
+    assert goal["monthly_saving_required"] == 2000.0
+    goal_id = goal["id"]
+
+    # 5. User-based Scheme Match
+    resp_match = client.get(f"/api/schemes/match/user/{user_id}")
+    assert resp_match.status_code == 200
+    match_data = resp_match.json()
+    assert match_data["total_matched"] > 0
+    print(f"User Scheme Match: {match_data['total_matched']} matched schemes")
+
+    # 6. Ask Sakhi AI Chat
+    resp_chat = client.post("/api/ai/chat", json={
+        "user_id": user_id,
+        "message": "How much surplus do I have and what should I save?",
+        "language": "en"
+    })
+    assert resp_chat.status_code == 200
+    chat_res = resp_chat.json()
+    assert "reply" in chat_res
+    print(f"Sakhi AI Response:\n{chat_res['reply']}\n")
+
+    # Clean up test goal
+    client.delete(f"/api/goals/{goal_id}")
+    client.delete(f"/api/transactions/{tx['id']}")
+    print("Full FastAPI API integration suite verified!\n")
+
 if __name__ == "__main__":
     test_financial_calculations()
+    test_user_totals_and_transactions()
+    test_journey_stage_transitions()
     test_database_and_schemes()
     test_ai_fallback_explanation()
-    print("ALL BACKEND VERIFICATIONS PASSED!")
+    test_fastapi_endpoints()
+    print("==================================================")
+    print("ALL 6 TEST SUITES PASSED (100% Deterministic & API)")
+    print("==================================================")

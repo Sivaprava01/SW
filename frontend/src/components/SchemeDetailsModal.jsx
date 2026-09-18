@@ -89,10 +89,10 @@ export default function SchemeDetailsModal({ scheme, onClose }) {
         </div>
 
         {/* Footer with Official Link */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
+        <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs transition"
+            className="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs transition cursor-pointer min-h-[44px]"
           >
             Close
           </button>
@@ -101,9 +101,9 @@ export default function SchemeDetailsModal({ scheme, onClose }) {
             href={scheme.official_source}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm"
+            className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm cursor-pointer min-h-[44px]"
           >
-            <span>Official Government Portal</span>
+            <span>View official source →</span>
             <ExternalLink size={14} />
           </a>
         </div>
