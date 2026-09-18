@@ -95,14 +95,19 @@ class AIContextBuilder:
             debt_lines.append(
                 f"- {d.lender_name} ({d.lender_type}): Balance ₹{d.current_balance:,.0f} at {d.annual_interest_rate:.1f}% APR (EMI: ₹{d.monthly_emi_payment:,.0f}/mo)"
             )
-        debt_str = "\n".join(debt_lines) if debt_lines else "None (Zero active debts)"
+        if debt_lines:
+            debt_str = "\n".join(debt_lines)
+        elif m.total_debt > 0:
+            debt_str = f"- Total Debt on Profile: ₹{m.total_debt:,.0f} (Individual loan breakdown not yet logged by user in debt tracker)"
+        else:
+            debt_str = "None (₹0 active debt)"
 
         goal_lines = []
         for g in goals:
             goal_lines.append(
                 f"- {g.name}: Target ₹{g.target_amount:,.0f}, Saved ₹{g.current_amount:,.0f} (Remaining: ₹{g.remaining_amount:,.0f})"
             )
-        goal_str = "\n".join(goal_lines) if goal_lines else "None (No active goals)"
+        goal_str = "\n".join(goal_lines) if goal_lines else "None (No specific goals logged yet)"
 
         scheme_lines = []
         for s in schemes[:4]:
@@ -119,7 +124,7 @@ class AIContextBuilder:
 - SHG Membership: {"Yes (" + (user.shg_name or "Active Sangham") + ")" if user.is_shg_member else "No (Individual)"}
 - Occupation: {user.occupation or "Self-Employed"}
 
-### LIVE FINANCIAL METRICS (DO NOT HALLUCINATE NUMBERS, USE EXACT FIGURES BELOW):
+### AUTHORITATIVE LIVE FINANCIAL FACTS (MANDATORY TRUTH - NEVER CONTRADICT OR INVENT):
 - Monthly Income: ₹{m.monthly_income:,.0f}
 - Monthly Expenses: ₹{m.monthly_expenses:,.0f}
 - Disposable Monthly Surplus: ₹{m.monthly_surplus:,.0f}
@@ -128,7 +133,7 @@ class AIContextBuilder:
 - Total Outstanding Debt: ₹{m.total_debt:,.0f} (Monthly Interest Drain: ₹{m.monthly_interest_drain:,.0f}/mo)
 - Current Roadmap Stage: Stage {m.current_stage} — {m.current_stage_title}
 
-### ACTIVE DEBTS:
+### RECORDED DEBTS & LIABILITIES:
 {debt_str}
 
 ### SAVINGS GOALS:
@@ -137,3 +142,4 @@ class AIContextBuilder:
 ### MATCHED 100% ELIGIBLE GOVERNMENT SCHEMES:
 {scheme_str}
 """.strip()
+

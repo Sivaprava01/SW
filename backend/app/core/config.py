@@ -44,8 +44,10 @@ class Settings(BaseSettings):
 
     # Google Gemini AI & Companion Configuration
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-1.5-flash"
+    GEMINI_MODEL: str = "gemini-flash-lite-latest"
+    GEMINI_TRANSCRIBE_MODEL: str = "gemini-3.5-transcribe"
     AI_FALLBACK_MODE: bool = True
+
 
     # Voice, STT & Indic TTS Configuration
     VOICE_TTS_PROVIDER: str = "gtts"

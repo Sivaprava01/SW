@@ -134,21 +134,109 @@ def test_stream_audio_endpoint(client: TestClient):
     assert response.content[:4] == b"RIFF"
 
 
-def test_transcribe_speech_endpoint(client: TestClient):
-    """Verify speech recognition / transcription endpoint."""
-    dummy_audio_b64 = base64.b64encode(b"RIFF\x00\x00\x00\x00WAVEfmt \x10\x00\x00\x00").decode("utf-8")
+def test_transcribe_speech_endpoint_success(client: TestClient):
+    """Verify speech recognition / transcription endpoint with mock Gemini response."""
+    from unittest.mock import patch, MagicMock
+    dummy_audio_b64 = base64.b64encode(b"RIFF\x00\x00\x00\x00WAVEfmt \x10\x00\x00\x00" + b"\x00" * 32000).decode("utf-8")
     payload = {
         "audio_base64": dummy_audio_b64,
         "language": "te",
         "audio_format": "wav",
     }
-    response = client.post("/api/v1/voice/transcribe", json=payload)
-    assert response.status_code == 200
-    data = response.json()
-    assert data["detected_language"] == "te"
-    assert "transcript" in data
-    assert len(data["transcript"]) > 0
-    assert data["confidence"] > 0.9
+    
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [{"audioTranscription": {"text": "నా అత్యవసర రక్షణ నిధి లక్ష్యం ఎంత?"}}]
+                }
+            }
+        ]
+    }
+    
+    with patch("httpx.Client.post", return_value=mock_resp):
+        response = client.post("/api/v1/voice/transcribe", json=payload)
+        assert response.status_code == 200
+        data = response.json()
+        assert data["detected_language"] == "te"
+        assert "లక్ష్యం" in data["transcript"]
+        assert data["confidence"] > 0.9
+
+
+def test_transcribe_speech_supported_formats(client: TestClient):
+    """Verify transcription endpoint accepts various audio container formats (mp3, webm, ogg, etc.)."""
+    from unittest.mock import patch, MagicMock
+    dummy_audio_b64 = base64.b64encode(b"ID3\x03\x00\x00\x00\x00\x00\x00" + b"\x00" * 1000).decode("utf-8")
+    
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [{"text": "What is my current savings balance?"}]
+                }
+            }
+        ]
+    }
+    
+    for fmt in ["mp3", "webm", "ogg", "wav", "m4a"]:
+        with patch("httpx.Client.post", return_value=mock_resp):
+            payload = {
+                "audio_base64": dummy_audio_b64,
+                "language": "en",
+                "audio_format": fmt,
+            }
+            response = client.post("/api/v1/voice/transcribe", json=payload)
+            assert response.status_code == 200
+            assert "savings balance" in response.json()["transcript"]
+
+
+def test_transcribe_speech_gemini_api_error(client: TestClient):
+    """Verify error handling when Gemini returns HTTP 500 or quota exceeded."""
+    from unittest.mock import patch, MagicMock
+    dummy_audio_b64 = base64.b64encode(b"RIFF\x00\x00\x00\x00WAVE" + b"\x00" * 100).decode("utf-8")
+    payload = {
+        "audio_base64": dummy_audio_b64,
+        "language": "en",
+        "audio_format": "wav",
+    }
+    mock_resp = MagicMock()
+    mock_resp.status_code = 500
+    mock_resp.text = "Internal Server Error"
+    
+    with patch("httpx.Client.post", return_value=mock_resp):
+        response = client.post("/api/v1/voice/transcribe", json=payload)
+        assert response.status_code == 400
+
+
+def test_transcribe_speech_empty_transcription(client: TestClient):
+    """Verify error handling when Gemini recognizes no words / silent audio."""
+    from unittest.mock import patch, MagicMock
+    dummy_audio_b64 = base64.b64encode(b"RIFF\x00\x00\x00\x00WAVE" + b"\x00" * 100).decode("utf-8")
+    payload = {
+        "audio_base64": dummy_audio_b64,
+        "language": "en",
+        "audio_format": "wav",
+    }
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [{"text": ""}]
+                }
+            }
+        ]
+    }
+    
+    with patch("httpx.Client.post", return_value=mock_resp):
+        response = client.post("/api/v1/voice/transcribe", json=payload)
+        assert response.status_code == 400
+
 
 
 def test_lesson_audio_endpoint(client: TestClient):
