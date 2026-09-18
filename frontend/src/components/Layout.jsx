@@ -93,7 +93,7 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
           <div>
             <div className="flex items-center gap-1.5">
               <span className="font-bold text-base tracking-tight text-[#221a0e] dark:text-[#FFF5EB] group-hover:text-orange-600 dark:group-hover:text-[#ffb690] transition">
-                {user ? `${t('greeting_namaste')}, ${user.name} 👋` : 'Sakhi (సఖీ)'}
+                {user ? `${t('greeting_namaste')}, ${user.name} 👋` : 'Sakhi'}
               </span>
             </div>
             <p className="text-[11px] font-semibold text-stone-500 dark:text-[#A8988A] flex items-center gap-1">
@@ -111,7 +111,7 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
               className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs cursor-pointer min-h-[38px]"
             >
               <IconSparkles size={16} />
-              <span>Demo (Lakshmi)</span>
+              <span>Explore Preview</span>
             </button>
           )}
 

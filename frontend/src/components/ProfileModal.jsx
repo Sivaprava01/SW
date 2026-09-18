@@ -96,7 +96,7 @@ export default function ProfileModal({ isOpen, onClose, onOpenSettings }) {
               <div className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#fff1e3] dark:bg-[#28211C] text-orange-900 dark:text-[#ffb690] border border-orange-200/60 dark:border-[#3D332B]">
                 <IconUsers size={14} className="text-orange-600 dark:text-[#ffb690]" />
                 <span className="text-[11px] font-bold">
-                  Active SHG Member (SERP ID: TG-{user.id ? (user.id * 791 + 48209) : '48209'})
+                  Active SHG Member
                 </span>
               </div>
             )}
@@ -235,7 +235,7 @@ export default function ProfileModal({ isOpen, onClose, onOpenSettings }) {
               className="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-2xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-md active:scale-95 cursor-pointer min-h-[46px]"
             >
               <IconSettings size={16} />
-              <span>Open Settings (☰) to Edit Details</span>
+              <span>Open Settings to Edit Details</span>
               <IconArrowRight size={16} />
             </button>
           </div>

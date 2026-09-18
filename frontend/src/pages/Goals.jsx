@@ -195,7 +195,7 @@ export default function Goals() {
             <form onSubmit={handleCreate} className="space-y-3.5">
               <div>
                 <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
-                  Goal Name (లక్ష్యం పేరు)
+                  Goal Name
                 </label>
                 <input
                   type="text"

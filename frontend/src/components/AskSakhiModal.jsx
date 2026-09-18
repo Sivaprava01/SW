@@ -207,7 +207,7 @@ export default function AskSakhiModal({ isOpen, onClose }) {
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 flex-wrap">
                 <h2 id="sakhi-dialog-title" className="font-bold text-base text-[#221a0e] dark:text-[#FFF5EB] truncate">
-                  {language === 'te' ? 'Bol Sakhi (బోల్ సఖీ)' : language === 'hi' ? 'बोल सखी (Bol Sakhi)' : 'Ask Sakhi'}
+                  {language === 'te' ? 'సఖిని అడగండి' : language === 'hi' ? 'सखी से पूछें' : 'Ask Sakhi'}
                 </h2>
                 <span className="px-2 py-0.5 rounded-full bg-orange-600 text-white text-[10px] font-bold tracking-wide shadow-xs">
                   AI Companion
@@ -246,7 +246,7 @@ export default function AskSakhiModal({ isOpen, onClose }) {
             }`}
           >
             {language === 'te' && <IconCheck size={13} />}
-            తెలుగు (Telugu)
+            తెలుగు
           </button>
 
           <button
@@ -258,7 +258,7 @@ export default function AskSakhiModal({ isOpen, onClose }) {
             }`}
           >
             {language === 'hi' && <IconCheck size={13} />}
-            हिंदी (Hindi)
+            हिंदी
           </button>
 
           <button
@@ -340,7 +340,7 @@ export default function AskSakhiModal({ isOpen, onClose }) {
                           ) : (
                             <>
                               <IconVolume size={14} className="text-orange-700 dark:text-[#ffb690]" />
-                              <span>🔊 {language === 'te' ? 'వినండి (Listen)' : language === 'hi' ? 'सुनिए (Listen)' : 'Listen'}</span>
+                              <span>🔊 {language === 'te' ? 'వినండి' : language === 'hi' ? 'सुनिए' : 'Listen'}</span>
                               {/* Audio animated equalizer bars */}
                               <span className="flex items-center gap-0.5 h-2.5 ml-0.5">
                                 <span className="w-0.5 h-1.5 bg-orange-600 dark:bg-[#ffb690] rounded-full animate-bounce"></span>
@@ -447,8 +447,8 @@ export default function AskSakhiModal({ isOpen, onClose }) {
 
               <span className="text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mt-2 text-center tracking-wide">
                 {isListening
-                  ? (language === 'te' ? 'Listening... మాట్లాడండి' : language === 'hi' ? 'सुन रहे हैं... बोलिए' : 'Listening... speak now')
-                  : (language === 'te' ? 'తెలుగు లేదా హిందీలో మాట్లాడటానికి నొక్కండి' : language === 'hi' ? 'हिंदी या तेलुगु में बोलने के लिए टैप करें' : 'Tap to speak in Telugu, Hindi or English')}
+                  ? (language === 'te' ? 'వింటున్నాం... మాట్లాడండి' : language === 'hi' ? 'सुन रहे हैं... बोलिए' : 'Listening... speak now')
+                  : (language === 'te' ? 'మాట్లాడటానికి నొక్కండి' : language === 'hi' ? 'बोलने के लिए टैप करें' : 'Tap to speak')}
               </span>
             </div>
           ) : (

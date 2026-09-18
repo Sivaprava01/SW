@@ -3,100 +3,97 @@ import {
   IconUser,
   IconMapPin,
   IconUsers,
-  IconUserOff,
-  IconCheck,
-  IconArrowRight,
-  IconArrowLeft,
-  IconSparkles,
-  IconShieldCheck,
-  IconLock,
-  IconVolume,
-  IconLanguage,
   IconHome,
   IconBuildingCommunity,
-  IconWallet,
-  IconPigMoney,
-  IconReceipt2,
-  IconTarget,
-  IconCircleCheck,
+  IconArrowRight,
+  IconArrowLeft,
+  IconCheck,
+  IconVolume,
+  IconLanguage,
 } from '@tabler/icons-react';
 import { api } from '../services/api';
 import { useUser } from '../context/UserContext';
 import { useSpeech } from '../hooks/useSpeech';
 
 export default function Onboarding({ onComplete }) {
-  const { loginUser, loadDemoUser, language, setLanguage, t } = useUser();
-  const { speak, stop, isSpeaking } = useSpeech();
+  const { setUser, setFinancialHealth, language, setLanguage, t } = useUser();
+  const { speak } = useSpeech();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
-    name: 'Lakshmi Devi',
-    age: '28',
-    state: 'Telangana',
+    name: '',
+    age: 28,
+    state: 'Andhra Pradesh',
     is_shg_member: true,
     residence: 'rural',
-    monthly_income: '12000',
-    monthly_expenses: '7800',
-    savings: '18000',
-    debt: '12000',
-    financial_goal: "Daughter's College Education Fund",
+    monthly_income: 12000,
+    monthly_expenses: 7800,
+    savings: 8000,
+    debt: 12000,
+    financial_goal: "Daughter's Education",
   });
 
   const states = [
-    { value: 'Telangana', label: 'Telangana (తెలంగాణ)' },
-    { value: 'Andhra Pradesh', label: 'Andhra Pradesh (ఆంధ్రప్రదేశ్)' },
-    { value: 'Karnataka', label: 'Karnataka (ಕರ್ನಾಟಕ)' },
-    { value: 'Maharashtra', label: 'Maharashtra (महाराष्ट्र)' },
-    { value: 'Tamil Nadu', label: 'Tamil Nadu (தமிழ்நாடு)' },
-    { value: 'Odisha', label: 'Odisha (ଓଡ଼ିଶା)' },
-    { value: 'Other', label: 'Other State (ఇతర రాష్ట్రం)' }
+    { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },
+    { value: 'Telangana', label: 'Telangana' },
+    { value: 'Maharashtra', label: 'Maharashtra' },
+    { value: 'Karnataka', label: 'Karnataka' },
+    { value: 'Tamil Nadu', label: 'Tamil Nadu' },
+    { value: 'Uttar Pradesh', label: 'Uttar Pradesh' },
+    { value: 'Bihar', label: 'Bihar' },
+    { value: 'Rajasthan', label: 'Rajasthan' },
+    { value: 'Madhya Pradesh', label: 'Madhya Pradesh' },
+    { value: 'West Bengal', label: 'West Bengal' },
+    { value: 'Other', label: 'Other State / Central' },
   ];
 
-  const handleQuickDemo = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      await loadDemoUser();
-      if (onComplete) onComplete();
-    } catch (err) {
-      setError(err.message || 'Failed to load demo user.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleAgeSelect = (ageVal) => {
-    setFormData((prev) => ({ ...prev, age: String(ageVal) }));
+    setFormData((prev) => ({ ...prev, age: parseInt(ageVal, 10) }));
   };
 
   const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
+    e.preventDefault();
     if (step < 3) {
       setStep(step + 1);
       return;
     }
 
     setLoading(true);
-    setError('');
+    setError(null);
+
     try {
       const payload = {
-        name: formData.name.trim() || 'Lakshmi Devi',
-        age: parseInt(formData.age, 10) || 28,
+        name: formData.name.trim(),
+        age: parseInt(formData.age, 10),
         state: formData.state,
+        is_shg_member: formData.is_shg_member,
+        residence: formData.residence,
         monthly_income: parseFloat(formData.monthly_income) || 0,
         monthly_expenses: parseFloat(formData.monthly_expenses) || 0,
         savings: parseFloat(formData.savings) || 0,
         debt: parseFloat(formData.debt) || 0,
-        financial_goal: formData.financial_goal.trim() || null,
+        financial_goal: formData.financial_goal.trim() || 'Emergency Fund',
       };
 
       const newUser = await api.createUser(payload);
-      loginUser(newUser);
-      if (onComplete) onComplete();
+      setUser(newUser);
+
+      if (newUser.id) {
+        try {
+          const healthData = await api.getFinancialHealth(newUser.id);
+          setFinancialHealth(healthData);
+        } catch {
+          // Fallback handled gracefully
+        }
+      }
+
+      if (onComplete) {
+        onComplete(newUser);
+      }
     } catch (err) {
-      setError(err.message || 'Failed to create profile. Please check your numbers.');
+      setError(err.message || 'Failed to complete setup. Please check details.');
     } finally {
       setLoading(false);
     }
@@ -106,7 +103,7 @@ export default function Onboarding({ onComplete }) {
 
   return (
     <div className="flex flex-col w-full pb-8 bg-[#fff8f3] dark:bg-[#14110F] text-[#221a0e] dark:text-[#FFF5EB] min-h-screen">
-      {/* Warm Top Decorative Accent Bar */}
+      {/* Warm Top Accent Bar */}
       <div className="w-full h-1.5 bg-gradient-to-r from-rose-700 via-orange-500 to-amber-600"></div>
 
       <div className="px-3.5 sm:px-4 pt-3 flex flex-col gap-4 max-w-md mx-auto w-full">
@@ -117,7 +114,7 @@ export default function Onboarding({ onComplete }) {
             {/* Cultural Emblem Mascot */}
             <div className="relative shrink-0">
               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-rose-600 flex items-center justify-center shadow-md text-white font-black text-2xl border-2 border-white/60 dark:border-stone-800">
-                स
+                స
               </div>
               <div className="absolute -bottom-1 -right-1 bg-white dark:bg-[#100e0c] rounded-full p-0.5 shadow-xs">
                 <span className="w-3.5 h-3.5 rounded-full bg-emerald-500 flex items-center justify-center">
@@ -126,16 +123,13 @@ export default function Onboarding({ onComplete }) {
               </div>
             </div>
 
-            {/* Title & Subtitle */}
+            {/* Title */}
             <div className="flex flex-col min-w-0">
-              <div className="flex items-center gap-1.5">
-                <h1 className="font-headline font-bold text-xl sm:text-2xl text-[#221a0e] dark:text-[#FFF5EB] truncate">
-                  Welcome to Sakhi <span className="text-orange-600 dark:text-[#ffb690] font-black">(సఖీ)</span>
-                </h1>
-              </div>
+              <h1 className="font-headline font-bold text-xl sm:text-2xl text-[#221a0e] dark:text-[#FFF5EB] truncate">
+                Welcome to Sakhi
+              </h1>
             </div>
           </div>
-
         </section>
 
         {/* Stepper Indicator */}
@@ -170,20 +164,6 @@ export default function Onboarding({ onComplete }) {
           </div>
         </nav>
 
-        {/* Warm Cultural Photo Card (Stitch Design) */}
-        {step === 1 && (
-          <div className="relative w-full rounded-2xl overflow-hidden shadow-xs h-28 bg-[#fff1e3] dark:bg-[#1e1b19] border border-amber-200/70 dark:border-[#3D332B]">
-            <div className="w-full h-full bg-gradient-to-r from-amber-600/90 via-orange-600/80 to-rose-700/90 p-4 flex items-end">
-              <div className="flex items-center gap-2 text-white">
-                <IconShieldCheck size={20} className="text-amber-200 shrink-0" />
-                <p className="text-xs font-medium leading-snug">
-                  Your personal confidante for family savings, SHG records, & government benefits.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {error && (
           <div className="p-3 bg-rose-50 dark:bg-rose-950/80 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 rounded-xl text-xs font-semibold">
             {error}
@@ -199,7 +179,7 @@ export default function Onboarding({ onComplete }) {
               {/* Full Name */}
               <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2 border border-amber-200/70 dark:border-[#3D332B]">
                 <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB] flex items-center justify-between" htmlFor="fullNameInput">
-                  <span>Full Name (పూర్తి పేరు)</span>
+                  <span>Full Name</span>
                   <span className="text-orange-600 dark:text-[#ffb690] text-[10px] uppercase font-bold">Step 1 of 3</span>
                 </label>
                 <div className="relative flex items-center">
@@ -214,16 +194,13 @@ export default function Onboarding({ onComplete }) {
                     className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 pl-10 pr-4 text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden transition"
                   />
                 </div>
-                <p className="text-[11px] text-stone-500 dark:text-[#A8988A]">
-                  As recognized by your Self-Help Group or Aadhaar.
-                </p>
               </div>
 
               {/* Age Input with Preset Chips */}
               <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3 border border-amber-200/70 dark:border-[#3D332B]">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]" htmlFor="ageInput">
-                    Age in Years (వయస్సు)
+                    Age (Years)
                   </label>
                   <div className="flex items-center gap-1 bg-[#fff1e3] dark:bg-[#28211C] px-3 py-0.5 rounded-full border border-amber-200/50 dark:border-[#3D332B]">
                     <span className="text-sm font-bold text-orange-700 dark:text-[#ffb690]">{formData.age}</span>
@@ -242,22 +219,22 @@ export default function Onboarding({ onComplete }) {
                         type="button"
                         onClick={() => handleAgeSelect(age)}
                         className={`py-2 rounded-full text-xs font-bold transition active:scale-95 cursor-pointer border ${
-                          formData.age === age
+                          formData.age === parseInt(age, 10)
                             ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
                             : 'bg-[#fffaf5] dark:bg-[#28211C] text-stone-700 dark:text-[#D4C4B5] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50'
                         }`}
                       >
-                        {age} {formData.age === age && '✓'}
+                        {age} {formData.age === parseInt(age, 10) && '✓'}
                       </button>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* State Dropdown with SERP / Velugu Active Tag */}
+              {/* State Dropdown */}
               <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 border border-amber-200/70 dark:border-[#3D332B]">
                 <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]" htmlFor="stateSelect">
-                  Operating State / Region (రాష్ట్రం)
+                  Operating State
                 </label>
                 <div className="relative flex items-center">
                   <IconMapPin size={18} className="absolute left-3.5 text-rose-600 pointer-events-none" />
@@ -265,126 +242,85 @@ export default function Onboarding({ onComplete }) {
                     id="stateSelect"
                     value={formData.state}
                     onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                    className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 pl-10 pr-8 text-xs font-bold text-[#221a0e] dark:text-[#FFF5EB] appearance-none focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                    className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 pl-10 pr-8 text-xs font-bold text-[#221a0e] dark:text-[#FFF5EB] appearance-none focus:ring-2 focus:ring-orange-500 focus:outline-hidden cursor-pointer"
                   >
                     {states.map((st) => (
-                      <option key={st.value} value={st.value}>
+                      <option key={st.value} value={st.value} className="bg-white dark:bg-[#1e1b19] text-[#221a0e] dark:text-[#FFF5EB]">
                         {st.label}
                       </option>
                     ))}
                   </select>
                 </div>
-
-                <div className="bg-[#fcebd7] dark:bg-[#28211C] rounded-xl p-2.5 flex items-center gap-2 border border-amber-200/50 dark:border-[#3D332B]">
-                  <div className="w-2 h-2 rounded-full bg-orange-600 animate-pulse shrink-0"></div>
-                  <IconShieldCheck size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <p className="text-[11px] text-stone-700 dark:text-[#D4C4B5] font-medium leading-snug">
-                    SERP / Velugu SHG federations & Stree Nidhi active rules matched for {formData.state}.
-                  </p>
-                </div>
               </div>
 
-              {/* SHG Toggle Cards */}
+              {/* SHG Toggle Cards (Clean Yes / No) */}
               <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 border border-amber-200/70 dark:border-[#3D332B]">
                 <span className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]">
                   Are you a member of a Self-Help Group (SHG)?
                 </span>
-                <div className="grid grid-cols-1 gap-2">
-                  <div
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
                     onClick={() => setFormData({ ...formData, is_shg_member: true })}
-                    className={`rounded-xl p-3 flex items-center justify-between cursor-pointer active:scale-98 transition border ${
+                    className={`py-3 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer border ${
                       formData.is_shg_member
-                        ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 shadow-xs'
-                        : 'bg-stone-50 dark:bg-[#100e0c] border-transparent opacity-75'
+                        ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
+                        : 'bg-[#fffaf5] dark:bg-[#100e0c] text-stone-700 dark:text-[#D4C4B5] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50'
                     }`}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-9 h-9 rounded-full bg-orange-600 text-white flex items-center justify-center shrink-0">
-                        <IconUsers size={18} />
-                      </div>
-                      <div className="flex flex-col min-w-0">
-                        <span className="text-xs font-bold text-stone-900 dark:text-[#FFF5EB]">Yes, active member</span>
-                        <span className="text-[11px] text-stone-500 dark:text-[#A8988A] truncate">Velugu / Mahila Mandal / NRLM Sangham</span>
-                      </div>
-                    </div>
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${formData.is_shg_member ? 'bg-orange-600 text-white' : 'bg-stone-200 text-transparent'}`}>
-                      <IconCheck size={12} />
-                    </div>
-                  </div>
+                    <IconUsers size={16} />
+                    <span>Yes</span>
+                    {formData.is_shg_member && <IconCheck size={14} />}
+                  </button>
 
-                  <div
+                  <button
+                    type="button"
                     onClick={() => setFormData({ ...formData, is_shg_member: false })}
-                    className={`rounded-xl p-3 flex items-center justify-between cursor-pointer active:scale-98 transition border ${
+                    className={`py-3 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer border ${
                       !formData.is_shg_member
-                        ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 shadow-xs'
-                        : 'bg-stone-50 dark:bg-[#100e0c] border-transparent opacity-75'
+                        ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
+                        : 'bg-[#fffaf5] dark:bg-[#100e0c] text-stone-700 dark:text-[#D4C4B5] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50'
                     }`}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-9 h-9 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 flex items-center justify-center shrink-0">
-                        <IconUserOff size={18} />
-                      </div>
-                      <div className="flex flex-col min-w-0">
-                        <span className="text-xs font-bold text-stone-900 dark:text-[#FFF5EB]">No, independent micro-business</span>
-                        <span className="text-[11px] text-stone-500 dark:text-[#A8988A] truncate">Self-employed, artisan, or individual saver</span>
-                      </div>
-                    </div>
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${!formData.is_shg_member ? 'bg-orange-600 text-white' : 'bg-stone-200 text-transparent'}`}>
-                      <IconCheck size={12} />
-                    </div>
-                  </div>
+                    <span>No</span>
+                    {!formData.is_shg_member && <IconCheck size={14} />}
+                  </button>
                 </div>
               </div>
 
-              {/* Rural / Urban Toggle Cards */}
+              {/* Rural / Urban Residence */}
               <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 border border-amber-200/70 dark:border-[#3D332B]">
                 <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]">
                   Where is your family home located?
                 </label>
                 <div className="grid grid-cols-2 gap-2">
-                  <div
+                  <button
+                    type="button"
                     onClick={() => setFormData({ ...formData, residence: 'rural' })}
-                    className={`rounded-xl p-3 flex flex-col gap-2 cursor-pointer active:scale-98 transition border ${
+                    className={`py-3 px-3 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition border text-xs font-bold ${
                       formData.residence === 'rural'
-                        ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 shadow-xs'
-                        : 'bg-stone-50 dark:bg-[#100e0c] border-transparent opacity-75'
+                        ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
+                        : 'bg-[#fffaf5] dark:bg-[#100e0c] text-stone-700 dark:text-[#D4C4B5] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50'
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="w-8 h-8 rounded-full bg-orange-600 text-white flex items-center justify-center">
-                        <IconHome size={16} />
-                      </div>
-                      <div className={`w-4 h-4 rounded-full flex items-center justify-center ${formData.residence === 'rural' ? 'bg-orange-600 text-white' : 'bg-stone-200 text-transparent'}`}>
-                        <IconCheck size={10} />
-                      </div>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs font-bold text-stone-900 dark:text-[#FFF5EB]">Rural village</span>
-                      <span className="text-[10px] text-stone-500">గ్రామం / Basti</span>
-                    </div>
-                  </div>
+                    <IconHome size={16} />
+                    <span>Rural village</span>
+                    {formData.residence === 'rural' && <IconCheck size={14} />}
+                  </button>
 
-                  <div
+                  <button
+                    type="button"
                     onClick={() => setFormData({ ...formData, residence: 'urban' })}
-                    className={`rounded-xl p-3 flex flex-col gap-2 cursor-pointer active:scale-98 transition border ${
+                    className={`py-3 px-3 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition border text-xs font-bold ${
                       formData.residence === 'urban'
-                        ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 shadow-xs'
-                        : 'bg-stone-50 dark:bg-[#100e0c] border-transparent opacity-75'
+                        ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
+                        : 'bg-[#fffaf5] dark:bg-[#100e0c] text-stone-700 dark:text-[#D4C4B5] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50'
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 flex items-center justify-center">
-                        <IconBuildingCommunity size={16} />
-                      </div>
-                      <div className={`w-4 h-4 rounded-full flex items-center justify-center ${formData.residence === 'urban' ? 'bg-orange-600 text-white' : 'bg-stone-200 text-transparent'}`}>
-                        <IconCheck size={10} />
-                      </div>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs font-bold text-stone-900 dark:text-[#FFF5EB]">Urban town</span>
-                      <span className="text-[10px] text-stone-500">పట్టణం / Nagar</span>
-                    </div>
-                  </div>
+                    <IconBuildingCommunity size={16} />
+                    <span>Urban town</span>
+                    {formData.residence === 'urban' && <IconCheck size={14} />}
+                  </button>
                 </div>
               </div>
             </div>
@@ -401,7 +337,7 @@ export default function Onboarding({ onComplete }) {
 
                 <div>
                   <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
-                    Monthly Income (ఆదాయం - What comes in)
+                    Monthly Income
                   </label>
                   <div className="relative flex items-center">
                     <span className="absolute left-3.5 text-stone-400 font-bold">₹</span>
@@ -418,7 +354,7 @@ export default function Onboarding({ onComplete }) {
 
                 <div>
                   <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
-                    Monthly Expenses (ఖర్చులు - What goes out)
+                    Monthly Expenses
                   </label>
                   <div className="relative flex items-center">
                     <span className="absolute left-3.5 text-stone-400 font-bold">₹</span>
@@ -457,7 +393,7 @@ export default function Onboarding({ onComplete }) {
 
                 <div>
                   <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
-                    Existing Savings (బ్యాంకు / పోస్ట్ ఆఫీస్ పొదుపు)
+                    Existing Savings
                   </label>
                   <div className="relative flex items-center">
                     <span className="absolute left-3.5 text-stone-400 font-bold">₹</span>
@@ -473,7 +409,7 @@ export default function Onboarding({ onComplete }) {
 
                 <div>
                   <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
-                    Current Debt / Loans (తీర్చవలసిన అప్పులు)
+                    Current Debt or Loans
                   </label>
                   <div className="relative flex items-center">
                     <span className="absolute left-3.5 text-stone-400 font-bold">₹</span>
@@ -489,7 +425,7 @@ export default function Onboarding({ onComplete }) {
 
                 <div>
                   <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
-                    Your Main Financial Dream / Goal (మీ ప్రధాన కల)
+                    Your Main Financial Dream or Goal
                   </label>
                   <input
                     type="text"
@@ -502,17 +438,6 @@ export default function Onboarding({ onComplete }) {
               </div>
             </div>
           )}
-
-          {/* Safe & Private Trust Note */}
-          <div className="bg-[#fff1e3] dark:bg-[#1e1b19] rounded-2xl p-3 flex items-start gap-2.5 border border-amber-200/50 dark:border-[#3D332B]">
-            <IconLock size={18} className="text-rose-700 dark:text-[#ffb690] shrink-0 mt-0.5" />
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-rose-800 dark:text-[#ffb690]">Safe & Private</span>
-              <p className="text-[11px] text-stone-600 dark:text-[#A8988A] leading-relaxed">
-                No paperwork or documents needed to start. Everything stays strictly locked and private on your phone.
-              </p>
-            </div>
-          </div>
 
           {/* Form CTAs */}
           <div className="flex gap-2 pt-1">
@@ -546,7 +471,7 @@ export default function Onboarding({ onComplete }) {
             className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#fcebd7] dark:bg-[#28211C] text-stone-700 dark:text-[#D4C4B5] text-[11px] font-bold active:scale-95 transition cursor-pointer"
           >
             <IconVolume size={14} className="text-orange-600" />
-            <span>Listen in Telugu (వినండి)</span>
+            <span>Listen in Telugu</span>
           </button>
 
           <button

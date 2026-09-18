@@ -267,7 +267,7 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
                   }`}
                 >
-                  <span>Yes, active SHG member (Velugu / Mahila Mandal)</span>
+                  <span>Yes, active SHG member</span>
                   {answers.is_shg_member && <IconCircleCheck size={18} className="text-orange-600 dark:text-[#ffb690]" />}
                 </button>
                 <button
@@ -279,7 +279,7 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
                   }`}
                 >
-                  <span>No, independent individual / micro-saver</span>
+                  <span>No, independent saver</span>
                   {!answers.is_shg_member && <IconCircleCheck size={18} className="text-orange-600 dark:text-[#ffb690]" />}
                 </button>
               </div>
@@ -303,11 +303,11 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                 onChange={(e) => setAnswers({ ...answers, state: e.target.value })}
                 className="w-full text-sm font-bold px-4 py-3 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200 dark:border-[#3D332B] rounded-2xl text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
               >
-                <option value="Telangana">Telangana (తెలంగాణ)</option>
-                <option value="Andhra Pradesh">Andhra Pradesh (ఆంధ్రప్రదేశ్)</option>
-                <option value="Karnataka">Karnataka (ಕರ್ನಾಟಕ)</option>
-                <option value="Maharashtra">Maharashtra (महाराष्ट्र)</option>
-                <option value="Odisha">Odisha (ଓଡ଼ିଶା)</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Odisha">Odisha</option>
                 <option value="Other">Other State</option>
               </select>
             </div>
@@ -376,7 +376,7 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
                   }`}
                 >
-                  Rural Village (గ్రామం)
+                  Rural village
                 </button>
                 <button
                   type="button"
@@ -387,7 +387,7 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
                   }`}
                 >
-                  Urban Town (పట్టణం)
+                  Urban town
                 </button>
               </div>
             </div>

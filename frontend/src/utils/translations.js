@@ -17,7 +17,7 @@ export const translations = {
     // Dashboard & Cards
     monthly_income: "Monthly Income",
     monthly_expenses: "Monthly Expenses",
-    monthly_surplus: "Money Left (Surplus)",
+    monthly_surplus: "Monthly Surplus",
     total_savings: "Total Savings",
     total_debt: "Total Debt",
     unallocated_savings: "Available Savings",
@@ -50,7 +50,7 @@ export const translations = {
     full_name: "Full Name",
     age: "Age",
     state: "State",
-    shg_member: "Self-Help Group (SHG) Member",
+    shg_member: "Self-Help Group Member",
     yes: "Yes",
     no: "No",
 
@@ -76,7 +76,7 @@ export const translations = {
     // Dashboard & Cards
     monthly_income: "मासिक आय",
     monthly_expenses: "मासिक खर्च",
-    monthly_surplus: "बचा हुआ पैसा (सरप्लस)",
+    monthly_surplus: "बचा हुआ पैसा",
     total_savings: "कुल बचत",
     total_debt: "कुल कर्ज़",
     unallocated_savings: "उपलब्ध बचत",
@@ -109,7 +109,7 @@ export const translations = {
     full_name: "पूरा नाम",
     age: "उम्र",
     state: "राज्य",
-    shg_member: "स्वयं सहायता समूह (SHG) सदस्य",
+    shg_member: "स्वयं सहायता समूह सदस्य",
     yes: "हाँ",
     no: "नहीं",
 
@@ -135,7 +135,7 @@ export const translations = {
     // Dashboard & Cards
     monthly_income: "నెలవారీ ఆదాయం",
     monthly_expenses: "నెలవారీ ఖర్చులు",
-    monthly_surplus: "మిగిలిన డబ్బు (మిగులు)",
+    monthly_surplus: "మిగిలిన డబ్బు",
     total_savings: "మొత్తం పొదుపు",
     total_debt: "మొత్తం అప్పు",
     unallocated_savings: "అందుబాటులో ఉన్న పొదుపు",
@@ -168,7 +168,7 @@ export const translations = {
     full_name: "పూర్తి పేరు",
     age: "వయస్సు",
     state: "రాష్ట్రం",
-    shg_member: "స్వయం సహాయక సంఘం (SHG) సభ్యురాలు",
+    shg_member: "స్వయం సహాయక సంఘం సభ్యురాలు",
     yes: "అవును",
     no: "కాదు",
 
