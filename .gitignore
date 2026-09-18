@@ -36,6 +36,8 @@ pnpm-debug.log*
 # Logs & OS artifacts
 logs/
 *.log
+audio_cache/
+backend/audio_cache/
 .DS_Store
 Thumbs.db
 

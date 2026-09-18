@@ -47,6 +47,15 @@ class Settings(BaseSettings):
     GEMINI_MODEL: str = "gemini-1.5-flash"
     AI_FALLBACK_MODE: bool = True
 
+    # Voice, STT & Indic TTS Configuration
+    VOICE_TTS_PROVIDER: str = "gtts"
+    VOICE_CACHE_ENABLED: bool = True
+    VOICE_AUDIO_CACHE_DIR: str = "./audio_cache"
+    VOICE_DEFAULT_SPEED: float = 1.0
+    BHASHINI_API_KEY: str = ""
+    BHASHINI_USER_ID: str = ""
+    BHASHINI_PIPELINE_ID: str = ""
+
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
