@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, X, ShieldAlert, ExternalLink, RefreshCw, ChevronRight, Award, FileText } from 'lucide-react';
+import {
+  IconSparkles,
+  IconArrowRight,
+  IconArrowLeft,
+  IconCircleCheck,
+  IconX,
+  IconAlertTriangle,
+  IconExternalLink,
+  IconRefresh,
+  IconChevronRight,
+  IconAward,
+  IconFileText,
+} from '@tabler/icons-react';
 import { api } from '../services/api';
 import SchemeDetailsModal from './SchemeDetailsModal';
 
@@ -69,21 +81,21 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
       role="dialog"
       aria-modal="true"
       aria-labelledby="matcher-title"
-      className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex flex-col justify-between overflow-y-auto animate-in fade-in"
+      className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex flex-col justify-between overflow-y-auto animate-in fade-in"
     >
-      <div className="w-full max-w-lg mx-auto min-h-screen bg-slate-50 flex flex-col shadow-2xl relative">
+      <div className="w-full max-w-lg mx-auto min-h-screen bg-[#fffaf5] dark:bg-slate-950 flex flex-col shadow-2xl relative">
         
         {/* Top Header */}
-        <header className="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3.5 flex items-center justify-between">
+        <header className="sticky top-0 z-10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-amber-100 dark:border-slate-800 px-4 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-amber-100 text-amber-900">
-              <Sparkles size={18} />
+            <div className="p-2 rounded-xl bg-orange-100 dark:bg-slate-800 text-orange-700 dark:text-orange-400">
+              <IconSparkles size={18} />
             </div>
             <div>
-              <h2 id="matcher-title" className="text-sm font-black text-slate-900 tracking-tight">
+              <h2 id="matcher-title" className="text-sm font-black text-stone-900 dark:text-stone-100 tracking-tight">
                 Government Scheme Matcher
               </h2>
-              <p className="text-[11px] text-slate-500">
+              <p className="text-[11px] text-stone-500 dark:text-stone-400">
                 Step-by-step preliminary eligibility check
               </p>
             </div>
@@ -91,22 +103,22 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
           <button
             onClick={onClose}
             aria-label="Close matcher"
-            className="p-2 text-slate-400 hover:text-slate-700 rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-2 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
-            <X size={20} />
+            <IconX size={20} />
           </button>
         </header>
 
         {/* Progress Bar (Only during question steps) */}
         {!results && !loading && (
-          <div className="bg-white px-4 py-2 border-b border-slate-100">
-            <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-1.5">
+          <div className="bg-white dark:bg-slate-900 px-4 py-2 border-b border-amber-100 dark:border-slate-800">
+            <div className="flex items-center justify-between text-xs font-bold text-stone-500 dark:text-stone-400 mb-1.5">
               <span>Question {currentStep} of {TOTAL_QUESTIONS}</span>
-              <span className="text-emerald-700">{Math.round((currentStep / TOTAL_QUESTIONS) * 100)}%</span>
+              <span className="text-orange-600 dark:text-orange-400 font-black">{Math.round((currentStep / TOTAL_QUESTIONS) * 100)}%</span>
             </div>
-            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+            <div className="w-full bg-stone-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
               <div
-                className="bg-emerald-600 h-full transition-all duration-300 rounded-full"
+                className="bg-orange-600 dark:bg-orange-500 h-full transition-all duration-300 rounded-full"
                 style={{ width: `${(currentStep / TOTAL_QUESTIONS) * 100}%` }}
               />
             </div>
@@ -119,13 +131,13 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
           {/* Loading Animation State */}
           {loading && (
             <div className="text-center py-12 space-y-4 animate-in fade-in">
-              <div className="w-16 h-16 rounded-3xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto animate-pulse">
-                <Sparkles size={32} />
+              <div className="w-16 h-16 rounded-3xl bg-orange-100 dark:bg-slate-800 text-orange-600 dark:text-orange-400 flex items-center justify-center mx-auto animate-pulse">
+                <IconSparkles size={32} />
               </div>
-              <h3 className="text-lg font-black text-slate-900">
+              <h3 className="text-lg font-black text-stone-900 dark:text-stone-100">
                 Analyzing your answers...
               </h3>
-              <p className="text-xs text-slate-500 max-w-xs mx-auto">
+              <p className="text-xs text-stone-500 dark:text-stone-400 max-w-xs mx-auto leading-relaxed">
                 Comparing your profile against 15 verified central and state schemes for maximum financial support.
               </p>
             </div>
@@ -138,13 +150,13 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
               {/* Question 1: Gender */}
               {currentStep === 1 && (
                 <div className="space-y-4">
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
                     Step 1 • Target Profile
                   </span>
-                  <h3 className="text-xl font-black text-slate-900 leading-tight">
+                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
                     Are you a woman?
                   </h3>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
                     Many specialized government schemes (like Lakhpati Didi, Stree Nidhi, Mahila Samman) offer exclusive grants and lower loan interest rates specifically for women.
                   </p>
 
@@ -154,12 +166,12 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       onClick={() => setAnswers({ ...answers, is_woman: true })}
                       className={`p-4 rounded-2xl border text-sm font-black transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
                         answers.is_woman
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-md scale-[1.02]'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                          ? 'bg-orange-600 text-white border-orange-600 shadow-md scale-[1.02]'
+                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
                       }`}
                     >
                       <span>Yes</span>
-                      {answers.is_woman && <CheckCircle2 size={18} />}
+                      {answers.is_woman && <IconCircleCheck size={18} />}
                     </button>
 
                     <button
@@ -167,12 +179,12 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       onClick={() => setAnswers({ ...answers, is_woman: false })}
                       className={`p-4 rounded-2xl border text-sm font-black transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
                         !answers.is_woman
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-md scale-[1.02]'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                          ? 'bg-orange-600 text-white border-orange-600 shadow-md scale-[1.02]'
+                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
                       }`}
                     >
                       <span>No</span>
-                      {!answers.is_woman && <CheckCircle2 size={18} />}
+                      {!answers.is_woman && <IconCircleCheck size={18} />}
                     </button>
                   </div>
                 </div>
@@ -181,13 +193,13 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
               {/* Question 2: Age */}
               {currentStep === 2 && (
                 <div className="space-y-4">
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
                     Step 2 • Eligibility
                   </span>
-                  <h3 className="text-xl font-black text-slate-900 leading-tight">
+                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
                     What is your age?
                   </h3>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
                     Schemes like Atal Pension Yojana, Sukanya Samriddhi, and PMSBY have specific age brackets.
                   </p>
 
@@ -198,7 +210,7 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       max="90"
                       value={answers.age}
                       onChange={(e) => setAnswers({ ...answers, age: e.target.value })}
-                      className="w-full text-2xl font-black px-4 py-3 border border-slate-300 rounded-2xl focus:outline-hidden focus:ring-2 focus:ring-emerald-500 bg-white"
+                      className="w-full text-2xl font-black px-4 py-3 border border-amber-200 dark:border-slate-700 rounded-2xl text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500 bg-white dark:bg-slate-900"
                       placeholder="e.g. 28"
                     />
                     <div className="flex gap-2">
@@ -209,8 +221,8 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                           onClick={() => setAnswers({ ...answers, age: preset })}
                           className={`flex-1 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer ${
                             parseInt(answers.age, 10) === preset
-                              ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                              : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                              ? 'bg-orange-100 dark:bg-orange-950 text-orange-900 dark:text-orange-300 border-orange-300'
+                              : 'bg-white dark:bg-slate-900 text-stone-600 dark:text-stone-400 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
                           }`}
                         >
                           {preset}
@@ -224,13 +236,13 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
               {/* Question 3: State */}
               {currentStep === 3 && (
                 <div className="space-y-4">
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
                     Step 3 • Location
                   </span>
-                  <h3 className="text-xl font-black text-slate-900 leading-tight">
+                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
                     Which state do you live in?
                   </h3>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
                     This unlocks state-specific welfare benefits (such as Stree Nidhi or Kalyana Lakshmi in Telangana) alongside Central schemes.
                   </p>
 
@@ -244,12 +256,12 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                           onClick={() => setAnswers({ ...answers, state: st === 'Other / All India' ? 'Central' : st })}
                           className={`p-3.5 rounded-2xl border text-sm font-bold transition text-left cursor-pointer min-h-[50px] flex items-center justify-between ${
                             isSelected
-                              ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
-                              : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                              ? 'bg-orange-600 text-white border-orange-600 shadow-sm'
+                              : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
                           }`}
                         >
                           <span>{st}</span>
-                          {isSelected && <CheckCircle2 size={16} />}
+                          {isSelected && <IconCircleCheck size={16} />}
                         </button>
                       );
                     })}
@@ -260,13 +272,13 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
               {/* Question 4: SHG Member */}
               {currentStep === 4 && (
                 <div className="space-y-4">
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
                     Step 4 • Community Livelihood
                   </span>
-                  <h3 className="text-xl font-black text-slate-900 leading-tight">
+                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
                     Are you a member of a Self-Help Group (SHG / Bachat Gat)?
                   </h3>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
                     SHG members qualify for Lakhpati Didi grants, Stree Nidhi fast loans, and NABARD group credit linkages.
                   </p>
 
@@ -276,17 +288,17 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       onClick={() => setAnswers({ ...answers, is_shg_member: true })}
                       className={`w-full p-4 rounded-2xl border text-sm font-bold transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
                         answers.is_shg_member
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-md'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                          ? 'bg-orange-600 text-white border-orange-600 shadow-md'
+                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
                       }`}
                     >
                       <div>
                         <div>Yes, active in an SHG / Bachat Gat</div>
-                        <div className={`text-xs mt-0.5 ${answers.is_shg_member ? 'text-emerald-100' : 'text-slate-400'}`}>
+                        <div className={`text-xs mt-0.5 ${answers.is_shg_member ? 'text-orange-100' : 'text-stone-400'}`}>
                           Unlocks micro-credit and group grants
                         </div>
                       </div>
-                      {answers.is_shg_member && <CheckCircle2 size={20} />}
+                      {answers.is_shg_member && <IconCircleCheck size={20} />}
                     </button>
 
                     <button
@@ -294,17 +306,17 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       onClick={() => setAnswers({ ...answers, is_shg_member: false })}
                       className={`w-full p-4 rounded-2xl border text-sm font-bold transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
                         !answers.is_shg_member
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-md'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                          ? 'bg-orange-600 text-white border-orange-600 shadow-md'
+                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
                       }`}
                     >
                       <div>
                         <div>No, not a member</div>
-                        <div className={`text-xs mt-0.5 ${!answers.is_shg_member ? 'text-emerald-100' : 'text-slate-400'}`}>
+                        <div className={`text-xs mt-0.5 ${!answers.is_shg_member ? 'text-orange-100' : 'text-stone-400'}`}>
                           Still eligible for direct individual schemes
                         </div>
                       </div>
-                      {!answers.is_shg_member && <CheckCircle2 size={20} />}
+                      {!answers.is_shg_member && <IconCircleCheck size={20} />}
                     </button>
                   </div>
                 </div>
@@ -313,13 +325,13 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
               {/* Question 5: Business Interest */}
               {currentStep === 5 && (
                 <div className="space-y-4">
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
                     Step 5 • Business & Livelihood
                   </span>
-                  <h3 className="text-xl font-black text-slate-900 leading-tight">
+                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
                     Do you want to start or expand a small business, tailoring, or shop?
                   </h3>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
                     Unlocks collateral-free loans like MUDRA Shishu (up to ₹50k), PM Vishwakarma toolkits, and Stand-Up India.
                   </p>
 
@@ -329,12 +341,12 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       onClick={() => setAnswers({ ...answers, has_business_interest: true })}
                       className={`p-4 rounded-2xl border text-sm font-black transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
                         answers.has_business_interest
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-md scale-[1.02]'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                          ? 'bg-orange-600 text-white border-orange-600 shadow-md scale-[1.02]'
+                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
                       }`}
                     >
                       <span>Yes</span>
-                      {answers.has_business_interest && <CheckCircle2 size={18} />}
+                      {answers.has_business_interest && <IconCircleCheck size={18} />}
                     </button>
 
                     <button
@@ -342,12 +354,12 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       onClick={() => setAnswers({ ...answers, has_business_interest: false })}
                       className={`p-4 rounded-2xl border text-sm font-black transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
                         !answers.has_business_interest
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-md scale-[1.02]'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                          ? 'bg-orange-600 text-white border-orange-600 shadow-md scale-[1.02]'
+                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
                       }`}
                     >
                       <span>No</span>
-                      {!answers.has_business_interest && <CheckCircle2 size={18} />}
+                      {!answers.has_business_interest && <IconCircleCheck size={18} />}
                     </button>
                   </div>
                 </div>
@@ -358,21 +370,21 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
           {/* Results Screen */}
           {results && !loading && (
             <div className="space-y-4 animate-in fade-in">
-              <div className="bg-emerald-100 text-emerald-950 p-4 rounded-2xl border border-emerald-300">
+              <div className="bg-emerald-100 dark:bg-emerald-950/80 text-emerald-950 dark:text-emerald-200 p-4 rounded-2xl border border-emerald-300 dark:border-emerald-800">
                 <div className="flex items-center justify-between mb-1">
                   <h3 className="font-black text-base flex items-center gap-2">
-                    <CheckCircle2 size={20} className="text-emerald-700" />
+                    <IconCircleCheck size={20} className="text-emerald-700 dark:text-emerald-400" />
                     You may want to explore {results.total_matched} Schemes
                   </h3>
                 </div>
-                <p className="text-xs text-emerald-900/80 leading-relaxed">
+                <p className="text-xs text-emerald-900/80 dark:text-emerald-300/80 leading-relaxed">
                   Based on your age ({answers.age}), location ({answers.state}), and profile.
                 </p>
               </div>
 
               {/* Disclaimer Notice */}
-              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex gap-2.5 text-amber-950">
-                <ShieldAlert size={18} className="shrink-0 text-amber-600 mt-0.5" />
+              <div className="bg-[#fff1e3] dark:bg-orange-950/40 border border-orange-200 dark:border-orange-800/60 rounded-2xl p-3.5 flex gap-2.5 text-orange-950 dark:text-orange-200">
+                <IconAlertTriangle size={18} className="shrink-0 text-orange-600 dark:text-orange-400 mt-0.5" />
                 <p className="text-xs leading-relaxed font-medium">
                   {results.disclaimer}
                 </p>
@@ -383,32 +395,32 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                 {results.matches.map((m) => (
                   <div
                     key={m.scheme.id}
-                    className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:border-emerald-400 transition"
+                    className="bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 rounded-2xl p-4 shadow-xs hover:border-orange-300 dark:hover:border-slate-700 transition"
                   >
                     <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900">
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#fff1e3] dark:bg-slate-800 text-orange-900 dark:text-orange-300 border border-orange-200/50 dark:border-slate-700">
                         {m.scheme.category}
                       </span>
-                      <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300/40">
                         {m.match_score}% Match
                       </span>
                     </div>
 
-                    <h4 className="text-base font-bold text-slate-900 mb-1">
+                    <h4 className="text-base font-bold text-stone-900 dark:text-stone-100 mb-1">
                       {m.scheme.name}
                     </h4>
 
-                    <p className="text-xs text-slate-600 mb-3 leading-relaxed">
+                    <p className="text-xs text-stone-600 dark:text-stone-400 mb-3 leading-relaxed">
                       {m.scheme.what_it_provides}
                     </p>
 
                     {/* Why you match */}
                     {m.reasons && m.reasons.length > 0 && (
-                      <div className="bg-slate-50 p-2.5 rounded-xl mb-3 border border-slate-100">
-                        <span className="text-[11px] font-bold text-emerald-700 block mb-1">
+                      <div className="bg-stone-50 dark:bg-slate-800/80 p-2.5 rounded-xl mb-3 border border-amber-50 dark:border-slate-700/60">
+                        <span className="text-[11px] font-bold text-orange-700 dark:text-orange-400 block mb-1">
                           Why it may be relevant:
                         </span>
-                        <ul className="text-xs text-slate-600 space-y-0.5 pl-3 list-disc">
+                        <ul className="text-xs text-stone-600 dark:text-stone-400 space-y-0.5 pl-3 list-disc">
                           {m.reasons.slice(0, 2).map((r, idx) => (
                             <li key={idx}>{r}</li>
                           ))}
@@ -416,10 +428,10 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                       </div>
                     )}
 
-                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <div className="pt-2 border-t border-amber-100 dark:border-slate-800 flex items-center justify-between gap-2">
                       <button
                         onClick={() => setSelectedScheme(m.scheme)}
-                        className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition cursor-pointer min-h-[38px]"
+                        className="px-3 py-1.5 bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 text-stone-700 dark:text-stone-300 font-bold rounded-xl text-xs transition cursor-pointer min-h-[38px]"
                       >
                         View Full Summary
                       </button>
@@ -431,6 +443,7 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
                         className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-xs cursor-pointer min-h-[38px]"
                       >
                         <span>View official source →</span>
+                        <IconExternalLink size={13} />
                       </a>
                     </div>
                   </div>
@@ -441,16 +454,16 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
         </div>
 
         {/* Footer Navigation Controls */}
-        <footer className="sticky bottom-0 z-10 bg-white border-t border-slate-200 p-4 flex gap-2">
+        <footer className="sticky bottom-0 z-10 bg-white dark:bg-slate-900 border-t border-amber-100 dark:border-slate-800 p-4 flex gap-2">
           {!results && !loading && (
             <>
               {currentStep > 1 && (
                 <button
                   type="button"
                   onClick={handleBack}
-                  className="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition cursor-pointer min-h-[44px] flex items-center gap-1.5"
+                  className="px-4 py-3 bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 text-stone-700 dark:text-stone-300 font-bold rounded-xl text-xs transition cursor-pointer min-h-[44px] flex items-center gap-1.5"
                 >
-                  <ArrowLeft size={16} />
+                  <IconArrowLeft size={16} />
                   <span>Back</span>
                 </button>
               )}
@@ -458,10 +471,10 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-xs transition shadow-sm cursor-pointer min-h-[44px] flex items-center justify-center gap-1.5"
+                className="flex-1 py-3 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-xl text-xs transition shadow-sm cursor-pointer min-h-[44px] flex items-center justify-center gap-1.5 active:scale-95"
               >
                 <span>{currentStep === TOTAL_QUESTIONS ? 'Calculate My Matches' : 'Next Question'}</span>
-                <ArrowRight size={16} />
+                <IconArrowRight size={16} />
               </button>
             </>
           )}
@@ -471,15 +484,15 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
               <button
                 type="button"
                 onClick={handleReset}
-                className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition cursor-pointer min-h-[44px] flex items-center justify-center gap-1.5"
+                className="flex-1 py-3 bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 text-stone-700 dark:text-stone-300 font-bold rounded-xl text-xs transition cursor-pointer min-h-[44px] flex items-center justify-center gap-1.5"
               >
-                <RefreshCw size={14} />
+                <IconRefresh size={14} />
                 <span>Retake Matcher</span>
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-xs transition shadow-sm cursor-pointer min-h-[44px]"
+                className="flex-1 py-3 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-xl text-xs transition shadow-sm cursor-pointer min-h-[44px] active:scale-95"
               >
                 Done
               </button>
