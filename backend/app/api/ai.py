@@ -29,6 +29,7 @@ async def chat_with_sakhi(req: AIChatRequest, db: Session = Depends(get_db)):
             "monthly_saving_required": g["monthly_saving_required"]
         }
 
+    user_lang = req.language or user.preferred_language or "en"
     context = FinancialContextPayload(
         name=user.name,
         income=summary["monthly_income"],
@@ -38,14 +39,18 @@ async def chat_with_sakhi(req: AIChatRequest, db: Session = Depends(get_db)):
         debt=summary["debt"],
         current_journey_stage=summary["journey"]["current_stage_name"],
         emergency_fund=summary["emergency_fund"],
-        primary_goal=primary_goal_dict
+        primary_goal=primary_goal_dict,
+        state=user.state or "All India",
+        age=user.age or 30,
+        is_shg_member=bool(user.is_shg_member),
+        language=user_lang
     )
 
     # Step 3: AI Service generates friendly, simple, grounded explanation
     response = await explain_finances_with_ai(
         user_message=req.message,
         context=context,
-        language=req.language or "en"
+        language=user_lang
     )
 
     return response

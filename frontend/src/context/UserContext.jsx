@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../services/api';
+import { translations } from '../utils/translations';
 
 const UserContext = createContext();
 
@@ -8,6 +9,55 @@ export function UserProvider({ children }) {
   const [financialHealth, setFinancialHealth] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Language state
+  const [language, setLanguageState] = useState(() => {
+    return localStorage.getItem('sakhi_language') || 'en';
+  });
+
+  // Theme state: 'light' | 'dark'
+  const [theme, setThemeState] = useState(() => {
+    return localStorage.getItem('sakhi_theme') || 'light';
+  });
+
+  // Interactive tutorial state
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const setTheme = (newTheme) => {
+    setThemeState(newTheme);
+    localStorage.setItem('sakhi_theme', newTheme);
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  const setLanguage = (newLang) => {
+    setLanguageState(newLang);
+    localStorage.setItem('sakhi_language', newLang);
+  };
+
+  const t = (key) => {
+    return translations[language]?.[key] || translations['en']?.[key] || key;
+  };
+
+  const startTutorial = () => {
+    setShowTutorial(true);
+  };
+
+  const completeTutorial = () => {
+    setShowTutorial(false);
+    localStorage.setItem('sakhi_tutorial_completed', 'true');
+  };
 
   const refreshFinancialData = async (userId = user?.id) => {
     if (!userId) return;
@@ -19,10 +69,22 @@ export function UserProvider({ children }) {
     }
   };
 
+  const updateUserLocally = (updatedData) => {
+    setUser((prev) => ({ ...prev, ...updatedData }));
+  };
+
   const loginUser = (userData) => {
     setUser(userData);
     localStorage.setItem('sakhi_user_id', userData.id);
+    if (userData.preferred_language && !localStorage.getItem('sakhi_language')) {
+      setLanguage(userData.preferred_language);
+    }
     refreshFinancialData(userData.id);
+
+    // Check if tutorial has been completed
+    if (!localStorage.getItem('sakhi_tutorial_completed')) {
+      setShowTutorial(true);
+    }
   };
 
   const logoutUser = () => {
@@ -68,9 +130,18 @@ export function UserProvider({ children }) {
         financialHealth,
         loading,
         error,
+        language,
+        setLanguage,
+        theme,
+        setTheme,
+        showTutorial,
+        startTutorial,
+        completeTutorial,
+        t,
         loginUser,
         logoutUser,
         loadDemoUser,
+        updateUserLocally,
         refreshFinancialData,
       }}
     >
@@ -82,3 +153,5 @@ export function UserProvider({ children }) {
 export function useUser() {
   return useContext(UserContext);
 }
+
+

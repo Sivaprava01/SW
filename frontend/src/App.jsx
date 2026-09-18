@@ -9,20 +9,22 @@ import Goals from './pages/Goals';
 import Benefits from './pages/Benefits';
 import Learn from './pages/Learn';
 import AskSakhiModal from './components/AskSakhiModal';
+import StartupGreeting from './components/StartupGreeting';
+import InteractiveTutorial from './components/InteractiveTutorial';
 
 function MainApp() {
-  const { user, loading } = useUser();
+  const { user, loading, showTutorial, completeTutorial } = useUser();
   const [activeTab, setActiveTab] = useState('home');
   const [showAskSakhi, setShowAskSakhi] = useState(false);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
         <div className="text-center">
           <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-black text-2xl flex items-center justify-center mx-auto mb-3 shadow-md animate-pulse">
             स
           </div>
-          <p className="text-xs font-bold text-slate-600">Loading Sakhi...</p>
+          <p className="text-xs font-bold text-slate-600 dark:text-slate-400">Loading Sakhi...</p>
         </div>
       </div>
     );
@@ -70,18 +72,26 @@ function MainApp() {
   };
 
   return (
-    <Layout
-      activeTab={activeTab}
-      setActiveTab={setActiveTab}
-      onOpenAskSakhi={() => setShowAskSakhi(true)}
-    >
-      {renderTab()}
+    <>
+      <StartupGreeting name={user.name} />
+      <Layout
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onOpenAskSakhi={() => setShowAskSakhi(true)}
+      >
+        {renderTab()}
 
-      <AskSakhiModal
-        isOpen={showAskSakhi}
-        onClose={() => setShowAskSakhi(false)}
-      />
-    </Layout>
+        <AskSakhiModal
+          isOpen={showAskSakhi}
+          onClose={() => setShowAskSakhi(false)}
+        />
+
+        <InteractiveTutorial
+          isOpen={showTutorial}
+          onClose={completeTutorial}
+        />
+      </Layout>
+    </>
   );
 }
 

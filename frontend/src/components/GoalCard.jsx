@@ -61,7 +61,8 @@ export default function GoalCard({ goal, onAddProgress, onDelete }) {
           {onAddProgress && !isComplete && (
             <button
               onClick={() => onAddProgress(goal)}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1"
+              aria-label={`Add savings to ${goal.name}`}
+              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer min-h-[38px]"
             >
               <PlusCircle size={14} /> Add ₹
             </button>
@@ -69,7 +70,8 @@ export default function GoalCard({ goal, onAddProgress, onDelete }) {
           {onDelete && (
             <button
               onClick={() => onDelete(goal.id)}
-              className="text-slate-400 hover:text-rose-500 text-xs px-1.5 py-1"
+              aria-label={`Delete goal ${goal.name}`}
+              className="text-slate-400 hover:text-rose-600 text-xs px-2 py-1.5 rounded-lg cursor-pointer min-h-[38px] flex items-center"
             >
               Remove
             </button>

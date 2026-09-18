@@ -1,6 +1,7 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from sqlalchemy.orm import Session
 from app.models.scheme import GovernmentScheme
+from app.models.user import User
 from app.schemas.scheme import SchemeMatchRequest, MatchedSchemeItem, SchemeResponse
 
 DISCLAIMER_TEXT = "Sakhi provides a preliminary eligibility match and does not provide official eligibility confirmation."
@@ -12,6 +13,8 @@ def match_schemes(db: Session, request: SchemeMatchRequest) -> List[MatchedSchem
     """
     schemes = db.query(GovernmentScheme).all()
     matched_results: List[MatchedSchemeItem] = []
+    
+    is_woman = bool(request.is_woman)
 
     for s in schemes:
         score = 60  # baseline interest score
@@ -19,7 +22,7 @@ def match_schemes(db: Session, request: SchemeMatchRequest) -> List[MatchedSchem
 
         # 1. State matching: Central applies to all, or exact state match
         if s.state != "Central":
-            if s.state.lower() == request.state.lower():
+            if s.state.lower() == (request.state or "").lower():
                 score += 25
                 reasons.append(f"Specifically benefits residents of {s.state}")
             else:
@@ -30,7 +33,7 @@ def match_schemes(db: Session, request: SchemeMatchRequest) -> List[MatchedSchem
 
         # 2. Gender matching
         if s.gender_target == "women":
-            if request.is_woman:
+            if is_woman:
                 score += 20
                 reasons.append("Dedicated program empowering women")
             else:
@@ -39,7 +42,7 @@ def match_schemes(db: Session, request: SchemeMatchRequest) -> List[MatchedSchem
 
         # 3. Age matching
         if s.min_age is not None and request.age < s.min_age:
-            # Check special case: SSY is for girl child under 10
+            # Special case: SSY is for girl child under 10
             if s.id == "scheme-sukanya-samriddhi" and request.age >= 18:
                 # Parent can apply on behalf of a daughter
                 reasons.append("Parent/guardian can apply for daughter (under 10 yrs)")
@@ -86,3 +89,19 @@ def match_schemes(db: Session, request: SchemeMatchRequest) -> List[MatchedSchem
     # Sort by match score descending
     matched_results.sort(key=lambda x: x.match_score, reverse=True)
     return matched_results
+
+def match_schemes_for_user(db: Session, user: User) -> List[MatchedSchemeItem]:
+    """
+    Direct matching helper using a User record from the database.
+    """
+    req = SchemeMatchRequest(
+        user_id=user.id,
+        is_woman=(user.gender == "women"),
+        age=user.age,
+        state=user.state,
+        income_level="low",
+        has_business_interest=user.has_business_interest,
+        is_shg_member=user.is_shg_member,
+        is_rural=user.is_rural
+    )
+    return match_schemes(db, req)

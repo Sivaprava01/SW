@@ -214,12 +214,89 @@ def test_ai_fallback_explanation():
 
     print("AI grounded explanations verified!\n")
 
+def test_fastapi_endpoints():
+    print("--- 6. Testing Full FastAPI Endpoints via TestClient ---")
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    client = TestClient(app)
+
+    # 1. Load Demo Lakshmi
+    resp_demo = client.post("/api/users/demo/lakshmi")
+    assert resp_demo.status_code == 200, f"Failed demo load: {resp_demo.text}"
+    demo_user = resp_demo.json()
+    user_id = demo_user["id"]
+    assert demo_user["name"] == "Lakshmi"
+    print(f"Loaded Demo User: {demo_user['name']} (ID: {user_id})")
+
+    # 2. Get Financial Health
+    resp_health = client.get(f"/api/financial-health/{user_id}")
+    assert resp_health.status_code == 200
+    health = resp_health.json()
+    assert health["monthly_income"] >= 12000.0
+    assert health["surplus"] >= 5000.0
+    assert health["savings"] >= 10000.0
+    assert health["debt"] >= 20000.0
+    print(f"Financial Health: Income ₹{health['monthly_income']}, Surplus ₹{health['surplus']}, Stage: {health['journey']['current_stage_name']}")
+
+    # 3. Create Transaction
+    resp_tx = client.post("/api/transactions", json={
+        "user_id": user_id,
+        "amount": 1500.0,
+        "type": "income",
+        "category": "Tailoring Orders",
+        "note": "Bridal blouses",
+        "date": "2026-09-18"
+    })
+    assert resp_tx.status_code == 200
+    tx = resp_tx.json()
+    assert tx["amount"] == 1500.0
+
+    # 4. Create and update Goal
+    resp_goal = client.post("/api/goals", json={
+        "user_id": user_id,
+        "name": "Sewing Machine Upgrade",
+        "category": "Business",
+        "target_amount": 25000.0,
+        "current_amount": 5000.0,
+        "target_date": "10"
+    })
+    assert resp_goal.status_code == 200
+    goal = resp_goal.json()
+    assert goal["remaining_amount"] == 20000.0
+    assert goal["monthly_saving_required"] == 2000.0
+    goal_id = goal["id"]
+
+    # 5. User-based Scheme Match
+    resp_match = client.get(f"/api/schemes/match/user/{user_id}")
+    assert resp_match.status_code == 200
+    match_data = resp_match.json()
+    assert match_data["total_matched"] > 0
+    print(f"User Scheme Match: {match_data['total_matched']} matched schemes")
+
+    # 6. Ask Sakhi AI Chat
+    resp_chat = client.post("/api/ai/chat", json={
+        "user_id": user_id,
+        "message": "How much surplus do I have and what should I save?",
+        "language": "en"
+    })
+    assert resp_chat.status_code == 200
+    chat_res = resp_chat.json()
+    assert "reply" in chat_res
+    print(f"Sakhi AI Response:\n{chat_res['reply']}\n")
+
+    # Clean up test goal
+    client.delete(f"/api/goals/{goal_id}")
+    client.delete(f"/api/transactions/{tx['id']}")
+    print("Full FastAPI API integration suite verified!\n")
+
 if __name__ == "__main__":
     test_financial_calculations()
     test_user_totals_and_transactions()
     test_journey_stage_transitions()
     test_database_and_schemes()
     test_ai_fallback_explanation()
-    print("========================================")
-    print("ALL BACKEND & FINANCIAL TESTS PASSED 100%")
-    print("========================================")
+    test_fastapi_endpoints()
+    print("==================================================")
+    print("ALL 6 TEST SUITES PASSED (100% Deterministic & API)")
+    print("==================================================")

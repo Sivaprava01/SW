@@ -34,12 +34,25 @@ export default function TransactionList({ transactions = [], onAddTransaction, o
     ]
   };
 
+  const today = new Date().toISOString().split('T')[0];
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) {
       alert('Please enter a valid amount');
       return;
     }
+
+    if (!formData.date) {
+      alert('Please select a valid date');
+      return;
+    }
+
+    if (formData.date > today) {
+      alert('Transaction date cannot be in the future. Please select today or an earlier date.');
+      return;
+    }
+
     onAddTransaction({
       ...formData,
       amount: parseFloat(formData.amount)
@@ -47,8 +60,8 @@ export default function TransactionList({ transactions = [], onAddTransaction, o
     setFormData({
       amount: '',
       type: 'expense',
-      category: 'Groceries & Food',
-      date: new Date().toISOString().split('T')[0],
+      category: categories.expense[0],
+      date: today,
       description: '',
     });
     setShowModal(false);
@@ -60,7 +73,7 @@ export default function TransactionList({ transactions = [], onAddTransaction, o
         <h3 className="font-bold text-slate-800 text-sm">Recent Transactions</h3>
         <button
           onClick={() => setShowModal(true)}
-          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center gap-1 shadow-xs transition"
+          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center gap-1 shadow-xs transition cursor-pointer min-h-[36px]"
         >
           <Plus size={14} /> Log Entry
         </button>
@@ -108,8 +121,9 @@ export default function TransactionList({ transactions = [], onAddTransaction, o
                   {onDeleteTransaction && (
                     <button
                       onClick={() => onDeleteTransaction(t.id)}
-                      className="text-slate-300 hover:text-rose-500 transition p-1"
+                      className="text-slate-300 hover:text-rose-500 transition p-2 cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center"
                       title="Delete entry"
+                      aria-label="Delete transaction"
                     >
                       <Trash2 size={15} />
                     </button>
@@ -124,7 +138,7 @@ export default function TransactionList({ transactions = [], onAddTransaction, o
       {/* Add Transaction Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-slate-100">
+          <div className="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-slate-100 animate-in zoom-in-95">
             <h3 className="text-lg font-black text-slate-900 mb-1">Add Money Entry</h3>
             <p className="text-xs text-slate-500 mb-4">
               Enter your income or expense. Sakhi will recalculate your surplus.
@@ -135,24 +149,24 @@ export default function TransactionList({ transactions = [], onAddTransaction, o
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, type: 'income', category: categories.income[0] })}
-                  className={`py-2 text-xs font-bold rounded-xl border transition ${
+                  className={`py-2 text-xs font-bold rounded-xl border transition min-h-[44px] cursor-pointer ${
                     formData.type === 'income'
                       ? 'bg-emerald-600 text-white border-emerald-600'
-                      : 'bg-white text-slate-700 border-slate-200'
+                      : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                   }`}
                 >
-                  + Income (Aamadni)
+                  + Income
                 </button>
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, type: 'expense', category: categories.expense[0] })}
-                  className={`py-2 text-xs font-bold rounded-xl border transition ${
+                  className={`py-2 text-xs font-bold rounded-xl border transition min-h-[44px] cursor-pointer ${
                     formData.type === 'expense'
                       ? 'bg-rose-600 text-white border-rose-600'
-                      : 'bg-white text-slate-700 border-slate-200'
+                      : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                   }`}
                 >
-                  - Expense (Kharch)
+                  - Expense
                 </button>
               </div>
 
@@ -185,9 +199,11 @@ export default function TransactionList({ transactions = [], onAddTransaction, o
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Date</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Date (Today or earlier)</label>
                 <input
                   type="date"
+                  max={today}
+                  required
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
@@ -209,13 +225,13 @@ export default function TransactionList({ transactions = [], onAddTransaction, o
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition"
+                  className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition min-h-[44px] cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition shadow-sm"
+                  className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition shadow-sm min-h-[44px] cursor-pointer"
                 >
                   Save Entry
                 </button>

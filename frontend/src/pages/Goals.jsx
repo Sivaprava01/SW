@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Plus, Sparkles, TrendingUp, CheckCircle, RefreshCw } from 'lucide-react';
+import { Target, Plus, Sparkles, TrendingUp, CheckCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useUser } from '../context/UserContext';
 import { api } from '../services/api';
@@ -265,29 +265,37 @@ export default function Goals() {
       {addProgressGoal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-slate-100">
-            <h3 className="text-base font-black text-slate-900 mb-1">Add Savings to Goal</h3>
+            <h3 className="text-base font-black text-slate-900 mb-1">Add Money to Goal</h3>
             <p className="text-xs text-slate-500 mb-3">
               {addProgressGoal.name} (Saved so far: ₹{Number(addProgressGoal.current_amount).toLocaleString('en-IN')})
             </p>
 
             <form onSubmit={handleAddSavings} className="space-y-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Amount Saved Today (₹)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Amount to Allocate (₹)</label>
                 <input
                   type="number"
                   required
                   min="1"
-                  placeholder="e.g. 500"
+                  placeholder="e.g. 1000"
                   value={progressAmount}
                   onChange={(e) => setProgressAmount(e.target.value)}
                   className="w-full px-3 py-2 text-lg font-bold border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
                 />
+                {progressAmount && !isNaN(progressAmount) && Number(progressAmount) > 0 && (
+                  <p className="mt-1 text-xs text-emerald-700 bg-emerald-50 rounded-lg p-2 font-medium">
+                    ℹ️ This moves ₹{Number(progressAmount).toLocaleString('en-IN')} into this goal from your savings.
+                  </p>
+                )}
               </div>
 
               <div className="flex gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={() => setAddProgressGoal(null)}
+                  onClick={() => {
+                    setAddProgressGoal(null);
+                    setProgressAmount('');
+                  }}
                   className="flex-1 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs"
                 >
                   Cancel

@@ -171,16 +171,16 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
       {/* Learn Card */}
       <button
         onClick={() => onNavigate('learn')}
-        className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 p-3.5 rounded-2xl text-left shadow-2xs flex items-center justify-between transition"
+        className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 p-3.5 rounded-2xl text-left shadow-2xs flex items-center justify-between transition cursor-pointer min-h-[52px]"
       >
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-purple-100 text-purple-800">
             <BookOpen size={18} />
           </div>
           <div>
-            <h4 className="font-bold text-xs text-slate-900">Learn: Simple Financial Guides</h4>
+            <h4 className="font-bold text-xs text-slate-900">Learn: Financial Guides</h4>
             <p className="text-[11px] text-slate-500">
-              Suraksha Kavach (Emergency Fund) • Clearing Debt • Small Savings
+              Emergency Fund • Managing Loans • Disciplined Savings • Micro-Insurance
             </p>
           </div>
         </div>

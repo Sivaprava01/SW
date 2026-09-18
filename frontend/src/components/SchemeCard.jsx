@@ -59,7 +59,8 @@ export default function SchemeCard({ scheme, matchScore, matchReasons, onViewDet
         </span>
         <button
           onClick={() => onViewDetails(scheme)}
-          className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold rounded-lg text-xs transition flex items-center gap-1"
+          aria-label={`View details and official source for ${scheme.name}`}
+          className="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold rounded-xl text-xs transition flex items-center gap-1 cursor-pointer min-h-[40px]"
         >
           <span>Details & Source</span>
           <ChevronRight size={14} />

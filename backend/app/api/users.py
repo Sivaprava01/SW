@@ -14,6 +14,11 @@ def create_user(user_in: UserCreate, db: Session = Depends(get_db)):
         name=user_in.name,
         age=user_in.age,
         state=user_in.state,
+        gender=user_in.gender,
+        is_shg_member=user_in.is_shg_member,
+        has_business_interest=user_in.has_business_interest,
+        is_rural=user_in.is_rural,
+        occupation=user_in.occupation,
         monthly_income=user_in.monthly_income,
         monthly_expenses=user_in.monthly_expenses,
         savings=user_in.savings,
@@ -27,7 +32,6 @@ def create_user(user_in: UserCreate, db: Session = Depends(get_db)):
     # If an initial financial goal was set during onboarding, auto-create a Goal record
     if user_in.financial_goal:
         target_amount = 50000.0  # sensible default if unspecified
-        # Parse simple name or default
         goal = Goal(
             user_id=user.id,
             name=user_in.financial_goal,
@@ -65,8 +69,9 @@ def update_user(user_id: str, user_in: UserUpdate, db: Session = Depends(get_db)
 @router.post("/demo/lakshmi", response_model=UserResponse)
 def load_demo_lakshmi(db: Session = Depends(get_db)):
     """
-    Creates or returns the official Demo Lakshmi profile as outlined in Section 31:
-    Name: Lakshmi, Age: 28, State: Telangana, Income: ₹12,000, Expenses: ₹7,000,
+    Creates or returns the official Demo Lakshmi profile:
+    Name: Lakshmi, Age: 28, State: Telangana, Gender: women, SHG Member: True,
+    Business Interest: True, Rural: True, Income: ₹12,000, Expenses: ₹7,000,
     Savings: ₹10,000, Debt: ₹20,000, Goal: Daughter's Education ₹50,000.
     """
     user = db.query(User).filter(User.name == "Lakshmi", User.state == "Telangana").first()
@@ -75,6 +80,11 @@ def load_demo_lakshmi(db: Session = Depends(get_db)):
             name="Lakshmi",
             age=28,
             state="Telangana",
+            gender="women",
+            is_shg_member=True,
+            has_business_interest=True,
+            is_rural=True,
+            occupation="Tailoring & Small Trade",
             monthly_income=12000.0,
             monthly_expenses=7000.0,
             savings=10000.0,
@@ -96,4 +106,14 @@ def load_demo_lakshmi(db: Session = Depends(get_db)):
         )
         db.add(goal)
         db.commit()
+    else:
+        # Ensure new fields are populated on existing demo user
+        user.gender = "women"
+        user.is_shg_member = True
+        user.has_business_interest = True
+        user.is_rural = True
+        user.occupation = "Tailoring & Small Trade"
+        db.commit()
+        db.refresh(user)
+        
     return user
