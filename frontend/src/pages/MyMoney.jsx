@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Wallet, ArrowDownLeft, ArrowUpRight, TrendingUp, AlertTriangle, ShieldCheck, Plus } from 'lucide-react';
+import {
+  IconArrowDownLeft,
+  IconArrowUpRight,
+  IconTrendingUp,
+  IconAlertTriangle,
+  IconShieldCheck,
+  IconPlus,
+} from '@tabler/icons-react';
 import { useUser } from '../context/UserContext';
 import { api } from '../services/api';
 import MoneyCard from '../components/MoneyCard';
@@ -7,7 +14,7 @@ import ProgressBar from '../components/ProgressBar';
 import TransactionList from '../components/TransactionList';
 
 export default function MyMoney() {
-  const { user, financialHealth, refreshFinancialData } = useUser();
+  const { user, financialHealth, refreshFinancialData, t } = useUser();
   const [transactions, setTransactions] = useState([]);
   const [loadingTxs, setLoadingTxs] = useState(false);
 
@@ -60,69 +67,67 @@ export default function MyMoney() {
   const ef = financialHealth?.emergency_fund;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pb-6">
       {/* Top Title */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-black text-slate-900 tracking-tight">
-            My Money & Health
-          </h2>
-          <p className="text-xs text-slate-500">
-            Real-time calculations from your logged income & expenses
-          </p>
-        </div>
+      <div>
+        <h2 className="text-xl font-black text-stone-900 dark:text-stone-100 tracking-tight">
+          {t('nav_money') || 'My Money'} & Cashflow
+        </h2>
+        <p className="text-xs text-stone-500 dark:text-stone-400">
+          Real-time calculations from your logged income & expenses
+        </p>
       </div>
 
       {/* Primary Financial Overview Grid */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
         <MoneyCard
-          title="Income"
+          title={t('income') || 'Income'}
           amount={income}
           subtitle="Monthly inflow"
-          icon={ArrowDownLeft}
+          icon={IconArrowDownLeft}
           variant="income"
         />
 
         <MoneyCard
-          title="Expense"
+          title={t('expense') || 'Expense'}
           amount={expenses}
           subtitle="Monthly outflow"
-          icon={ArrowUpRight}
+          icon={IconArrowUpRight}
           variant="expense"
         />
 
         <MoneyCard
-          title="Surplus"
+          title={t('surplus') || 'Surplus'}
           amount={surplus}
-          subtitle={surplus >= 0 ? "Left to save & invest" : "Monthly deficit"}
-          icon={TrendingUp}
+          subtitle={surplus >= 0 ? "Safe to save & invest" : "Monthly deficit"}
+          icon={IconTrendingUp}
           variant="surplus"
         />
 
         <MoneyCard
-          title="Savings"
+          title={t('savings') || 'Savings'}
           amount={savings}
           subtitle="In bank & cash"
-          icon={ShieldCheck}
+          icon={IconShieldCheck}
           variant="savings"
         />
       </div>
 
       {/* Debt Card */}
       {debt > 0 && (
-        <div className="bg-rose-50 border border-rose-200 rounded-2xl p-4 flex items-center justify-between">
+        <div className="bg-rose-50/90 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 rounded-2xl p-4 flex items-center justify-between shadow-xs">
           <div className="flex items-start gap-3">
-            <div className="p-2.5 bg-rose-100 text-rose-700 rounded-xl mt-0.5">
-              <AlertTriangle size={20} />
+            <div className="p-2.5 bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 rounded-xl mt-0.5 shrink-0">
+              <IconAlertTriangle size={20} />
             </div>
             <div>
-              <span className="text-xs font-bold text-rose-900 uppercase tracking-wider block">
+              <span className="text-[11px] font-bold text-rose-900 dark:text-rose-300 uppercase tracking-wider block">
                 Total Outstanding Debt
               </span>
-              <div className="text-xl font-black text-rose-950">
+              <div className="text-xl font-black text-rose-950 dark:text-rose-100">
                 ₹{Number(debt).toLocaleString('en-IN')}
               </div>
-              <p className="text-xs text-rose-700 mt-0.5">
+              <p className="text-xs text-rose-700 dark:text-rose-300/90 mt-0.5 font-medium">
                 Suggested payment: ~₹{Math.min(surplus, Math.max(1000, Math.round(surplus * 0.5))).toLocaleString('en-IN')}/mo from surplus
               </p>
             </div>
@@ -132,30 +137,33 @@ export default function MyMoney() {
 
       {/* Emergency Fund Progress */}
       {ef && (
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 rounded-2xl p-4 shadow-xs">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+            <span className="text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
               <span>🛡 Emergency Fund</span>
             </span>
-            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-300/40">
               {ef.percent_complete}% complete
             </span>
           </div>
 
-          <div className="text-base font-black text-slate-900 mb-1.5">
-            ₹{Number(ef.current).toLocaleString('en-IN')} <span className="text-xs font-normal text-slate-400">/ ₹{Number(ef.target).toLocaleString('en-IN')}</span>
+          <div className="text-base font-black text-stone-900 dark:text-stone-100 mb-1.5">
+            ₹{Number(ef.current).toLocaleString('en-IN')}{' '}
+            <span className="text-xs font-normal text-stone-400">
+              / ₹{Number(ef.target).toLocaleString('en-IN')}
+            </span>
           </div>
 
-          <ProgressBar value={ef.current} max={ef.target} color="bg-teal-600" />
+          <ProgressBar value={ef.current} max={ef.target} color="bg-emerald-600 dark:bg-emerald-500" />
           
-          <p className="text-xs text-slate-500 mt-2 font-medium">
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-2 font-medium">
             Build your safety net (3 months of household expenses)
           </p>
         </div>
       )}
 
       {/* Transaction Log Feed */}
-      <div className="pt-2">
+      <div className="pt-1">
         <TransactionList
           transactions={transactions}
           onAddTransaction={handleAddTransaction}
