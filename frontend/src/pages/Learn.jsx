@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { BookOpen, ShieldAlert, Sparkles, TrendingDown, PiggyBank, HeartHandshake, CheckCircle2, ChevronDown, ChevronUp, Volume2, VolumeX } from 'lucide-react';
+import {
+  IconBook,
+  IconShieldExclamation,
+  IconSparkles,
+  IconTrendingDown,
+  IconPigMoney,
+  IconHeartHandshake,
+  IconCircleCheck,
+  IconChevronDown,
+  IconChevronUp,
+  IconVolume,
+  IconVolumeOff,
+} from '@tabler/icons-react';
 import { useUser } from '../context/UserContext';
 import { useSpeech } from '../hooks/useSpeech';
 
@@ -8,8 +20,8 @@ const TOPICS = [
     id: 'emergency-fund',
     title: 'Emergency Fund',
     subtitle: 'Build your safety net against hospital visits & emergencies',
-    icon: ShieldAlert,
-    iconColor: 'bg-teal-100 text-teal-800',
+    icon: IconShieldExclamation,
+    iconColor: 'bg-teal-100 dark:bg-teal-950/80 text-teal-700 dark:text-teal-300',
     summary: 'Money kept safely in the bank that you never touch for shopping or festivals. It protects your family from borrowing during medical emergencies.',
     points: [
       'Target: Save 3 times your monthly household expenses (e.g. ₹21,000 for ₹7,000/mo expenses).',
@@ -21,8 +33,8 @@ const TOPICS = [
     id: 'managing-debt',
     title: 'Managing Loans',
     subtitle: 'Pay off high-interest loans faster and keep your surplus',
-    icon: TrendingDown,
-    iconColor: 'bg-rose-100 text-rose-800',
+    icon: IconTrendingDown,
+    iconColor: 'bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300',
     summary: 'Private moneylender loans drain your household surplus. Paying down high-interest debt first frees up your income.',
     points: [
       'Pay highest-interest debt first (loans with 3% to 5% monthly interest).',
@@ -34,8 +46,8 @@ const TOPICS = [
     id: 'disciplined-savings',
     title: 'Disciplined Saving',
     subtitle: 'Put aside ₹500 to ₹1,000 the day money arrives',
-    icon: PiggyBank,
-    iconColor: 'bg-emerald-100 text-emerald-800',
+    icon: IconPigMoney,
+    iconColor: 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300',
     summary: 'Saving is not what is left after spending. It is putting aside a small fixed amount the day your salary or sales money arrives.',
     points: [
       'Open a Recurring Deposit (RD) at your nearest Post Office or bank.',
@@ -47,8 +59,8 @@ const TOPICS = [
     id: 'government-insurance',
     title: 'Micro-Insurance',
     subtitle: 'Protect your family for less than the cost of a cup of tea',
-    icon: HeartHandshake,
-    iconColor: 'bg-purple-100 text-purple-800',
+    icon: IconHeartHandshake,
+    iconColor: 'bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300',
     summary: 'Government-backed micro-insurance policies provide ₹2 Lakh protection for your family with tiny annual bank deductions.',
     points: [
       'PMSBY: ₹20 per year gives ₹2 Lakh accidental protection.',
@@ -64,18 +76,18 @@ export default function Learn({ onOpenAskSakhi }) {
   const [expandedId, setExpandedId] = useState(TOPICS[0].id);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3.5 pb-6">
       {/* Header */}
       <div>
         <div className="flex items-center gap-1.5 mb-1">
-          <span className="text-xs font-bold text-purple-900 bg-purple-100 px-2.5 py-0.5 rounded-full">
+          <span className="text-[11px] font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-0.5 rounded-full border border-orange-200/60 dark:border-orange-800/40">
             Financial Guidance
           </span>
         </div>
-        <h2 className="text-xl font-black text-slate-900 tracking-tight">
+        <h2 className="text-xl font-black text-stone-900 dark:text-stone-100 tracking-tight">
           What do you want to learn?
         </h2>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-stone-500 dark:text-stone-400">
           Simple guides to protect your family and grow your savings
         </p>
       </div>
@@ -92,14 +104,16 @@ export default function Learn({ onOpenAskSakhi }) {
           return (
             <div
               key={topic.id}
-              className={`bg-white border rounded-2xl overflow-hidden shadow-xs transition ${
-                isExpanded ? 'border-purple-300 ring-2 ring-purple-100' : 'border-slate-200'
+              className={`bg-white dark:bg-slate-900 border rounded-2xl overflow-hidden shadow-xs transition ${
+                isExpanded
+                  ? 'border-orange-400 dark:border-orange-800 ring-2 ring-orange-100 dark:ring-orange-950/50'
+                  : 'border-amber-100 dark:border-slate-800'
               }`}
             >
               <button
                 type="button"
                 onClick={() => setExpandedId(isExpanded ? null : topic.id)}
-                className="w-full p-4 text-left flex items-center justify-between gap-3 hover:bg-slate-50/60 transition cursor-pointer min-h-[64px]"
+                className="w-full p-4 text-left flex items-center justify-between gap-3 hover:bg-stone-50/60 dark:hover:bg-slate-800/60 transition cursor-pointer min-h-[64px]"
                 aria-expanded={isExpanded}
               >
                 <div className="flex items-center gap-3">
@@ -107,31 +121,31 @@ export default function Learn({ onOpenAskSakhi }) {
                     <Icon size={22} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-slate-900 leading-snug">
+                    <h3 className="font-bold text-xs sm:text-sm text-stone-900 dark:text-stone-100 leading-snug">
                       {topic.title}
                     </h3>
-                    <p className="text-xs text-slate-500 mt-0.5 leading-snug">
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5 leading-snug">
                       {topic.subtitle}
                     </p>
                   </div>
                 </div>
-                <div className="text-slate-400 shrink-0">
-                  {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                <div className="text-stone-400 dark:text-stone-500 shrink-0">
+                  {isExpanded ? <IconChevronUp size={20} /> : <IconChevronDown size={20} />}
                 </div>
               </button>
 
               {isExpanded && (
-                <div className="px-4 pb-4 pt-1 border-t border-slate-100 bg-slate-50/50 space-y-3 animate-in fade-in">
+                <div className="px-4 pb-4 pt-1 border-t border-amber-100 dark:border-slate-800 bg-[#fffaf5]/60 dark:bg-slate-900/60 space-y-3 animate-in fade-in">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs font-medium text-slate-700 leading-relaxed bg-white p-3 rounded-xl border border-slate-200 flex-1">
+                    <p className="text-xs font-medium text-stone-700 dark:text-stone-300 leading-relaxed bg-white dark:bg-slate-800 p-3 rounded-xl border border-amber-100 dark:border-slate-700/60 flex-1">
                       {topic.summary}
                     </p>
                   </div>
 
                   <ul className="space-y-2">
                     {topic.points.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
-                        <CheckCircle2 size={15} className="text-emerald-600 shrink-0 mt-0.5" />
+                      <li key={idx} className="flex items-start gap-2 text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+                        <IconCircleCheck size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -145,18 +159,18 @@ export default function Learn({ onOpenAskSakhi }) {
                         aria-label={isTopicSpeaking ? t('stop_listening') : t('listen')}
                         className={`px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer min-h-[38px] border ${
                           isTopicSpeaking
-                            ? 'bg-amber-100 text-amber-950 border-amber-300 shadow-xs'
-                            : 'bg-purple-50 hover:bg-purple-100 text-purple-900 border-purple-200'
+                            ? 'bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border-amber-300 shadow-xs'
+                            : 'bg-orange-50 dark:bg-orange-950/60 hover:bg-orange-100 text-orange-900 dark:text-orange-300 border-orange-200 dark:border-orange-800/40'
                         }`}
                       >
                         {isTopicSpeaking ? (
                           <>
-                            <VolumeX size={15} className="text-amber-700" />
+                            <IconVolumeOff size={15} className="text-amber-700" />
                             <span>{t('stop_listening')}</span>
                           </>
                         ) : (
                           <>
-                            <Volume2 size={15} className="text-purple-700" />
+                            <IconVolume size={15} className="text-orange-700" />
                             <span>🔊 {t('listen')}</span>
                           </>
                         )}
@@ -167,9 +181,9 @@ export default function Learn({ onOpenAskSakhi }) {
                       <button
                         type="button"
                         onClick={onOpenAskSakhi}
-                        className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1.5 cursor-pointer py-1 min-h-[36px]"
+                        className="text-xs font-bold text-orange-600 dark:text-orange-400 hover:text-orange-700 flex items-center gap-1 cursor-pointer py-1 min-h-[36px]"
                       >
-                        <Sparkles size={14} />
+                        <IconSparkles size={14} />
                         <span>Ask Sakhi how this applies to you →</span>
                       </button>
                     )}
@@ -183,4 +197,3 @@ export default function Learn({ onOpenAskSakhi }) {
     </div>
   );
 }
-
