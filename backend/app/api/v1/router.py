@@ -12,6 +12,8 @@ from app.api.v1.endpoints import (
     financial_health,
     goals,
     debt,
+    calculators,
+    knowledge,
 )
 
 api_v1_router = APIRouter()
@@ -23,3 +25,5 @@ api_v1_router.include_router(transactions.router)
 api_v1_router.include_router(financial_health.router)
 api_v1_router.include_router(goals.router)
 api_v1_router.include_router(debt.router)
+api_v1_router.include_router(calculators.router)
+api_v1_router.include_router(knowledge.router)
