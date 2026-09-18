@@ -31,11 +31,31 @@ TestingSessionLocal = sessionmaker(
 
 
 @pytest.fixture(scope="session", autouse=True)
-def setup_test_db():
-    """Create all tables in the test database on session start."""
+def setup_test_db(monkeypatch_session=None):
+    """Create all tables in the test database on session start and patch engine."""
+    import app.core.database as db_module
+    import app.api.v1.endpoints.health as health_module
+    
+    # Patch main engine and check_db_connection for test session
+    orig_engine = db_module.engine
+    db_module.engine = test_engine
+    
+    def test_check_db_connection():
+        try:
+            with test_engine.connect() as conn:
+                from sqlalchemy import text
+                conn.execute(text("SELECT 1"))
+            return True, "connected"
+        except Exception as e:
+            return False, str(e)
+            
+    db_module.check_db_connection = test_check_db_connection
+    health_module.check_db_connection = test_check_db_connection
+
     Base.metadata.create_all(bind=test_engine)
     yield
     Base.metadata.drop_all(bind=test_engine)
+    db_module.engine = orig_engine
 
 
 @pytest.fixture

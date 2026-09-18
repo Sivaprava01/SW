@@ -122,7 +122,7 @@ class AIService:
             }
         }
 
-        with httpx.Client(timeout=10.0) as client:
+        with httpx.Client(timeout=25.0) as client:
             response = client.post(url, json=payload)
             if response.status_code == 200:
                 data = response.json()
@@ -151,27 +151,27 @@ class AIService:
         debts = grounding_data["debts"]
         q_lower = message.lower()
 
-        # Intent 1: Emergency Shield / Buffer
-        if any(w in q_lower for w in ["emergency", "shield", "suraksha", "buffer", "ఆపత్కాల", "రక్షణ", "कवच", "आपातकालीन"]):
+        # Intent 1: Emergency Shield / Savings / Buffer
+        if any(w in q_lower for w in ["saving", "savings", "balance", "emergency", "shield", "suraksha", "buffer", "ఆపత్కాల", "రక్షణ", "పొదుపు", "నిల్వ", "कवच", "आपातकालीन", "बचत"]):
             if language == "te":
                 return (
-                    f"నమస్తే {user.name} అక్క! మీ నెలవారీ ఖర్చులు రూ. {m.monthly_expenses:,.0f} కాబట్టి, "
-                    f"మీ 3 నెలల అత్యవసర రక్షణ కవచం లక్ష్యం **రూ. {m.emergency_fund_target:,.0f}**.\n\n"
-                    f"ప్రస్తుతం మీ పొదుపు రూ. {m.current_savings:,.0f} ({m.emergency_fund_progress_percentage:.1f}% పూర్తయింది).\n"
+                    f"నమస్తే {user.name} అక్క! మీ ప్రస్తుత పొదుపు నిల్వ **రూ. {m.current_savings:,.0f}**.\n\n"
+                    f"మీ నెలవారీ ఖర్చులు రూ. {m.monthly_expenses:,.0f} కాబట్టి, మీ 3 నెలల అత్యవసర రక్షణ కవచం లక్ష్యం **రూ. {m.emergency_fund_target:,.0f}** "
+                    f"({m.emergency_fund_progress_percentage:.1f}% పూర్తయింది).\n"
                     f"మీ నెలవారీ మిగులు రూ. {m.monthly_surplus:,.0f} నుండి ప్రతి నెలా రూ. {min(m.monthly_surplus, 2000):,.0f} "
                     f"పోస్టాఫీసు లేదా బ్యాంకులో జమ చేస్తే సులభంగా రక్షణ కవచం చేరుకోవచ్చు!"
                 )
             elif language == "hi":
                 return (
-                    f"नमस्ते {user.name} दीदी! आपके मासिक खर्च ₹{m.monthly_expenses:,.0f} के अनुसार, "
-                    f"आपका 3 महीने का सुरक्षा कवच लक्ष्य **₹{m.emergency_fund_target:,.0f}** है।\n\n"
-                    f"वर्तमान में आपकी बचत ₹{m.current_savings:,.0f} है ({m.emergency_fund_progress_percentage:.1f}% पूर्ण)।\n"
+                    f"नमस्ते {user.name} दीदी! आपकी वर्तमान बचत **₹{m.current_savings:,.0f}** है।\n\n"
+                    f"आपके मासिक खर्च ₹{m.monthly_expenses:,.0f} के आधार पर आपका 3 महीने का सुरक्षा कवच लक्ष्य **₹{m.emergency_fund_target:,.0f}** "
+                    f"({m.emergency_fund_progress_percentage:.1f}% पूर्ण) है।\n"
                     f"अपनी मासिक बचत (₹{m.monthly_surplus:,.0f}) में से डाकघर बचत खाते या बैंक में नियमित रूप से जमा करके इसे पूरा करें।"
                 )
             return (
-                f"Namaste {user.name} Sister! Based on your monthly living expenses of ₹{m.monthly_expenses:,.0f}, "
-                f"your 3-month Emergency Shield buffer target is **₹{m.emergency_fund_target:,.0f}**.\n\n"
-                f"You currently have ₹{m.current_savings:,.0f} in savings ({m.emergency_fund_progress_percentage:.1f}% reached). "
+                f"Namaste {user.name}! Your current savings balance is **₹{m.current_savings:,.0f}**.\n\n"
+                f"Based on your monthly living expenses of ₹{m.monthly_expenses:,.0f}, your 3-month Emergency Shield buffer target is **₹{m.emergency_fund_target:,.0f}** "
+                f"({m.emergency_fund_progress_percentage:.1f}% reached). "
                 f"With your monthly disposable surplus of ₹{m.monthly_surplus:,.0f}, you can allocate a disciplined portion to reach full safety quickly!"
             )
 
@@ -196,10 +196,28 @@ class AIService:
                     f"Your highest interest loan is with '{highest_debt.lender_name}' at {highest_debt.annual_interest_rate:.1f}% APR. "
                     f"By refinancing this debt through your SHG Sangham at 12% APR, you can save significant monthly interest and become debt-free faster!"
                 )
+            elif m.total_debt > 0:
+                if language == "te":
+                    return (
+                        f"అక్క, మీ ప్రొఫైల్ ప్రకారం మీ మొత్తం అప్పు **రూ. {m.total_debt:,.0f}** గా నమోదై ఉంది.\n\n"
+                        f"ఖచ్చితమైన వడ్డీ రేట్లు మరియు సంఘం ద్వారా రీఫైనాన్స్ ప్రణాళికను పొందడానికి మీ అప్పు వివరాలను నమోదు చేయండి."
+                    )
+                elif language == "hi":
+                    return (
+                        f"दीदी, आपकी प्रोफ़ाइल के अनुसार आपका कुल कर्ज़ **₹{m.total_debt:,.0f}** दर्ज है।\n\n"
+                        f"सटीक ब्याज दर और बचत योजना जानने के लिए अपने कर्ज़ का विस्तृत विवरण जोड़ें।"
+                    )
+                return (
+                    f"Sister, your profile records a total outstanding debt of **₹{m.total_debt:,.0f}**.\n\n"
+                    f"To see a personalized payoff and SHG refinancing plan, you can log the specific loan details in your debt tracker."
+                )
             else:
                 if language == "te":
                     return f"అభినందనలు {user.name} అక్క! మీకు ఎటువంటి అప్పులు లేవు. మీ మిగులు రూ. {m.monthly_surplus:,.0f} ను లక్ష్యాల కోసం పొదుపు చేయవచ్చు."
+                elif language == "hi":
+                    return f"बधाई हो {user.name} दीदी! आप पर कोई कर्ज़ नहीं है। आप अपनी मासिक बचत ₹{m.monthly_surplus:,.0f} को अपने लक्ष्यों के लिए जोड़ सकती हैं।"
                 return f"Wonderful news, {user.name}! You currently have zero debt. You can direct your monthly surplus of ₹{m.monthly_surplus:,.0f} toward your savings goals."
+
 
         # Intent 3: Government Schemes / Insurance / Entitlements
         if any(w in q_lower for w in ["scheme", "pmsby", "pmjjby", "stree nidhi", "mudra", "పథకం", "బీమా", "योजना", "बीमा"]):

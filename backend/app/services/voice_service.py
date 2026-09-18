@@ -13,11 +13,12 @@ import os
 import struct
 import wave
 from typing import Dict, Any, Optional, List, Tuple
+import httpx
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.core.logging import logger
-from app.core.errors import ResourceNotFoundException, ValidationException
+from app.core.errors import ResourceNotFoundException, ValidationException, BadRequestException
 from app.schemas.voice import (
     VoiceLanguage,
     SupportedLanguagesResponse,
@@ -37,7 +38,20 @@ from app.services.knowledge_service import KnowledgeService
 class VoiceService:
     """Core audio synthesis, transcription, and Indic voice interaction service."""
 
+    # Supported Audio Formats to MIME types
+    AUDIO_MIME_MAP: Dict[str, str] = {
+        "webm": "audio/webm",
+        "wav": "audio/wav",
+        "mp3": "audio/mp3",
+        "ogg": "audio/ogg",
+        "m4a": "audio/aac",
+        "aac": "audio/aac",
+        "flac": "audio/flac",
+        "mp4": "audio/mp4",
+    }
+
     # Supported Indic Voice Languages and Personas
+
     LANGUAGES: Dict[str, VoiceLanguage] = {
         "te": VoiceLanguage(
             code="te",
@@ -170,32 +184,42 @@ class VoiceService:
         request: VoiceTranscriptionRequest,
     ) -> VoiceTranscriptionResponse:
         """
-        Transcribe spoken audio input into text.
-        Supports base64 audio container decoding and Indic dialect recognition.
+        Transcribe spoken audio input into text using Google Gemini Audio Transcription.
+        Supports base64 audio container decoding, MIME mapping, and Indic language recognition.
         """
         if not request.audio_base64 or not request.audio_base64.strip():
             raise ValidationException(message="Audio data is required for transcription")
 
         try:
             # Clean base64 header if included (e.g. data:audio/webm;base64,...)
-            clean_b64 = request.audio_base64
+            clean_b64 = request.audio_base64.strip()
             if "," in clean_b64:
                 clean_b64 = clean_b64.split(",", 1)[1]
             raw_audio = base64.b64decode(clean_b64)
+            if len(raw_audio) == 0:
+                raise ValidationException(message="Audio data is empty")
+        except ValidationException:
+            raise
         except Exception as e:
             raise ValidationException(message=f"Invalid base64 audio payload: {e}")
 
-        lang = request.language.lower()[:2] if request.language else "te"
+        # Real Gemini Audio Transcription
+        transcript, detected_lang, confidence = cls._transcribe_with_gemini(
+            clean_b64=clean_b64,
+            raw_audio=raw_audio,
+            audio_format=request.audio_format,
+            language=request.language,
+        )
 
-        # Deterministic transcription handler
-        transcript = cls._mock_or_recognize_audio(raw_audio, target_language=lang)
+        duration = round(max(0.5, len(raw_audio) / 16000.0), 2)
 
         return VoiceTranscriptionResponse(
             transcript=transcript,
-            detected_language=lang,
-            confidence=0.98,
-            duration_seconds=round(len(raw_audio) / 16000.0, 2),
+            detected_language=detected_lang,
+            confidence=confidence,
+            duration_seconds=duration,
         )
+
 
     @classmethod
     def get_lesson_audio(
@@ -381,13 +405,100 @@ class VoiceService:
         return buffer.getvalue()
 
     @classmethod
-    def _mock_or_recognize_audio(cls, raw_audio: bytes, target_language: str) -> str:
-        """Speech recognition transcription helper."""
-        if target_language == "te":
-            return "నా అత్యవసర రక్షణ నిధి లక్ష్యం ఎంత?"
-        elif target_language == "hi":
-            return "मेरी सुरक्षा कवच का लक्ष्य कितना है?"
-        return "What is my emergency fund target?"
+    def _transcribe_with_gemini(
+        cls,
+        clean_b64: str,
+        raw_audio: bytes,
+        audio_format: str = "webm",
+        language: Optional[str] = None,
+    ) -> Tuple[str, str, float]:
+        """
+        Invoke Google Gemini audio transcription model.
+        Extracts verbatim spoken words in original Indic or English language.
+        """
+        if not settings.GEMINI_API_KEY or len(settings.GEMINI_API_KEY.strip()) < 5:
+            raise BadRequestException(message="Gemini API key is not configured for audio transcription")
+
+        fmt = (audio_format or "webm").lower().strip()
+        mime_type = cls.AUDIO_MIME_MAP.get(fmt, "audio/webm")
+
+        if language and language.strip():
+            lang_code = language.lower().strip()[:2]
+            prompt_text = f"Transcribe this spoken audio verbatim in its original language ({lang_code}). Do not translate. Return only the exact transcribed speech text."
+        else:
+            lang_code = None
+            prompt_text = "Transcribe this spoken audio verbatim in its original language. Do not translate. Return only the exact transcribed speech text."
+
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{settings.GEMINI_TRANSCRIBE_MODEL}:generateContent?key={settings.GEMINI_API_KEY}"
+        payload = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt_text},
+                        {
+                            "inline_data": {
+                                "mime_type": mime_type,
+                                "data": clean_b64,
+                            }
+                        },
+                    ]
+                }
+            ]
+        }
+
+        try:
+            with httpx.Client(timeout=30.0) as client:
+                response = client.post(url, json=payload)
+        except Exception as e:
+            logger.error(f"Gemini transcription network error: {e}")
+            raise BadRequestException(message=f"Gemini transcription request failed: {e}")
+
+        if response.status_code != 200:
+            logger.error(f"Gemini transcription API returned HTTP {response.status_code}: {response.text}")
+            raise BadRequestException(
+                message=f"Gemini transcription service returned HTTP {response.status_code}"
+            )
+
+        data = response.json()
+        candidates = data.get("candidates", [])
+        if not candidates:
+            raise BadRequestException(message="Gemini transcription returned no speech candidates")
+
+        parts = candidates[0].get("content", {}).get("parts", [])
+        transcript_pieces = []
+        for part in parts:
+            if isinstance(part, dict):
+                # 1. Check audioTranscription object (gemini-3.5-transcribe format)
+                if "audioTranscription" in part and isinstance(part["audioTranscription"], dict):
+                    t = part["audioTranscription"].get("text", "")
+                    if t:
+                        transcript_pieces.append(t)
+                elif "audio_transcription" in part and isinstance(part["audio_transcription"], dict):
+                    t = part["audio_transcription"].get("text", "")
+                    if t:
+                        transcript_pieces.append(t)
+                # 2. Check standard text part format
+                elif "text" in part and part["text"]:
+                    transcript_pieces.append(part["text"])
+
+        full_transcript = " ".join(transcript_pieces).strip()
+        if not full_transcript:
+            raise BadRequestException(message="No spoken words could be recognized in the audio recording")
+
+        # Detect language if not explicitly requested
+        detected_lang = lang_code if lang_code else cls._detect_script_language(full_transcript)
+
+        return full_transcript, detected_lang, 0.98
+
+    @classmethod
+    def _detect_script_language(cls, text: str) -> str:
+        """Infer language code from unicode script characters."""
+        if any("\u0c00" <= ch <= "\u0c7f" for ch in text):
+            return "te"
+        if any("\u0900" <= ch <= "\u097f" for ch in text):
+            return "hi"
+        return "en"
+
 
     @classmethod
     def _estimate_duration(cls, text: str, speed: float) -> float:

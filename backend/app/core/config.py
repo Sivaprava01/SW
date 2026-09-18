@@ -24,8 +24,8 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     LOG_LEVEL: str = "INFO"
     
-    # Database Configuration
-    DATABASE_URL: str = "sqlite:///./sakhi.db"
+    # Database Configuration (Mandatory: PostgreSQL in development & production)
+    DATABASE_URL: str = "postgresql://sakhi_user:sakhi_password@localhost:5432/sakhi_db"
     DB_ECHO: bool = False
     DB_POOL_SIZE: int = 10
     DB_MAX_OVERFLOW: int = 20
@@ -44,8 +44,10 @@ class Settings(BaseSettings):
 
     # Google Gemini AI & Companion Configuration
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-1.5-flash"
+    GEMINI_MODEL: str = "gemini-flash-lite-latest"
+    GEMINI_TRANSCRIBE_MODEL: str = "gemini-3.5-transcribe"
     AI_FALLBACK_MODE: bool = True
+
 
     # Voice, STT & Indic TTS Configuration
     VOICE_TTS_PROVIDER: str = "gtts"
