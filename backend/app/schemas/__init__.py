@@ -16,6 +16,33 @@ from app.schemas.debt import (
     DebtSnowballItem,
     DebtSnowballAnalysisResponse,
 )
+from app.schemas.calculator import (
+    EmergencyFundCalcRequest,
+    EmergencyFundCalcResponse,
+    DebtRefinanceCalcRequest,
+    DebtRefinanceCalcResponse,
+    RDCalcRequest,
+    RDCalcResponse,
+    GoalHorizonCalcRequest,
+    GoalHorizonCalcResponse,
+)
+from app.schemas.knowledge import (
+    LocalizedText,
+    FinancialConceptResponse,
+    GoldenRuleResponse,
+)
+from app.schemas.learning import (
+    QuizQuestion,
+    LessonResponse,
+    ModuleResponse,
+    LessonCompleteRequest,
+    UserLessonProgressResponse,
+    UserLearningSummaryResponse,
+)
+from app.schemas.journey import (
+    JourneyStageResponse,
+    JourneyRoadmapResponse,
+)
 
 __all__ = [
     "HealthResponse",
@@ -44,4 +71,23 @@ __all__ = [
     "DebtResponse",
     "DebtSnowballItem",
     "DebtSnowballAnalysisResponse",
+    "EmergencyFundCalcRequest",
+    "EmergencyFundCalcResponse",
+    "DebtRefinanceCalcRequest",
+    "DebtRefinanceCalcResponse",
+    "RDCalcRequest",
+    "RDCalcResponse",
+    "GoalHorizonCalcRequest",
+    "GoalHorizonCalcResponse",
+    "LocalizedText",
+    "FinancialConceptResponse",
+    "GoldenRuleResponse",
+    "QuizQuestion",
+    "LessonResponse",
+    "ModuleResponse",
+    "LessonCompleteRequest",
+    "UserLessonProgressResponse",
+    "UserLearningSummaryResponse",
+    "JourneyStageResponse",
+    "JourneyRoadmapResponse",
 ]
