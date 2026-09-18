@@ -58,3 +58,8 @@ Thumbs.db
 # Internal Documentation
 internal documentation/
 internal_documentation/
+
+# Audio Cache
+audio_cache/
+backend/audio_cache/
+
