@@ -43,6 +43,13 @@ from app.schemas.journey import (
     JourneyStageResponse,
     JourneyRoadmapResponse,
 )
+from app.schemas.scheme import (
+    SchemeBase,
+    SchemeResponse,
+    SchemeMatchResponse,
+    BookmarkRequest,
+    BookmarkResponse,
+)
 
 __all__ = [
     "HealthResponse",
@@ -90,4 +97,10 @@ __all__ = [
     "UserLearningSummaryResponse",
     "JourneyStageResponse",
     "JourneyRoadmapResponse",
+    "SchemeBase",
+    "SchemeResponse",
+    "SchemeMatchResponse",
+    "BookmarkRequest",
+    "BookmarkResponse",
 ]
+
