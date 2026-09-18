@@ -25,19 +25,19 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
   return (
     <div className="space-y-3.5 pb-6">
       {/* Financial Health Summary Hero Banner (Stitch Design) */}
-      <div className="relative overflow-hidden rounded-2xl bg-[#fff1e3] dark:bg-slate-900 border border-amber-200/70 dark:border-slate-800 p-4 sm:p-5 shadow-sm">
-        <div className="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-orange-500/10 dark:bg-emerald-500/10 pointer-events-none blur-xl" />
+      <div className="relative overflow-hidden rounded-2xl bg-[#fff1e3] dark:bg-[#1e1b19] border border-amber-200/70 dark:border-[#3D332B] p-4 sm:p-5 shadow-xs">
+        <div className="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-orange-500/10 dark:bg-orange-500/5 pointer-events-none blur-xl" />
         
         {/* Header Badges */}
         <div className="flex items-center justify-between gap-2 mb-3">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
-            <span className="text-[11px] uppercase tracking-wider font-bold text-stone-600 dark:text-stone-300">
+            <span className="text-[11px] uppercase tracking-wider font-bold text-stone-600 dark:text-[#D4C4B5]">
               {t('monthly_snapshot') || 'Monthly Snapshot • Active Cycle'}
             </span>
           </div>
           {user?.is_shg_member && (
-            <span className="text-[11px] font-bold bg-amber-200/80 dark:bg-amber-950/80 text-amber-900 dark:text-amber-300 px-2.5 py-0.5 rounded-full border border-amber-300/40">
+            <span className="text-[11px] font-bold bg-amber-200/80 dark:bg-[#28211C] text-amber-900 dark:text-[#ffb690] px-2.5 py-0.5 rounded-full border border-amber-300/40 dark:border-[#3D332B]">
               SHG Member
             </span>
           )}
@@ -46,22 +46,22 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
         {/* Income Stat */}
         <div className="flex items-center justify-between py-1 mb-3">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-orange-100 dark:bg-slate-800 flex items-center justify-center text-orange-600 dark:text-orange-400">
+            <div className="w-8 h-8 rounded-xl bg-orange-100 dark:bg-[#28211C] flex items-center justify-center text-orange-600 dark:text-[#ffb690]">
               <IconWallet size={18} />
             </div>
-            <span className="text-xs sm:text-sm font-bold text-stone-600 dark:text-stone-300">
+            <span className="text-xs sm:text-sm font-bold text-stone-600 dark:text-[#D4C4B5]">
               {t('your_monthly_income') || 'Your Monthly Income'}
             </span>
           </div>
-          <span className="text-xl sm:text-2xl font-black text-stone-900 dark:text-stone-100">
+          <span className="font-headline text-xl sm:text-2xl font-black text-[#221a0e] dark:text-[#FFF5EB]">
             ₹{Number(income).toLocaleString('en-IN')}
           </span>
         </div>
 
         {/* Surplus Highlight Container */}
-        <div className="rounded-xl bg-white dark:bg-slate-800/90 p-3.5 shadow-xs border border-amber-100 dark:border-slate-700/60 flex flex-col gap-1.5">
+        <div className="rounded-xl bg-white dark:bg-[#14110F] p-3.5 shadow-xs border border-amber-100 dark:border-[#3D332B] flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-stone-500 dark:text-stone-400">
+            <span className="text-xs font-semibold text-stone-500 dark:text-[#A8988A]">
               {t('calculated_surplus') || 'Calculated Monthly Surplus'}
             </span>
             <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 flex items-center gap-1 border border-emerald-300/40">
@@ -70,16 +70,16 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
           </div>
           <div className="flex items-baseline justify-between mt-0.5">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl sm:text-3xl font-black text-orange-600 dark:text-orange-400">
+              <span className="font-headline text-2xl sm:text-3xl font-black text-orange-600 dark:text-[#ffb690]">
                 ₹{Number(surplus).toLocaleString('en-IN')}
               </span>
-              <span className="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
+              <span className="text-[11px] text-stone-500 dark:text-[#A8988A] font-medium">
                 ready to allocate
               </span>
             </div>
             <button
               onClick={() => onNavigate('money')}
-              className="text-xs font-bold text-orange-600 dark:text-orange-400 hover:text-orange-700 inline-flex items-center gap-0.5 active:scale-95 transition-transform cursor-pointer"
+              className="text-xs font-bold text-orange-600 dark:text-[#ffb690] hover:text-orange-700 inline-flex items-center gap-0.5 active:scale-95 transition-transform cursor-pointer"
             >
               <span>Breakdown</span>
               <IconArrowUpRight size={15} />
@@ -116,7 +116,7 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
                 Telugu, Hindi & English
               </span>
             </div>
-            <h2 className="text-base font-black text-white leading-tight">
+            <h2 className="font-headline text-base font-black text-white leading-tight">
               Talk to Sakhi
             </h2>
             <p className="text-xs text-orange-100/90 truncate font-medium">
@@ -136,21 +136,21 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
         {/* Card 1: My Money */}
         <button
           onClick={() => onNavigate('money')}
-          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 shadow-xs hover:border-orange-300 dark:hover:border-slate-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
+          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] shadow-xs hover:border-orange-300 dark:hover:border-stone-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
         >
           <div className="flex items-center justify-between w-full mb-2">
-            <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-slate-800 flex items-center justify-center text-orange-600 dark:text-orange-400">
+            <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-[#28211C] flex items-center justify-center text-orange-600 dark:text-[#ffb690]">
               <IconWallet size={20} />
             </div>
-            <span className="text-[11px] font-bold bg-[#fff1e3] dark:bg-slate-800 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-bold bg-[#fff1e3] dark:bg-[#28211C] text-orange-700 dark:text-[#ffb690] px-2 py-0.5 rounded-full border border-amber-200/50 dark:border-[#3D332B]">
               ₹{Number(surplus).toLocaleString('en-IN')}
             </span>
           </div>
           <div>
-            <h3 className="font-bold text-xs sm:text-sm text-stone-900 dark:text-stone-100">
+            <h3 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB]">
               {t('nav_money') || 'My Money'}
             </h3>
-            <p className="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-1">
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] line-clamp-1">
               Income, expenses & logs
             </p>
           </div>
@@ -159,21 +159,21 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
         {/* Card 2: My Journey */}
         <button
           onClick={() => onNavigate('journey')}
-          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 shadow-xs hover:border-orange-300 dark:hover:border-slate-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
+          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] shadow-xs hover:border-orange-300 dark:hover:border-stone-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
         >
           <div className="flex items-center justify-between w-full mb-2">
-            <div className="w-9 h-9 rounded-xl bg-teal-100 dark:bg-slate-800 flex items-center justify-center text-teal-700 dark:text-teal-400">
+            <div className="w-9 h-9 rounded-xl bg-teal-100 dark:bg-[#28211C] flex items-center justify-center text-teal-700 dark:text-teal-400">
               <IconCompass size={20} />
             </div>
-            <span className="text-[11px] font-bold bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-bold bg-teal-50 dark:bg-[#28211C] text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full border border-teal-200/50 dark:border-[#3D332B]">
               Stage {journey?.current_stage_id || 2}
             </span>
           </div>
           <div>
-            <h3 className="font-bold text-xs sm:text-sm text-stone-900 dark:text-stone-100">
+            <h3 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB]">
               {t('nav_journey') || 'My Journey'}
             </h3>
-            <p className="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-1">
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] line-clamp-1">
               {journey?.current_stage_name || 'Emergency Shield'}
             </p>
           </div>
@@ -182,23 +182,23 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
         {/* Card 3: My Goals */}
         <button
           onClick={() => onNavigate('goals')}
-          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 shadow-xs hover:border-orange-300 dark:hover:border-slate-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
+          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] shadow-xs hover:border-orange-300 dark:hover:border-stone-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
         >
           <div className="flex items-center justify-between w-full mb-2">
-            <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-slate-800 flex items-center justify-center text-blue-700 dark:text-blue-400">
+            <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-[#28211C] flex items-center justify-center text-blue-700 dark:text-blue-400">
               <IconTarget size={20} />
             </div>
             {primaryGoal && (
-              <span className="text-[11px] font-bold bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
+              <span className="text-[11px] font-bold bg-blue-50 dark:bg-[#28211C] text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full border border-blue-200/50 dark:border-[#3D332B]">
                 {primaryGoal.percent_complete}%
               </span>
             )}
           </div>
           <div>
-            <h3 className="font-bold text-xs sm:text-sm text-stone-900 dark:text-stone-100">
+            <h3 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB]">
               {t('nav_goals') || 'My Goals'}
             </h3>
-            <p className="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-1">
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] line-clamp-1">
               {primaryGoal?.name || "Save for future"}
             </p>
           </div>
@@ -207,21 +207,21 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
         {/* Card 4: Benefits */}
         <button
           onClick={() => onNavigate('benefits')}
-          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 shadow-xs hover:border-orange-300 dark:hover:border-slate-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
+          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] shadow-xs hover:border-orange-300 dark:hover:border-stone-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
         >
           <div className="flex items-center justify-between w-full mb-2">
-            <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-slate-800 flex items-center justify-center text-amber-700 dark:text-amber-400">
+            <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-[#28211C] flex items-center justify-center text-amber-700 dark:text-[#ffb690]">
               <IconShieldCheck size={20} />
             </div>
-            <span className="text-[11px] font-bold bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-bold bg-amber-50 dark:bg-[#28211C] text-amber-800 dark:text-[#ffb690] px-2 py-0.5 rounded-full border border-amber-200/50 dark:border-[#3D332B]">
               15 Schemes
             </span>
           </div>
           <div>
-            <h3 className="font-bold text-xs sm:text-sm text-stone-900 dark:text-stone-100">
+            <h3 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB]">
               {t('nav_benefits') || 'Benefits'}
             </h3>
-            <p className="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-1">
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] line-clamp-1">
               Govt schemes & grants
             </p>
           </div>
@@ -230,30 +230,30 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
 
       {/* Active Dream Progress Preview Card */}
       {primaryGoal && (
-        <div className="rounded-2xl bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 p-4 shadow-xs flex flex-col gap-2.5">
+        <div className="rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] p-4 shadow-xs flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <IconSparkles size={16} className="text-orange-500" />
-              <span className="text-[11px] uppercase font-bold text-orange-600 dark:text-orange-400 tracking-wider">
+              <span className="text-[11px] uppercase font-bold text-orange-600 dark:text-[#ffb690] tracking-wider">
                 Active Dream
               </span>
             </div>
-            <span className="text-[11px] font-bold text-stone-600 dark:text-stone-300 bg-[#fff1e3] dark:bg-slate-800 px-2.5 py-0.5 rounded-full">
+            <span className="text-[11px] font-bold text-stone-600 dark:text-[#D4C4B5] bg-[#fff1e3] dark:bg-[#28211C] px-2.5 py-0.5 rounded-full border border-amber-200/50 dark:border-[#3D332B]">
               ₹{Number(primaryGoal.monthly_saving_required).toLocaleString('en-IN')}/mo required
             </span>
           </div>
           <div>
             <div className="flex justify-between items-baseline mb-1">
-              <h3 className="text-sm font-bold text-stone-900 dark:text-stone-100">
+              <h3 className="font-headline text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB]">
                 {primaryGoal.name}
               </h3>
-              <span className="text-xs font-bold text-orange-600 dark:text-orange-400">
+              <span className="font-mono text-xs font-bold text-orange-600 dark:text-[#ffb690]">
                 {primaryGoal.percent_complete}%
               </span>
             </div>
           </div>
           <ProgressBar value={primaryGoal.current_amount} max={primaryGoal.target_amount} />
-          <div className="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400 pt-1 font-medium">
+          <div className="flex items-center justify-between text-xs text-stone-500 dark:text-[#A8988A] pt-1 font-medium font-mono">
             <span>Saved: ₹{Number(primaryGoal.current_amount).toLocaleString('en-IN')}</span>
             <span>Target: ₹{Number(primaryGoal.target_amount).toLocaleString('en-IN')}</span>
           </div>
@@ -263,20 +263,20 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
       {/* Learn Guides Shortcut Banner */}
       <button
         onClick={() => onNavigate('learn')}
-        className="w-full rounded-2xl bg-[#fff1e3]/70 dark:bg-slate-900 border border-amber-200/70 dark:border-slate-800 p-3.5 shadow-xs flex items-center justify-between gap-3 active:scale-95 transition-transform text-left cursor-pointer min-h-[54px]"
+        className="w-full rounded-2xl bg-[#fff1e3]/70 dark:bg-[#1e1b19] border border-amber-200/70 dark:border-[#3D332B] p-3.5 shadow-xs flex items-center justify-between gap-3 active:scale-95 transition-transform text-left cursor-pointer min-h-[54px]"
       >
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-slate-800 flex items-center justify-center text-orange-600 dark:text-orange-400 shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-[#28211C] flex items-center justify-center text-orange-600 dark:text-[#ffb690] shrink-0">
             <IconBook size={20} />
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <h4 className="font-bold text-xs sm:text-sm text-stone-900 dark:text-stone-100 truncate">
+              <h4 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB] truncate">
                 {t('nav_learn') || 'Learn'}: Financial Guides
               </h4>
               <span className="w-2 h-2 rounded-full bg-orange-500 shrink-0" />
             </div>
-            <p className="text-[11px] text-stone-500 dark:text-stone-400 truncate">
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] truncate">
               Emergency Fund • Managing Loans • Micro-Insurance
             </p>
           </div>
