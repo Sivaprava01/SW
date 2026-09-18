@@ -127,163 +127,173 @@ export default function Goals() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-black text-stone-900 dark:text-stone-100 tracking-tight">
+          <h2 className="font-headline text-xl font-black text-[#221a0e] dark:text-[#FFF5EB] tracking-tight">
             {t('nav_goals') || 'My Goals'} & Dreams
           </h2>
-          <p className="text-xs text-stone-500 dark:text-stone-400">
+          <p className="text-xs text-stone-500 dark:text-[#A8988A]">
             Set a target, and Sakhi calculates the exact monthly savings needed
           </p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="px-3.5 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer min-h-[36px]"
+          className="px-3.5 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition active:scale-95 cursor-pointer min-h-[36px]"
         >
           <IconPlus size={15} />
           <span>New Goal</span>
         </button>
       </div>
 
-      {/* Goal Cards List */}
+      {/* Goals List */}
       {goals.length === 0 ? (
-        <div className="bg-[#fff1e3]/50 dark:bg-slate-900 border border-dashed border-amber-200 dark:border-slate-800 rounded-3xl p-8 text-center shadow-2xs">
-          <div className="w-13 h-13 rounded-2xl bg-orange-100 dark:bg-slate-800 text-orange-600 dark:text-orange-400 flex items-center justify-center mx-auto mb-3 shadow-xs">
-            <IconTarget size={26} />
+        <div className="bg-[#fff1e3]/40 dark:bg-[#1e1b19] border border-dashed border-amber-200/80 dark:border-[#3D332B] rounded-2xl p-6 text-center text-stone-500 dark:text-[#A8988A]">
+          <div className="w-12 h-12 rounded-full bg-orange-100 dark:bg-[#28211C] text-orange-600 dark:text-[#ffb690] flex items-center justify-center mx-auto mb-2">
+            <IconTarget size={24} />
           </div>
-          <h3 className="font-bold text-stone-900 dark:text-stone-100 text-sm">
-            No Goals Created Yet
-          </h3>
-          <p className="text-xs text-stone-500 dark:text-stone-400 max-w-xs mx-auto mt-1 mb-4 leading-relaxed">
-            Dreaming of education, a shop, or a better house? Add a goal to let Sakhi plan your monthly savings.
+          <p className="font-headline text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB]">No financial goals created yet.</p>
+          <p className="text-xs text-stone-500 dark:text-[#A8988A] mt-1 max-w-xs mx-auto">
+            Create a goal (e.g. Children Education, Gold, Machinery, House Repair) to see how much to save monthly.
           </p>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2.5 bg-orange-600 text-white text-xs font-bold rounded-xl shadow-xs hover:bg-orange-700 transition active:scale-95 cursor-pointer min-h-[44px]"
+            className="mt-4 px-4 py-2 bg-orange-600 text-white text-xs font-bold rounded-xl shadow-xs active:scale-95 transition"
           >
-            Create My First Goal
+            Create Your First Dream
           </button>
         </div>
       ) : (
         <div className="space-y-3">
-          {goals.map((goal) => (
+          {goals.map((g) => (
             <GoalCard
-              key={goal.id}
-              goal={goal}
-              onAddProgress={(g) => setAddProgressGoal(g)}
+              key={g.id}
+              goal={g}
+              onAddProgress={(goal) => setAddProgressGoal(goal)}
               onDelete={handleDelete}
             />
           ))}
         </div>
       )}
 
-      {/* Modal: Create Goal */}
+      {/* CREATE NEW GOAL MODAL (Stitch Pattern) */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-amber-100 dark:border-slate-800 animate-in zoom-in-95">
+        <div className="fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#1e1b19] rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-amber-100 dark:border-[#3D332B] animate-in zoom-in-95 text-[#221a0e] dark:text-[#FFF5EB]">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-lg font-black text-stone-900 dark:text-stone-100">
-                Create Savings Goal
+              <h3 className="font-headline text-lg font-black text-[#221a0e] dark:text-[#FFF5EB]">
+                Create New Dream
               </h3>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="p-1 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition"
+                className="p-1 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition cursor-pointer"
               >
                 <IconX size={18} />
               </button>
             </div>
-            <p className="text-xs text-stone-500 dark:text-stone-400 mb-4">
-              What are you saving for?
+            <p className="text-xs text-stone-500 dark:text-[#A8988A] mb-4">
+              Sakhi will calculate the exact monthly savings needed to reach this goal.
             </p>
 
-            <form onSubmit={handleCreate} className="space-y-3">
+            <form onSubmit={handleCreate} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
-                  Goal Name
+                <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
+                  Goal Name (లక్ష్యం పేరు)
                 </label>
                 <input
                   type="text"
+                  placeholder="e.g. Daughter's College, Tailoring Unit"
                   required
-                  placeholder="e.g. Daughter's College Fees"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3.5 py-2.5 bg-[#fffaf5] dark:bg-[#14110F] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB] focus:outline-hidden focus:ring-2 focus:ring-orange-500 font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
+                <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
                   Category
                 </label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3.5 py-2.5 bg-[#fffaf5] dark:bg-[#14110F] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB] focus:outline-hidden focus:ring-2 focus:ring-orange-500"
                 >
                   {CATEGORIES.map((c) => (
-                    <option key={c} value={c}>{c}</option>
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
+                  <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
                     Target (₹)
                   </label>
                   <input
                     type="number"
+                    placeholder="e.g. 50000"
                     required
                     min="100"
-                    placeholder="50000"
                     value={formData.target_amount}
                     onChange={(e) => setFormData({ ...formData, target_amount: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-sm font-bold text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3.5 py-2.5 bg-[#fffaf5] dark:bg-[#14110F] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs sm:text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] focus:outline-hidden focus:ring-2 focus:ring-orange-500 font-headline"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
-                    Saved So Far (₹)
+                  <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
+                    Already Saved (₹)
                   </label>
                   <input
                     type="number"
                     min="0"
-                    placeholder="10000"
                     value={formData.current_amount}
                     onChange={(e) => setFormData({ ...formData, current_amount: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-sm font-bold text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3.5 py-2.5 bg-[#fffaf5] dark:bg-[#14110F] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs sm:text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] focus:outline-hidden focus:ring-2 focus:ring-orange-500 font-headline"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
-                  Time Horizon (Months)
+                <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
+                  Target Duration (Months)
                 </label>
-                <input
-                  type="number"
-                  required
-                  min="1"
-                  max="120"
-                  placeholder="12"
+                <select
                   value={formData.target_date}
                   onChange={(e) => setFormData({ ...formData, target_date: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
-                />
+                  className="w-full px-3.5 py-2.5 bg-[#fffaf5] dark:bg-[#14110F] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB] focus:outline-hidden focus:ring-2 focus:ring-orange-500 font-mono"
+                >
+                  <option value="6">6 Months (Short term)</option>
+                  <option value="12">12 Months (1 Year)</option>
+                  <option value="24">24 Months (2 Years)</option>
+                  <option value="36">36 Months (3 Years)</option>
+                  <option value="60">60 Months (5 Years)</option>
+                </select>
               </div>
+
+              {/* Live Required Per Month Estimation */}
+              {formData.target_amount && (
+                <div className="p-3 rounded-xl bg-[#fcebd7] dark:bg-[#28211C] border border-amber-200/70 dark:border-[#3D332B] flex items-center justify-between text-xs">
+                  <span className="font-semibold text-stone-700 dark:text-[#D4C4B5]">Estimated Monthly Quota:</span>
+                  <span className="font-headline font-black text-orange-700 dark:text-[#ffb690]">
+                    ₹{Math.ceil(Math.max(0, parseFloat(formData.target_amount || 0) - parseFloat(formData.current_amount || 0)) / parseInt(formData.target_date || 12, 10)).toLocaleString('en-IN')}/mo
+                  </span>
+                </div>
+              )}
 
               <div className="flex gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="flex-1 py-2.5 bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 text-stone-700 dark:text-stone-300 font-bold rounded-xl text-xs transition min-h-[44px] cursor-pointer"
+                  className="flex-1 py-2.5 bg-[#fff1e3] dark:bg-[#28211C] hover:bg-amber-100 dark:hover:bg-stone-800 text-stone-700 dark:text-[#D4C4B5] font-bold rounded-xl text-xs transition min-h-[44px] cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl text-xs transition shadow-xs min-h-[44px] cursor-pointer"
+                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl text-xs transition shadow-xs min-h-[44px] cursor-pointer active:scale-95"
                 >
-                  Calculate & Save
+                  Create Goal
                 </button>
               </div>
             </form>
@@ -291,54 +301,54 @@ export default function Goals() {
         </div>
       )}
 
-      {/* Modal: Add Progress to Goal */}
+      {/* ADD PROGRESS MODAL */}
       {addProgressGoal && (
-        <div className="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-amber-100 dark:border-slate-800 animate-in zoom-in-95">
-            <h3 className="text-base font-black text-stone-900 dark:text-stone-100 mb-1">
-              Add Money to Goal
-            </h3>
-            <p className="text-xs text-stone-500 dark:text-stone-400 mb-3">
-              {addProgressGoal.name} (Saved so far: ₹{Number(addProgressGoal.current_amount).toLocaleString('en-IN')})
+        <div className="fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#1e1b19] rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-amber-100 dark:border-[#3D332B] animate-in zoom-in-95 text-[#221a0e] dark:text-[#FFF5EB]">
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="font-headline text-lg font-black text-[#221a0e] dark:text-[#FFF5EB]">
+                Add Savings to Goal
+              </h3>
+              <button
+                onClick={() => setAddProgressGoal(null)}
+                className="p-1 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition cursor-pointer"
+              >
+                <IconX size={18} />
+              </button>
+            </div>
+            <p className="text-xs text-stone-500 dark:text-[#A8988A] mb-4">
+              Adding to <strong>{addProgressGoal.name}</strong>
             </p>
 
-            <form onSubmit={handleAddSavings} className="space-y-3">
+            <form onSubmit={handleAddSavings} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
-                  Amount to Allocate (₹)
+                <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
+                  Amount to Deposit (₹)
                 </label>
                 <input
                   type="number"
+                  placeholder="e.g. 1500"
                   required
                   min="1"
-                  placeholder="e.g. 1000"
                   value={progressAmount}
                   onChange={(e) => setProgressAmount(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-lg font-black text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
+                  className="w-full text-xl font-headline font-black px-3.5 py-2.5 bg-[#fffaf5] dark:bg-[#14110F] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-[#221a0e] dark:text-[#FFF5EB] focus:outline-hidden focus:ring-2 focus:ring-orange-500"
                 />
-                {progressAmount && !isNaN(progressAmount) && Number(progressAmount) > 0 && (
-                  <p className="mt-2 text-xs text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 rounded-xl p-2.5 font-medium border border-emerald-300/40">
-                    ℹ️ This moves ₹{Number(progressAmount).toLocaleString('en-IN')} into this goal from your savings.
-                  </p>
-                )}
               </div>
 
               <div className="flex gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={() => {
-                    setAddProgressGoal(null);
-                    setProgressAmount('');
-                  }}
-                  className="flex-1 py-2.5 bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 font-bold rounded-xl text-xs min-h-[44px] cursor-pointer"
+                  onClick={() => setAddProgressGoal(null)}
+                  className="flex-1 py-2.5 bg-[#fff1e3] dark:bg-[#28211C] hover:bg-amber-100 dark:hover:bg-stone-800 text-stone-700 dark:text-[#D4C4B5] font-bold rounded-xl text-xs transition min-h-[44px] cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl text-xs shadow-xs min-h-[44px] cursor-pointer"
+                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl text-xs transition shadow-xs min-h-[44px] cursor-pointer active:scale-95"
                 >
-                  Confirm
+                  Confirm Deposit
                 </button>
               </div>
             </form>
