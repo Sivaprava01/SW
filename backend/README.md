@@ -100,6 +100,26 @@ uv run alembic upgrade head
 | `DELETE` | `/api/v1/users/{user_id}/transactions/{tx_id}` | Delete a logged transaction |
 | `GET` | `/api/v1/users/{user_id}/financial-health` | Deterministic surplus, savings ratio, emergency target, and health status |
 
+### 🎯 Goals & Micro-Savings System (B4)
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/v1/users/{user_id}/goals` | Create a savings goal with monthly requirements math |
+| `GET` | `/api/v1/users/{user_id}/goals` | List user goals with progress % and monthly savings needed |
+| `GET` | `/api/v1/users/{user_id}/goals/{goal_id}` | Get goal details and progress |
+| `POST` | `/api/v1/users/{user_id}/goals/{goal_id}/deposit` | Add savings deposit towards goal |
+| `PATCH` | `/api/v1/users/{user_id}/goals/{goal_id}` | Update goal parameters |
+| `DELETE` | `/api/v1/users/{user_id}/goals/{goal_id}` | Delete a goal |
+
+### 💳 Debt Management & Snowball Refinancing (B4)
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/v1/users/{user_id}/debts` | Record a loan liability (moneylender, SHG, bank) |
+| `GET` | `/api/v1/users/{user_id}/debts` | List user debts with calculated monthly interest drain |
+| `GET` | `/api/v1/users/{user_id}/debts/{debt_id}` | Get specific debt record |
+| `PATCH` | `/api/v1/users/{user_id}/debts/{debt_id}` | Update balance, interest rate, or mark cleared |
+| `DELETE` | `/api/v1/users/{user_id}/debts/{debt_id}` | Delete a debt record |
+| `GET` | `/api/v1/users/{user_id}/debts-analysis/snowball` | Deterministic interest drain, SHG refinance savings, and snowball/avalanche rankings |
+
 ---
 
 ## 🛡️ Standardized Error Envelope
