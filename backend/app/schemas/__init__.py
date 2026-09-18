@@ -50,6 +50,13 @@ from app.schemas.scheme import (
     BookmarkRequest,
     BookmarkResponse,
 )
+from app.schemas.ai import (
+    AIChatRequest,
+    GroundingMetrics,
+    AIChatResponse,
+    ExplainConceptRequest,
+    ExplainConceptResponse,
+)
 
 __all__ = [
     "HealthResponse",
@@ -102,5 +109,11 @@ __all__ = [
     "SchemeMatchResponse",
     "BookmarkRequest",
     "BookmarkResponse",
+    "AIChatRequest",
+    "GroundingMetrics",
+    "AIChatResponse",
+    "ExplainConceptRequest",
+    "ExplainConceptResponse",
 ]
+
 

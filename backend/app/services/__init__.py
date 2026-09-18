@@ -13,6 +13,9 @@ from app.services.learning_service import LearningService
 from app.services.journey_engine import JourneyEngine
 from app.services.scheme_matcher import SchemeMatcher
 from app.services.scheme_service import SchemeService
+from app.services.ai_context_builder import AIContextBuilder
+from app.services.ai_guardrails import AIGuardrails
+from app.services.ai_service import AIService
 
 __all__ = [
     "UserService",
@@ -26,5 +29,9 @@ __all__ = [
     "JourneyEngine",
     "SchemeMatcher",
     "SchemeService",
+    "AIContextBuilder",
+    "AIGuardrails",
+    "AIService",
 ]
+
 
