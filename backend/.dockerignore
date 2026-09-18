@@ -1,0 +1,24 @@
+# Virtual environments & caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases & audio cache
+*.db
+*.sqlite3
+sakhi.db
+audio_cache/
+logs/
+.env
+
+# Git & IDE
+.git/
+.gitignore
+.vscode/
+.idea/

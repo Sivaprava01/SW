@@ -56,6 +56,14 @@ class Settings(BaseSettings):
     BHASHINI_USER_ID: str = ""
     BHASHINI_PIPELINE_ID: str = ""
 
+    # Production Security, Rate Limiting & Scaling Configuration
+    SECRET_KEY: str = "sakhi-production-secret-key-change-in-prod"
+    ENABLE_SECURITY_HEADERS: bool = True
+    ALLOWED_HOSTS: Union[List[str], str] = ["*"]
+    RATE_LIMIT_ENABLED: bool = True
+    RATE_LIMIT_PER_MINUTE: int = 120
+    LOG_FORMAT: str = "standard"
+
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod

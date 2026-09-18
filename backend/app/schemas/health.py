@@ -22,3 +22,15 @@ class ReadinessResponse(BaseModel):
     app: str = Field(..., description="Application name")
     version: str = Field(..., description="Application semantic version")
     timestamp: datetime = Field(..., description="UTC timestamp of the check")
+
+
+class MetricsResponse(BaseModel):
+    """Schema returned by the system metrics and diagnostics endpoint."""
+    app: str
+    version: str
+    environment: str
+    uptime_seconds: float
+    database_status: str
+    ai_provider: str
+    voice_tts_provider: str
+    timestamp: datetime

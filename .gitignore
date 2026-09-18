@@ -3,10 +3,14 @@ venv/
 .venv/
 env/
 .env
+.env.*
+!.env.example
 backend/venv/
 backend/.venv/
 backend/env/
 backend/.env
+backend/.env.*
+!backend/.env.example
 __pycache__/
 *.py[cod]
 *$py.class
