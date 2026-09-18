@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Sparkles, Search, CheckCircle2 } from 'lucide-react';
+import {
+  IconShieldCheck,
+  IconSparkles,
+  IconSearch,
+  IconCheck,
+} from '@tabler/icons-react';
 import { api } from '../services/api';
 import { useUser } from '../context/UserContext';
 import SchemeCard from '../components/SchemeCard';
@@ -18,7 +23,7 @@ const CATEGORIES = [
 ];
 
 export default function Benefits() {
-  const { user } = useUser();
+  const { user, t } = useUser();
   const [schemes, setSchemes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -51,56 +56,56 @@ export default function Benefits() {
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3.5 pb-6">
       {/* Title & Header */}
       <div>
         <div className="flex items-center gap-1.5 mb-1">
-          <span className="text-xs font-bold text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full">
+          <span className="text-[11px] font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-0.5 rounded-full border border-orange-200/60 dark:border-orange-800/40">
             Verified Government Programs
           </span>
         </div>
-        <h2 className="text-xl font-black text-slate-900 tracking-tight">
-          Government Benefits & Schemes
+        <h2 className="text-xl font-black text-stone-900 dark:text-stone-100 tracking-tight">
+          {t('nav_benefits') || 'Government Benefits'} & Schemes
         </h2>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-stone-500 dark:text-stone-400">
           Official central and state initiatives for women, SHGs, and micro businesses
         </p>
       </div>
 
-      {/* Hero Scheme Matcher Banner */}
-      <div className="bg-linear-to-r from-amber-500 to-orange-500 text-slate-950 rounded-3xl p-4 sm:p-5 shadow-sm">
+      {/* Hero Scheme Matcher Banner (Stitch Gradient Card) */}
+      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-stone-950 rounded-2xl p-4 sm:p-5 shadow-sm border border-orange-400/40">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
           <div>
-            <div className="flex items-center gap-1.5 font-bold text-xs text-slate-900/80 mb-1">
-              <Sparkles size={16} />
+            <div className="flex items-center gap-1.5 font-bold text-xs text-stone-950/80 mb-1">
+              <IconSparkles size={16} />
               <span>Smart Preliminary Eligibility Match</span>
             </div>
-            <h3 className="text-lg font-black leading-tight text-slate-950 mb-1">
+            <h3 className="text-base sm:text-lg font-black leading-tight text-stone-950 mb-1">
               Find Schemes You May Be Eligible For
             </h3>
-            <p className="text-xs text-slate-900/80 max-w-xs leading-relaxed">
+            <p className="text-xs text-stone-900/80 max-w-xs leading-relaxed font-medium">
               Answer 5 quick questions. Sakhi evaluates your age, state, and work to find the best programs.
             </p>
           </div>
           <button
             onClick={() => setIsMatcherOpen(true)}
-            className="px-4 py-2.5 bg-slate-950 text-amber-300 hover:bg-slate-900 text-xs font-black rounded-xl transition shadow-xs cursor-pointer shrink-0 min-h-[44px] flex items-center justify-center gap-1.5"
+            className="px-4 py-2.5 bg-stone-950 text-amber-300 hover:bg-stone-900 text-xs font-black rounded-xl transition shadow-xs cursor-pointer shrink-0 min-h-[44px] flex items-center justify-center gap-1.5 active:scale-95"
           >
-            <Sparkles size={14} />
+            <IconSparkles size={14} />
             <span>Start Matching</span>
           </button>
         </div>
       </div>
 
-      {/* Search & Category Tabs */}
+      {/* Search Bar */}
       <div className="relative">
-        <Search size={16} className="absolute left-3.5 top-3 text-slate-400" />
+        <IconSearch size={16} className="absolute left-3.5 top-3 text-stone-400" />
         <input
           type="text"
           placeholder="Search scheme name, e.g. Mudra, Stree Nidhi..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+          className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 rounded-2xl text-xs text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-orange-500 focus:outline-hidden shadow-2xs"
         />
       </div>
 
@@ -112,8 +117,8 @@ export default function Benefits() {
             onClick={() => setSelectedCategory(cat)}
             className={`px-3 py-1.5 text-xs font-bold rounded-full whitespace-nowrap transition cursor-pointer min-h-[36px] ${
               selectedCategory === cat
-                ? 'bg-emerald-700 text-white shadow-xs'
-                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-xs'
+                : 'bg-white dark:bg-slate-900 text-stone-600 dark:text-stone-300 border border-amber-100 dark:border-slate-800 hover:bg-stone-50 dark:hover:bg-slate-800'
             }`}
           >
             {cat}
@@ -123,11 +128,11 @@ export default function Benefits() {
 
       {/* Scheme Cards Feed */}
       {loading ? (
-        <div className="p-8 text-center text-slate-500 text-xs font-medium">
+        <div className="p-8 text-center text-stone-500 dark:text-stone-400 text-xs font-medium">
           Loading authentic schemes...
         </div>
       ) : filteredSchemes.length === 0 ? (
-        <div className="bg-white border border-dashed border-slate-200 rounded-2xl p-6 text-center text-slate-500 text-xs">
+        <div className="bg-white dark:bg-slate-900 border border-dashed border-amber-200 dark:border-slate-800 rounded-2xl p-6 text-center text-stone-500 dark:text-stone-400 text-xs">
           No schemes found matching this filter.
         </div>
       ) : (
