@@ -10,6 +10,7 @@ from app.services.debt_service import DebtService
 from app.services.calculators import FinancialCalculators
 from app.services.knowledge_service import KnowledgeService
 from app.services.learning_service import LearningService
+from app.services.journey_engine import JourneyEngine
 
 __all__ = [
     "UserService",
@@ -20,4 +21,5 @@ __all__ = [
     "FinancialCalculators",
     "KnowledgeService",
     "LearningService",
+    "JourneyEngine",
 ]

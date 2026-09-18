@@ -39,6 +39,10 @@ from app.schemas.learning import (
     UserLessonProgressResponse,
     UserLearningSummaryResponse,
 )
+from app.schemas.journey import (
+    JourneyStageResponse,
+    JourneyRoadmapResponse,
+)
 
 __all__ = [
     "HealthResponse",
@@ -84,4 +88,6 @@ __all__ = [
     "LessonCompleteRequest",
     "UserLessonProgressResponse",
     "UserLearningSummaryResponse",
+    "JourneyStageResponse",
+    "JourneyRoadmapResponse",
 ]
