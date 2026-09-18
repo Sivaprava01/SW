@@ -48,3 +48,7 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Internal Documentation
+internal documentation/
+internal_documentation/
