@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    color-scheme: light;
     --font-headline: 'Karla', sans-serif;
     --font-body: 'Inconsolata', monospace;
     
@@ -24,6 +25,7 @@
 
   html.dark {
     /* Stitch Dark Colors */
+    color-scheme: dark;
     --color-surface-canvas: #14110F;
     --color-surface-lowest: #100e0c;
     --color-surface-low: #1e1b19;
@@ -56,6 +58,40 @@
 
   h1, h2, h3, h4, h5, h6, .font-headline {
     font-family: var(--font-headline), -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Browser Autofill Dark & Light Theme Resets */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #221a0e !important;
+    -webkit-box-shadow: 0 0 0 1000px #fffaf5 inset !important;
+    box-shadow: 0 0 0 1000px #fffaf5 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  html.dark input:-webkit-autofill,
+  html.dark input:-webkit-autofill:hover, 
+  html.dark input:-webkit-autofill:focus, 
+  html.dark input:-webkit-autofill:active,
+  html.dark textarea:-webkit-autofill,
+  html.dark textarea:-webkit-autofill:hover,
+  html.dark textarea:-webkit-autofill:focus,
+  html.dark select:-webkit-autofill,
+  html.dark select:-webkit-autofill:hover,
+  html.dark select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #FFF5EB !important;
+    -webkit-box-shadow: 0 0 0 1000px #100e0c inset !important;
+    box-shadow: 0 0 0 1000px #100e0c inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: #FFF5EB !important;
   }
 }
 

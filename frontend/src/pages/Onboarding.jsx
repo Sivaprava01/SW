@@ -183,7 +183,7 @@ export default function Onboarding({ onComplete }) {
         )}
 
         {/* Onboarding Steps Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+        <form onSubmit={handleSubmit} autoComplete="off" className="flex flex-col gap-3.5">
           
           {/* STEP 1: Personal Details */}
           {step === 1 && (
@@ -200,10 +200,12 @@ export default function Onboarding({ onComplete }) {
                     id="fullNameInput"
                     type="text"
                     required
+                    autoComplete="off"
+                    spellCheck="false"
                     placeholder={t('onboarding_name_placeholder')}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 pl-10 pr-12 text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden transition"
+                    className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 pl-10 pr-12 text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] placeholder-stone-400 dark:placeholder-stone-500 focus:ring-2 focus:ring-orange-500 focus:outline-hidden transition"
                   />
                   <button
                     type="button"
