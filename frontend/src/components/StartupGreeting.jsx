@@ -36,16 +36,7 @@ export default function StartupGreeting({ name = 'Lakshmi', onComplete }) {
   const [fading, setFading] = useState(false);
   const [greetingIndex, setGreetingIndex] = useState(0);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [remainingTime, setRemainingTime] = useState(4.0);
-  const [isPaused, setIsPaused] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
-
-  const totalDuration = 4000; // 4.0 seconds countdown giving ample time
-  const progressIntervalRef = useRef(null);
-  const timerRef = useRef(null);
-  const startTimeRef = useRef(Date.now());
-  const elapsedRef = useRef(0);
 
   // Set initial greeting based on language or user name
   useEffect(() => {
@@ -54,33 +45,7 @@ export default function StartupGreeting({ name = 'Lakshmi', onComplete }) {
     else setGreetingIndex(0);
   }, [language]);
 
-  // Handle countdown progress
-  useEffect(() => {
-    if (isPaused || fading || unlocked) return;
-
-    const interval = 50;
-    progressIntervalRef.current = setInterval(() => {
-      elapsedRef.current += interval;
-      const pct = Math.min((elapsedRef.current / totalDuration) * 100, 100);
-      setProgress(pct);
-      const rem = Math.max(0, (totalDuration - elapsedRef.current) / 1000).toFixed(1);
-      setRemainingTime(rem);
-
-      if (elapsedRef.current >= totalDuration) {
-        clearInterval(progressIntervalRef.current);
-        handleDismiss();
-      }
-    }, interval);
-
-    return () => {
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-    };
-  }, [isPaused, fading, unlocked]);
-
   const handleDismiss = () => {
-    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-    if (timerRef.current) clearTimeout(timerRef.current);
-
     setUnlocked(true);
     setTimeout(() => {
       setFading(true);
@@ -92,19 +57,16 @@ export default function StartupGreeting({ name = 'Lakshmi', onComplete }) {
 
   const toggleGreeting = (e) => {
     if (e) e.stopPropagation();
-    setIsPaused(true);
     setGreetingIndex((prev) => (prev + 1) % GREETINGS.length);
   };
 
   const handleSelectLang = (e, langCode) => {
     if (e) e.stopPropagation();
-    setIsPaused(true);
     setLanguage(langCode);
   };
 
   const handleToggleVoiceAudio = (e) => {
     if (e) e.stopPropagation();
-    setIsPaused(true);
 
     if (isAudioPlaying) {
       if ('speechSynthesis' in window) {
@@ -144,8 +106,6 @@ export default function StartupGreeting({ name = 'Lakshmi', onComplete }) {
       id="splash-screen"
       role="region"
       aria-label="Welcome screen for Sakhi Financial Companion"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
       className={`fixed inset-0 z-[100] bg-[#fff8f3] dark:bg-[#14110F] flex flex-col justify-between overflow-y-auto px-4 py-6 sm:py-8 text-[#221a0e] dark:text-[#FFF5EB] transition-all duration-350 select-none ${
         fading ? 'opacity-0 pointer-events-none scale-98' : 'opacity-100 scale-100'
       }`}
@@ -320,17 +280,10 @@ export default function StartupGreeting({ name = 'Lakshmi', onComplete }) {
           </button>
         </div>
 
-        {/* Progress countdown meter */}
-        <div className="w-full flex flex-col items-center pt-1">
-          <div className="w-44 h-1.5 bg-[#fcebd7] dark:bg-[#28211C] rounded-full overflow-hidden mb-1">
-            <div
-              className="h-full bg-orange-600 transition-all duration-100 ease-linear rounded-full"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <span className="font-mono text-[11px] text-stone-500 dark:text-[#A8988A]">
-            {isPaused ? 'Auto-advance paused (hovering/editing)' : `Auto-opening in ${remainingTime}s`}
-          </span>
+        {/* Tap prompt */}
+        <div className="w-full flex items-center justify-center pt-1 text-stone-500 dark:text-[#A8988A] text-xs font-semibold gap-1.5">
+          <IconSparkles size={13} className="text-orange-600 dark:text-[#ffb690]" />
+          <span>Tap to explore your savings & financial guidance</span>
         </div>
 
       </div>
