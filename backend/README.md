@@ -135,6 +135,16 @@ uv run alembic upgrade head
 | `GET` | `/api/v1/knowledge/concepts/{id}` | Get single concept with practical actions and warning pitfalls |
 | `GET` | `/api/v1/knowledge/golden-rules` | Retrieve the 5 official Sakhi Golden Financial Rules |
 
+### 🚀 7-Stage Financial Journey & Learning (B6)
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/v1/users/{user_id}/journey` | Deterministic 7-stage roadmap progress evaluated against user's live financial data |
+| `GET` | `/api/v1/learning/modules` | List educational modules & micro-lessons with multilingual audio scripts |
+| `GET` | `/api/v1/learning/modules/{module_id}` | Get module details and contained lessons |
+| `GET` | `/api/v1/learning/lessons/{lesson_id}` | Get micro-lesson with audio narration transcript and quiz |
+| `POST` | `/api/v1/users/{user_id}/learning/lessons/{lesson_id}/complete` | Mark lesson completed with optional quiz score |
+| `GET` | `/api/v1/users/{user_id}/learning/progress` | Get user overall learning completion percentage |
+
 ---
 
 ## 🛡️ Standardized Error Envelope
