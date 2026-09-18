@@ -17,12 +17,6 @@ import { useUser } from '../context/UserContext';
 import { useSpeech } from '../hooks/useSpeech';
 import { useSTT } from '../hooks/useSTT';
 
-const DREAM_SUGGESTIONS = {
-  en: ["Daughter's Education", "Tailoring Machine", "House Repair", "Gold Savings", "Dairy Cow"],
-  te: ["పిల్లల చదువు", "కుట్టు మిషన్", "ఇంటి మరమ్మత్తు", "బంగారం పొదుపు", "పాడి ఆవు"],
-  hi: ["बेटी की पढ़ाई", "सिलाई मशीन", "घर की मरम्मत", "सोना बचत", "दुधारू गाय"],
-};
-
 export default function Onboarding({ onComplete }) {
   const { setUser, setFinancialHealth, language, setLanguage, t } = useUser();
   const { speak, isSpeaking, stop } = useSpeech();
@@ -41,7 +35,7 @@ export default function Onboarding({ onComplete }) {
     monthly_expenses: 7800,
     savings: 8000,
     debt: 12000,
-    financial_goal: "Daughter's Education",
+    financial_goal: 'Emergency Fund',
   });
 
   const states = [
@@ -407,7 +401,7 @@ export default function Onboarding({ onComplete }) {
             </div>
           )}
 
-          {/* STEP 3: Savings, Debt & Goals */}
+          {/* STEP 3: Savings & Debt */}
           {step === 3 && (
             <div className="space-y-3.5 animate-in fade-in">
               <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3.5 border border-amber-200/70 dark:border-[#3D332B]">
@@ -445,57 +439,6 @@ export default function Onboarding({ onComplete }) {
                       onChange={(e) => setFormData({ ...formData, debt: e.target.value })}
                       className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-rose-700 dark:text-[#ffb599] focus:ring-2 focus:ring-rose-500 focus:outline-hidden [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
-                    {t('onboarding_dream_question')}
-                  </label>
-                  <div className="relative flex items-center">
-                    <input
-                      type="text"
-                      placeholder={t('onboarding_dream_placeholder')}
-                      value={formData.financial_goal}
-                      onChange={(e) => setFormData({ ...formData, financial_goal: e.target.value })}
-                      className="w-full pl-3.5 pr-12 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (isListening && listeningField === 'goal') {
-                          stopListening();
-                        } else {
-                          startListening((spoken) => setFormData((prev) => ({ ...prev, financial_goal: spoken })), 'goal');
-                        }
-                      }}
-                      title={language === 'te' ? 'లక్ష్యాన్ని మాట్లాడండి' : language === 'hi' ? 'लक्ष्य बोलें' : 'Speak Goal'}
-                      className={`absolute right-2 p-2 rounded-lg transition cursor-pointer ${
-                        isListening && listeningField === 'goal'
-                          ? 'bg-rose-500 text-white animate-pulse'
-                          : 'bg-[#fff1e3] dark:bg-[#28211C] text-orange-700 dark:text-[#ffb690] hover:bg-orange-100 dark:hover:bg-[#383431]'
-                      }`}
-                    >
-                      <IconMicrophone size={15} />
-                    </button>
-                  </div>
-
-                  {/* Localized Quick Dream Chips */}
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    {(DREAM_SUGGESTIONS[language] || DREAM_SUGGESTIONS['en']).map((dream) => (
-                      <button
-                        key={dream}
-                        type="button"
-                        onClick={() => setFormData((prev) => ({ ...prev, financial_goal: dream }))}
-                        className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition cursor-pointer active:scale-95 ${
-                          formData.financial_goal === dream
-                            ? 'bg-orange-600 text-white border-orange-600 shadow-2xs'
-                            : 'bg-[#fffaf5] dark:bg-[#28211C] text-stone-700 dark:text-[#D4C4B5] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50'
-                        }`}
-                      >
-                        {dream}
-                      </button>
-                    ))}
                   </div>
                 </div>
               </div>
