@@ -39,6 +39,28 @@ class ResourceNotFoundException(SakhiException):
         )
 
 
+class ValidationException(SakhiException):
+    """Raised when domain or parameter validation fails."""
+    def __init__(self, message: str = "Validation failed", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="VALIDATION_ERROR",
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            details=details,
+        )
+
+
+class BadRequestException(SakhiException):
+    """Raised when a request payload is malformed or invalid."""
+    def __init__(self, message: str = "Bad request", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="BAD_REQUEST",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            details=details,
+        )
+
+
 def register_error_handlers(app: FastAPI) -> None:
     """Register custom exception handlers with the FastAPI application."""
 
