@@ -54,7 +54,7 @@ const AVATAR_COLORS = [
 export default function SettingsDrawer({ isOpen, onClose }) {
   const { 
     user, financialHealth, language, setLanguage, theme, setTheme, 
-    startTutorial, t, logoutUser, updateUserLocally, refreshFinancialData 
+    startTutorial, replaySplash, t, logoutUser, updateUserLocally, refreshFinancialData 
   } = useUser();
 
   const [saving, setSaving] = useState(false);
@@ -398,26 +398,40 @@ export default function SettingsDrawer({ isOpen, onClose }) {
             </div>
           </div>
 
-          {/* SECTION 3: 🎓 Interactive App Tour Replay */}
+          {/* SECTION 3: 🎓 Interactive App Tour & Splash Replay */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-amber-100 dark:border-slate-800 shadow-xs space-y-2">
             <h3 className="text-xs font-black uppercase tracking-wider text-orange-800 dark:text-orange-400 flex items-center gap-1.5">
               <IconSparkles size={14} />
               <span>Help & Guided Tour</span>
             </h3>
             <p className="text-xs text-stone-600 dark:text-stone-400">
-              Need a reminder on how to use Sakhi? Walkthrough our simple guided tour again.
+              Need a reminder on how to use Sakhi? Walkthrough our simple guided tour or view the startup greeting.
             </p>
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                startTutorial();
-              }}
-              className="w-full py-2.5 bg-[#fff1e3] dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 text-orange-950 dark:text-orange-300 font-bold rounded-xl text-xs transition border border-orange-200 dark:border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] active:scale-95"
-            >
-              <IconPlayerPlay size={16} />
-              <span>Replay Interactive App Tour</span>
-            </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  startTutorial();
+                }}
+                className="w-full py-2.5 bg-[#fff1e3] dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 text-orange-950 dark:text-orange-300 font-bold rounded-xl text-xs transition border border-orange-200 dark:border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] active:scale-95"
+              >
+                <IconPlayerPlay size={16} />
+                <span>Replay Tour</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  replaySplash();
+                }}
+                className="w-full py-2.5 bg-[#fff1e3] dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 text-orange-950 dark:text-orange-300 font-bold rounded-xl text-xs transition border border-orange-200 dark:border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] active:scale-95"
+              >
+                <IconSparkles size={16} />
+                <span>Replay Splash</span>
+              </button>
+            </div>
           </div>
 
           {/* SECTION 4: 🔊 Audio & Voice Status */}

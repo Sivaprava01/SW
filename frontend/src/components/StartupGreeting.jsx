@@ -1,107 +1,349 @@
-import React, { useState, useEffect } from 'react';
-import { IconSparkles, IconArrowRight } from '@tabler/icons-react';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  IconSparkles,
+  IconArrowRight,
+  IconWifi,
+  IconShieldLock,
+  IconMessageCircle,
+  IconVolume,
+  IconPlayerPlay,
+  IconPlayerPause,
+  IconCheck,
+  IconRotateClockwise,
+  IconLockOpen,
+  IconPigMoney,
+  IconCalendarTime,
+} from '@tabler/icons-react';
 import { useUser } from '../context/UserContext';
 
-export default function StartupGreeting({ name = 'Sister', onComplete }) {
-  const { language } = useUser();
-  const [fading, setFading] = useState(false);
-  const [visible, setVisible] = useState(true);
+const GREETINGS = [
+  { text: 'Namaste, Lakshmi 👋', sub: 'Your personal financial companion is ready' },
+  { text: 'నమస్తే లక్ష్మి గారు 👋', sub: 'మీ వ్యక్తిగత పొదుపు మరియు లెడ్జర్ సహచరి సిద్ధంగా ఉంది' },
+  { text: 'नमस्ते लक्ष्मी जी 👋', sub: 'आपकी व्यक्तिगत सखी वित्तीय साथी तैयार है' },
+  { text: 'Namaste, Sister 👋', sub: 'Empowering your savings & SHG journey together' },
+  { text: 'Pranam, Lakshmiji 🙏', sub: 'Zero jargon • 100% private financial guidance' },
+];
 
+const LANGUAGES = [
+  { code: 'te', native: 'తెలుగు', name: 'Telugu' },
+  { code: 'hi', native: 'हिंदी', name: 'Hindi' },
+  { code: 'en', native: 'English', name: 'Simple Terms' },
+  { code: 'mr', native: 'मराठी', name: 'Marathi' },
+];
+
+export default function StartupGreeting({ name = 'Lakshmi', onComplete }) {
+  const { language, setLanguage, user } = useUser();
+  const [fading, setFading] = useState(false);
+  const [greetingIndex, setGreetingIndex] = useState(0);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [remainingTime, setRemainingTime] = useState(4.0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
+
+  const totalDuration = 4000; // 4.0 seconds countdown giving ample time
+  const progressIntervalRef = useRef(null);
+  const timerRef = useRef(null);
+  const startTimeRef = useRef(Date.now());
+  const elapsedRef = useRef(0);
+
+  // Set initial greeting based on language or user name
   useEffect(() => {
-    // Check if already greeted in this browser session
-    const greeted = sessionStorage.getItem('sakhi_startup_greeted');
-    if (greeted) {
-      setVisible(false);
-      if (onComplete) onComplete();
+    if (language === 'te') setGreetingIndex(1);
+    else if (language === 'hi') setGreetingIndex(2);
+    else setGreetingIndex(0);
+  }, [language]);
+
+  // Handle countdown progress
+  useEffect(() => {
+    if (isPaused || fading || unlocked) return;
+
+    const interval = 50;
+    progressIntervalRef.current = setInterval(() => {
+      elapsedRef.current += interval;
+      const pct = Math.min((elapsedRef.current / totalDuration) * 100, 100);
+      setProgress(pct);
+      const rem = Math.max(0, (totalDuration - elapsedRef.current) / 1000).toFixed(1);
+      setRemainingTime(rem);
+
+      if (elapsedRef.current >= totalDuration) {
+        clearInterval(progressIntervalRef.current);
+        handleDismiss();
+      }
+    }, interval);
+
+    return () => {
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    };
+  }, [isPaused, fading, unlocked]);
+
+  const handleDismiss = () => {
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    setUnlocked(true);
+    setTimeout(() => {
+      setFading(true);
+      setTimeout(() => {
+        if (onComplete) onComplete();
+      }, 350);
+    }, 450);
+  };
+
+  const toggleGreeting = (e) => {
+    if (e) e.stopPropagation();
+    setIsPaused(true);
+    setGreetingIndex((prev) => (prev + 1) % GREETINGS.length);
+  };
+
+  const handleSelectLang = (e, langCode) => {
+    if (e) e.stopPropagation();
+    setIsPaused(true);
+    setLanguage(langCode);
+  };
+
+  const handleToggleVoiceAudio = (e) => {
+    if (e) e.stopPropagation();
+    setIsPaused(true);
+
+    if (isAudioPlaying) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      setIsAudioPlaying(false);
       return;
     }
 
-    // Auto fade after 2.6 seconds
-    const timer = setTimeout(() => {
-      setFading(true);
-      setTimeout(() => {
-        setVisible(false);
-        sessionStorage.setItem('sakhi_startup_greeted', 'true');
-        if (onComplete) onComplete();
-      }, 400);
-    }, 2600);
+    setIsAudioPlaying(true);
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const currentGreeting = GREETINGS[greetingIndex];
+      const utter = new SpeechSynthesisUtterance(
+        `${currentGreeting.text}. ${currentGreeting.sub}`
+      );
+      utter.rate = 0.95;
+      utter.pitch = 1.05;
+      if (language === 'te') utter.lang = 'te-IN';
+      else if (language === 'hi') utter.lang = 'hi-IN';
+      else utter.lang = 'en-IN';
 
-    return () => clearTimeout(timer);
-  }, [onComplete]);
-
-  if (!visible) return null;
-
-  const handleDismiss = () => {
-    setFading(true);
-    setTimeout(() => {
-      setVisible(false);
-      sessionStorage.setItem('sakhi_startup_greeted', 'true');
-      if (onComplete) onComplete();
-    }, 250);
+      utter.onend = () => setIsAudioPlaying(false);
+      utter.onerror = () => setIsAudioPlaying(false);
+      window.speechSynthesis.speak(utter);
+    } else {
+      setTimeout(() => setIsAudioPlaying(false), 2400);
+    }
   };
 
-  const greetingTitle = language === 'te' 
-    ? `నమస్తే, ${name} 👋`
-    : language === 'hi'
-    ? `नमस्ते, ${name} 👋`
-    : `Namaste, ${name} 👋`;
-
-  const greetingSubtitle = language === 'te'
-    ? 'మీ వ్యక్తిగత ఆర్థిక సహచరి సిద్ధంగా ఉంది'
-    : language === 'hi'
-    ? 'आपकी व्यक्तिगत सखी वित्तीय साथी तैयार है'
-    : 'Your personal AI financial companion is ready';
+  const activeGreeting = GREETINGS[greetingIndex];
+  const displayName = user?.name || name || 'Lakshmi';
+  const resolvedGreetingText = activeGreeting.text.replace('Lakshmi', displayName).replace('లక్ష్మి', displayName).replace('लक्ष्मी', displayName);
 
   return (
     <div
-      onClick={handleDismiss}
-      className={`fixed inset-0 z-50 bg-[#fff8f3]/95 dark:bg-[#14110F]/95 backdrop-blur-lg flex items-center justify-center p-6 text-[#221a0e] dark:text-[#FFF5EB] cursor-pointer transition-opacity duration-400 select-none ${
-        fading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      id="splash-screen"
+      role="region"
+      aria-label="Welcome screen for Sakhi Financial Companion"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      className={`fixed inset-0 z-[100] bg-[#fff8f3] dark:bg-[#14110F] flex flex-col justify-between overflow-y-auto px-4 py-6 sm:py-8 text-[#221a0e] dark:text-[#FFF5EB] transition-all duration-350 select-none ${
+        fading ? 'opacity-0 pointer-events-none scale-98' : 'opacity-100 scale-100'
       }`}
     >
-      <div className="text-center flex flex-col items-center space-y-5 max-w-sm animate-in zoom-in-95 duration-300">
-        
-        {/* Stitch Glowing Dual Radial Concentric Rings & Cultural Mascot */}
-        <div className="relative flex items-center justify-center my-4">
-          <span className="absolute w-36 h-36 rounded-full bg-orange-500/25 dark:bg-orange-500/15 animate-ping pointer-events-none"></span>
-          <span className="absolute w-44 h-44 rounded-full bg-orange-500/15 dark:bg-orange-500/10 animate-pulse pointer-events-none"></span>
-          
-          <div className="relative z-10 w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 via-amber-500 to-rose-600 flex items-center justify-center shadow-2xl border-4 border-white/60 dark:border-stone-800">
-            <span className="font-headline text-4xl font-black text-white select-none">
-              स
-            </span>
-          </div>
+      {/* Subtle ambient decorative glow rings */}
+      <div aria-hidden="true" className="absolute -top-24 -right-16 w-72 h-72 rounded-full bg-orange-400/20 dark:bg-orange-500/10 blur-3xl pointer-events-none" />
+      <div aria-hidden="true" className="absolute -bottom-20 -left-12 w-80 h-80 rounded-full bg-amber-400/20 dark:bg-amber-600/10 blur-3xl pointer-events-none" />
 
-          <span className="absolute bottom-1 right-2 w-5 h-5 rounded-full bg-emerald-500 ring-4 ring-[#fff8f3] dark:ring-[#14110F] flex items-center justify-center z-20">
-            <span className="w-2 h-2 rounded-full bg-white animate-ping"></span>
+      {/* Top bar: Brand subtle mark & offline indicator */}
+      <div className="w-full max-w-md mx-auto flex items-center justify-between z-10">
+        <div className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#fcebd7] dark:bg-[#28211C] rounded-full border border-amber-200/80 dark:border-[#3D332B] shadow-2xs">
+          <span className="inline-block w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+          <span className="font-mono text-xs font-bold text-orange-950 dark:text-[#ffb690] uppercase tracking-wider">
+            Sakhi · v2.4
           </span>
         </div>
 
-        {/* Title & Pill Badges */}
-        <div className="space-y-2 flex flex-col items-center">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#fcebd7] dark:bg-[#28211C] text-orange-800 dark:text-[#ffb690] text-xs font-bold border border-amber-200/70 dark:border-[#3D332B] shadow-xs">
-            <IconSparkles size={14} className="text-orange-600 dark:text-[#ffb690]" />
-            <span>Sakhi (సఖీ) • Financial Companion</span>
+        <div className="flex items-center gap-1.5 bg-[#fcebd7] dark:bg-[#28211C] px-3 py-1.5 rounded-full text-stone-700 dark:text-[#D4C4B5] border border-amber-200/80 dark:border-[#3D332B] shadow-2xs">
+          <IconWifi size={14} className="text-orange-600 dark:text-[#ffb690]" />
+          <span className="font-mono text-xs font-bold">Offline Safe</span>
+        </div>
+      </div>
+
+      {/* Main Hero Card */}
+      <div className="w-full max-w-md mx-auto my-auto py-4 z-10 flex flex-col items-center text-center space-y-4">
+        
+        {/* Mascot Emblem with glowing halo */}
+        <div 
+          onClick={toggleGreeting}
+          className="relative group cursor-pointer transition-transform active:scale-95"
+          title="Tap to change greeting style"
+        >
+          <div aria-hidden="true" className="absolute -inset-2 bg-gradient-to-tr from-orange-500 to-amber-500 rounded-3xl opacity-30 blur-lg transition duration-500 group-hover:opacity-60" />
+          
+          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white dark:bg-[#1e1b19] border-2 border-amber-200/80 dark:border-[#3D332B] p-2 shadow-xl flex items-center justify-center">
+            <div className="w-full h-full rounded-2xl bg-gradient-to-br from-orange-500 via-amber-500 to-rose-600 flex items-center justify-center shadow-md">
+              <span className="font-headline text-4xl sm:text-5xl font-black text-white select-none">
+                स
+              </span>
+            </div>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#221a0e] dark:text-[#FFF5EB] font-headline">
-            {greetingTitle}
-          </h1>
+          <div className="absolute -bottom-1 -right-1 bg-orange-600 text-white rounded-full p-1.5 shadow-md flex items-center justify-center border-2 border-white dark:border-[#14110F]">
+            <IconSparkles size={14} />
+          </div>
+        </div>
 
-          <p className="text-xs sm:text-sm text-stone-600 dark:text-[#D4C4B5] font-medium max-w-xs leading-relaxed">
-            {greetingSubtitle}
+        {/* Product Badge Pill */}
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#fcebd7] dark:bg-[#28211C] border border-amber-200/80 dark:border-[#3D332B] shadow-2xs text-orange-950 dark:text-[#ffb690] text-xs font-bold">
+          <IconSparkles size={13} className="text-orange-600 dark:text-[#ffb690]" />
+          <span>Mahila Bachat Gat & SHG Sahayika</span>
+        </div>
+
+        {/* Greeting Headline */}
+        <div 
+          onClick={toggleGreeting} 
+          className="cursor-pointer select-none space-y-1 group"
+          title="Tap to switch greeting"
+        >
+          <h1 className="font-headline text-2xl sm:text-3xl font-black tracking-tight text-[#221a0e] dark:text-[#FFF5EB] group-hover:text-orange-600 dark:group-hover:text-[#ffb690] transition flex items-center justify-center gap-1.5">
+            <span>{resolvedGreetingText}</span>
+          </h1>
+          <p className="text-xs font-medium text-stone-500 dark:text-[#A8988A] flex items-center justify-center gap-1">
+            <span>(tap to change greeting style)</span>
+            <IconRotateClockwise size={12} className="group-hover:rotate-180 transition duration-300" />
           </p>
         </div>
 
-        {/* Continue prompt */}
-        <div className="pt-3">
-          <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white dark:bg-[#1e1b19] border border-amber-200/60 dark:border-[#3D332B] shadow-xs text-xs font-bold text-stone-500 dark:text-[#A8988A] hover:text-orange-600 transition">
-            <span>Tap anywhere to continue</span>
-            <IconArrowRight size={13} />
+        {/* Sub-caption */}
+        <p className="text-xs sm:text-sm text-stone-600 dark:text-[#D4C4B5] font-medium max-w-xs leading-relaxed">
+          {activeGreeting.sub}
+        </p>
+
+        {/* Language selector chips */}
+        <div className="w-full pt-1">
+          <div className="grid grid-cols-4 gap-1.5">
+            {LANGUAGES.map((lang) => {
+              const isSelected = language === lang.code;
+              return (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={(e) => handleSelectLang(e, lang.code)}
+                  className={`py-2 px-1 rounded-xl text-xs font-bold transition flex flex-col items-center justify-center cursor-pointer border ${
+                    isSelected
+                      ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
+                      : 'bg-white dark:bg-[#1e1b19] text-stone-700 dark:text-[#D4C4B5] border-amber-200/70 dark:border-[#3D332B] hover:bg-amber-50'
+                  }`}
+                >
+                  <span className="text-xs">{lang.native}</span>
+                  <span className="text-[10px] opacity-80">{lang.name}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
+        {/* Audio Guidance Card */}
+        <div className="w-full bg-white dark:bg-[#1e1b19] border border-amber-200/80 dark:border-[#3D332B] rounded-2xl p-3 shadow-xs flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 text-left min-w-0">
+            <div className="w-9 h-9 rounded-xl bg-[#fcebd7] dark:bg-[#28211C] flex items-center justify-center shrink-0 text-orange-600 dark:text-[#ffb690]">
+              <IconVolume size={18} />
+            </div>
+            <div className="min-w-0">
+              <span className="text-[11px] font-bold text-orange-800 dark:text-[#ffb690] uppercase tracking-wide block">
+                Voice Guidance • శ్రవణ స్వాగతం
+              </span>
+              <p className="text-xs font-bold text-[#221a0e] dark:text-[#FFF5EB] truncate">
+                {isAudioPlaying ? 'Playing spoken greeting...' : 'Tap play to listen to audio'}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Waveform animation */}
+            <div className="flex items-end gap-0.5 h-4 px-1">
+              {[8, 16, 12, 20, 10].map((h, i) => (
+                <span
+                  key={i}
+                  style={{ height: isAudioPlaying ? `${Math.floor(Math.random() * 14 + 6)}px` : `${h}px` }}
+                  className="w-1 bg-orange-500 rounded-full transition-all duration-200"
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleToggleVoiceAudio}
+              className="w-9 h-9 rounded-xl bg-orange-600 hover:bg-orange-700 text-white flex items-center justify-center shrink-0 shadow-xs cursor-pointer transition active:scale-90"
+              title="Play voice greeting"
+            >
+              {isAudioPlaying ? <IconPlayerPause size={17} /> : <IconPlayerPlay size={17} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Trust Badges Grid */}
+        <div className="flex flex-wrap justify-center gap-2 w-full pt-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white dark:bg-[#1e1b19] border border-amber-200/70 dark:border-[#3D332B] rounded-full shadow-2xs text-xs font-semibold text-stone-700 dark:text-[#D4C4B5]">
+            <IconShieldLock size={14} className="text-orange-600 dark:text-[#ffb690]" />
+            <span>100% Private</span>
+          </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white dark:bg-[#1e1b19] border border-amber-200/70 dark:border-[#3D332B] rounded-full shadow-2xs text-xs font-semibold text-stone-700 dark:text-[#D4C4B5]">
+            <IconMessageCircle size={14} className="text-emerald-600 dark:text-emerald-400" />
+            <span>Zero Bank Jargon</span>
+          </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white dark:bg-[#1e1b19] border border-amber-200/70 dark:border-[#3D332B] rounded-full shadow-2xs text-xs font-semibold text-stone-700 dark:text-[#D4C4B5]">
+            <IconVolume size={14} className="text-amber-600 dark:text-amber-400" />
+            <span>Voice Support</span>
+          </div>
+        </div>
+
+        {/* Primary Tap Action Button */}
+        <div className="w-full pt-2">
+          <button
+            type="button"
+            id="continue-button"
+            onClick={handleDismiss}
+            className="w-full py-3.5 px-6 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-headline text-base font-bold shadow-lg shadow-orange-600/25 active:scale-98 transition flex items-center justify-center gap-2 group cursor-pointer"
+          >
+            {unlocked ? (
+              <>
+                <IconLockOpen size={20} className="animate-bounce" />
+                <span>Welcome! Opening Ledger...</span>
+              </>
+            ) : (
+              <>
+                <span>Shuru Karein / ప్రారంభించండి</span>
+                <IconArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Progress countdown meter */}
+        <div className="w-full flex flex-col items-center pt-1">
+          <div className="w-44 h-1.5 bg-[#fcebd7] dark:bg-[#28211C] rounded-full overflow-hidden mb-1">
+            <div
+              className="h-full bg-orange-600 transition-all duration-100 ease-linear rounded-full"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="font-mono text-[11px] text-stone-500 dark:text-[#A8988A]">
+            {isPaused ? 'Auto-advance paused (hovering/editing)' : `Auto-opening in ${remainingTime}s`}
+          </span>
+        </div>
+
       </div>
+
+      {/* Footer */}
+      <footer className="w-full max-w-md mx-auto text-center z-10 pt-2 pb-1">
+        <p className="text-[11px] font-medium text-stone-500 dark:text-[#A8988A]">
+          Protected by SHG Rural Trust & RBI Security Standards
+        </p>
+        <p className="font-mono text-[10px] text-stone-400 dark:text-stone-600 mt-0.5">
+          Sakhi v2.4 • Offline First Enabled
+        </p>
+      </footer>
     </div>
   );
 }
