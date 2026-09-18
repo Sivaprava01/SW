@@ -120,6 +120,21 @@ uv run alembic upgrade head
 | `DELETE` | `/api/v1/users/{user_id}/debts/{debt_id}` | Delete a debt record |
 | `GET` | `/api/v1/users/{user_id}/debts-analysis/snowball` | Deterministic interest drain, SHG refinance savings, and snowball/avalanche rankings |
 
+### 🧮 Deterministic Financial Calculators (B5)
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/v1/calculators/emergency-fund` | Calculate 3-month emergency safety buffer (Suraksha Kavach) and savings plans |
+| `POST` | `/api/v1/calculators/debt-refinance` | Moneylender (36-60%) vs SHG (12%) interest arbitrage & monthly rupee savings |
+| `POST` | `/api/v1/calculators/recurring-deposit` | Post Office / Bank RD quarterly compounded maturity and interest earned |
+| `POST` | `/api/v1/calculators/goal-horizon` | Calculate goal timeline & required allocation based on monthly surplus |
+
+### 📚 Financial Knowledge Base & Golden Rules (B5)
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/v1/knowledge/concepts` | List verified financial literacy concepts (English, Telugu, Hindi) |
+| `GET` | `/api/v1/knowledge/concepts/{id}` | Get single concept with practical actions and warning pitfalls |
+| `GET` | `/api/v1/knowledge/golden-rules` | Retrieve the 5 official Sakhi Golden Financial Rules |
+
 ---
 
 ## 🛡️ Standardized Error Envelope
