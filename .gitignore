@@ -31,10 +31,18 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
 .env*.local
 
 # typescript
 *.tsbuildinfo
+
+# stitch export & mcp
+stitch_export/
+stitch_screens/
+.stitch-mcp/
+.agents/
+.cursor/
 
 # generated native folders
 /ios

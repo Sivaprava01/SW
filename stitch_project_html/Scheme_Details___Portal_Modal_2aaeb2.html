@@ -1,0 +1,227 @@
+<!DOCTYPE html><html class="h-full" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><title>Sakhi - Financial Companion</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&amp;family=Karla:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100%;margin:0;padding:0;min-height:100%;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'surface-container-high': '#f6e6d2', 'error': '#ba1a1a', 'on-primary': '#ffffff', 'primary-container': '#f97316', 'on-primary-fixed-variant': '#783200', 'background': '#fff8f3', 'on-tertiary': '#ffffff', 'surface-tint': '#9d4300', 'surface-container-lowest': '#ffffff', 'on-surface-variant': '#584237', 'on-secondary-container': '#610000', 'on-error-container': '#93000a', 'surface': '#fff8f3', 'tertiary-fixed': '#ffdad4', 'tertiary-fixed-dim': '#ffb4a8', 'secondary-container': '#fd5e49', 'on-tertiary-fixed-variant': '#7e2a20', 'inverse-primary': '#ffb690', 'on-secondary-fixed-variant': '#900c05', 'tertiary-container': '#e87b6b', 'on-primary-container': '#582200', 'inverse-surface': '#382f22', 'on-error': '#ffffff', 'secondary': '#b3291b', 'error-container': '#ffdad6', 'secondary-fixed': '#ffdad4', 'inverse-on-surface': '#ffeedb', 'on-primary-fixed': '#341100', 'on-secondary-fixed': '#410000', 'primary-fixed-dim': '#ffb690', 'surface-container': '#fcebd7', 'on-surface': '#221a0e', 'on-secondary': '#ffffff', 'surface-container-highest': '#f1e0cc', 'surface-dim': '#e8d8c4', 'on-tertiary-fixed': '#410000', 'outline-variant': '#e0c0b1', 'on-background': '#221a0e', 'outline': '#8c7164', 'primary-fixed': '#ffdbca', 'surface-container-low': '#fff1e3', 'tertiary': '#9d4135', 'on-tertiary-container': '#62160e', 'primary': '#9d4300', 'secondary-fixed-dim': '#ffb4a8', 'surface-bright': '#fff8f3', 'surface-variant': '#f1e0cc' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'gutter-mobile': '0.75rem', 'gutter': '1rem', 'gutter-desktop': '1.5rem', 'space-xs': '0.25rem', 'space-sm': '0.5rem', 'space-lg': '1.5rem', 'margin-mobile': '1rem', 'space-md': '1rem', 'margin': '1rem', 'margin-desktop': '2rem', 'space-xl': '2.5rem' }, fontFamily: { 'body-md': ['Inconsolata'], 'headline-lg-mobile': ['Karla'], 'display': ['Karla'], 'display-mobile': ['Karla'], 'label-lg': ['Inconsolata'], 'label-md': ['Inconsolata'], 'headline-md': ['Karla'], 'body-lg': ['Inconsolata'], 'body-sm': ['Inconsolata'], 'headline-sm': ['Karla'], 'headline-lg': ['Karla'], 'label-sm': ['Inconsolata'] }, fontSize: { 'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0em', fontWeight: '400' }], 'headline-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.02em', fontWeight: '700' }], 'display': ['56px', { lineHeight: '64px', letterSpacing: '-0.035em', fontWeight: '700' }], 'display-mobile': ['38px', { lineHeight: '44px', letterSpacing: '-0.025em', fontWeight: '700' }], 'label-lg': ['15px', { lineHeight: '20px', letterSpacing: '0.04em', fontWeight: '600' }], 'label-md': ['13px', { lineHeight: '18px', letterSpacing: '0.05em', fontWeight: '600' }], 'headline-md': ['28px', { lineHeight: '36px', letterSpacing: '-0.02em', fontWeight: '600' }], 'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0em', fontWeight: '400' }], 'body-sm': ['14px', { lineHeight: '22px', letterSpacing: '0.01em', fontWeight: '400' }], 'headline-sm': ['22px', { lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: '600' }], 'headline-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.03em', fontWeight: '700' }], 'label-sm': ['11px', { lineHeight: '16px', letterSpacing: '0.06em', fontWeight: '600' }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-full"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 px-gutter flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="Brand logo. - Primary color: #f97316
+- Font: karla
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VHmpITbe783gkT9AbwXgdyMxBVLp3RIzhk_M7zFrR6iyl9s88bIl2yFVO_ysDZNcZrLGCDz6ixa555dRcpDJX53qqaP2ovUngGsMNKOclNRRTL21vNxY6_ZWG6DvkJ7-7IbrPo32uxLh7h9MQvioY-fTeNGsu2qNh210F-LkhK-JwuYnwOFtWejUvivCJPArnD1jTBHU14tiK_Rlnf3mdmffj038rd4ljm6vvogqc9HQ86XIxd2u9vbqrA"><div class="w-11 h-11 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 font-bold shadow-sm">L</div><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface truncate">Namaste, Lakshmi 👋</span></div><div class="flex items-center gap-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-0.5 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px] text-primary">location_on</span>Telangana • My Money</span></div></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><button aria-label="Open Settings Menu" class="w-12 h-12 flex items-center justify-center text-on-surface active:scale-95 transition-transform rounded-full hover:bg-surface-container-high"><span class="material-symbols-outlined text-[28px]">menu</span></button></div></div></header><main class="flex-1 flex flex-col relative w-full pt-20 pb-36 px-gutter bg-surface"><div class="flex flex-col w-full">
+<div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-inverse-surface/40 backdrop-blur-sm px-0 sm:px-gutter">
+<!-- Modal Card Container -->
+<div class="w-full max-w-lg bg-surface-container-lowest rounded-t-xl sm:rounded-xl shadow-xl flex flex-col max-h-[813px] overflow-hidden">
+<!-- Top Sticky Dialog Header -->
+<div class="bg-surface-container-low px-gutter py-space-md flex flex-col gap-space-xs shadow-sm flex-shrink-0">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="px-2.5 py-1 rounded-full bg-primary-container/15 text-primary font-label-sm text-label-sm font-bold tracking-wider">SHG LIVELIHOOD</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold">CENTRAL &amp; TELANGANA</span>
+</div>
+<button aria-label="Close dialog" class="w-10 h-10 -mr-2 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+<div class="flex items-start justify-between gap-space-sm pt-1">
+<div class="flex flex-col">
+<h1 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Lakhpati Didi Initiative</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ministry of Rural Development &amp; SERP Telangana</p>
+</div>
+<div class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-container text-on-primary shadow-sm animate-pulse">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label-sm text-label-sm font-bold tracking-tight">100% Match</span>
+</div>
+</div>
+</div>
+<!-- Scrollable Content Body -->
+<div class="overflow-y-auto px-gutter py-space-md flex flex-col gap-space-lg flex-1">
+<!-- Section 1: Mandatory Government Notice Box -->
+
+<!-- Section 2: What This Program Provides -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs">
+
+
+</div>
+<div class="grid grid-cols-1 gap-2.5">
+
+
+
+</div>
+</section>
+<!-- Section 3: Target Beneficiaries & Eligibility -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">groups</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Target Beneficiaries &amp; Eligibility</h2>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-space-sm">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Active woman member in an SHG / Mahila Mandal for at least <strong>1 year</strong>.</span>
+</div>
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Household income target: transitioning to at least <strong>₹1,00,000</strong> annual sustainable income.</span>
+</div>
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Valid Aadhaar card and linked active <strong>Jan Dhan bank passbook</strong>.</span>
+</div>
+</div>
+</section>
+<!-- Section 4: Documents Checklist (Interactive) -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">inventory_2</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Documents Checklist</h2>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-on-surface-variant" id="checklist-tracker">2 of 3 Ready</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Checklist Item 1 -->
+<label class="group flex items-center justify-between p-space-md rounded-lg bg-surface-container-low active:bg-surface-container cursor-pointer select-none transition-colors">
+<div class="flex items-center gap-space-sm">
+<input checked="" class="peer sr-only document-checkbox" data-label="aadhaar" type="checkbox">
+<div class="w-6 h-6 rounded bg-surface-container-highest peer-checked:bg-primary text-on-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold peer-checked:text-on-surface">Aadhaar Card</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Verified &amp; linked to your registered mobile number</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Linked</span>
+</label>
+<!-- Checklist Item 2 -->
+<label class="group flex items-center justify-between p-space-md rounded-lg bg-surface-container-low active:bg-surface-container cursor-pointer select-none transition-colors">
+<div class="flex items-center gap-space-sm">
+<input checked="" class="peer sr-only document-checkbox" data-label="shg-passbook" type="checkbox">
+<div class="w-6 h-6 rounded bg-surface-container-highest peer-checked:bg-primary text-on-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold peer-checked:text-on-surface">SHG Passbook &amp; Resolution</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Latest 6-month ledger record + group meeting resolution copy</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Verified</span>
+</label>
+<!-- Checklist Item 3 -->
+<label class="group flex items-center justify-between p-space-md rounded-lg bg-surface-container-low active:bg-surface-container cursor-pointer select-none transition-colors">
+<div class="flex items-center gap-space-sm">
+<input class="peer sr-only document-checkbox" data-label="vo-endorsement" type="checkbox">
+<div class="w-6 h-6 rounded bg-surface-container-highest peer-checked:bg-primary text-on-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[18px] opacity-0 peer-checked:opacity-100">check</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold peer-checked:text-on-surface">Gram Panchayat / VO Letter</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Signed by Village Animator or VO Secretary</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold">Needed</span>
+</label>
+</div>
+</section>
+<!-- Section 5: How to Apply -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">route</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">How to Apply</h2>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div class="flex gap-space-sm p-space-md rounded-lg bg-surface-container-lowest shadow-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 font-bold">1</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Inform Your SHG President</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Raise your intent at the upcoming fortnightly Village Organization (VO) meeting for member priority endorsement.</p>
+</div>
+</div>
+<div class="flex gap-space-sm p-space-md rounded-lg bg-surface-container-lowest shadow-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 font-bold">2</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Submit Micro-Investment Plan (MIP)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Generate your verified cashflow numbers directly through Sakhi and submit the printed plan to the cluster coordinator.</p>
+</div>
+</div>
+<div class="flex gap-space-sm p-space-md rounded-lg bg-surface-container-lowest shadow-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 font-bold">3</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Branch Disbursal to Bank Account</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Funds are sanctioned directly into your SHG group savings account with automated tranche updates.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Action Bar -->
+<div class="bg-surface-container-low px-gutter py-space-sm flex items-center gap-space-sm flex-shrink-0 shadow-[0_-2px_8px_rgba(0,0,0,0.04)]">
+<!-- Audio Readout Button -->
+<button class="h-12 px-space-md rounded-full bg-surface-container-high text-on-surface font-label-lg text-label-lg font-bold flex items-center gap-space-xs active:scale-95 transition-transform flex-shrink-0" id="audio-toggle-btn" type="button">
+<span class="material-symbols-outlined text-[22px] text-primary" id="audio-icon">volume_up</span>
+<span id="audio-label" class="">తెలుగులో వినండి</span>
+</button>
+<!-- Official Portal Deep-Link Action -->
+<a class="h-12 flex-1 px-space-md rounded-full bg-primary-container text-on-primary font-headline-sm text-label-lg font-bold flex items-center justify-center gap-space-xs active:scale-95 transition-transform shadow-sm" href="https://lakhpatididi.gov.in" rel="noopener noreferrer" target="_blank">
+<span class="">View Official Portal</span>
+<span class="material-symbols-outlined text-[18px]">north_east</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    // Checkbox dynamic count micro-interaction
+    var checkboxes = document.querySelectorAll('.document-checkbox');
+    var tracker = document.getElementById('checklist-tracker');
+
+    function updateChecklistProgress() {
+      var checkedCount = 0;
+      checkboxes.forEach(function(box) {
+        if (box.checked) checkedCount++;
+      });
+      if (tracker) {
+        tracker.textContent = checkedCount + ' of ' + checkboxes.length + ' Ready';
+        if (checkedCount === checkboxes.length) {
+          tracker.className = 'font-label-sm text-label-sm font-bold text-primary';
+        } else {
+          tracker.className = 'font-label-sm text-label-sm font-bold text-on-surface-variant';
+        }
+      }
+    }
+
+    checkboxes.forEach(function(box) {
+      box.addEventListener('change', updateChecklistProgress);
+    });
+
+    // Audio narration toggle state simulation
+    var audioBtn = document.getElementById('audio-toggle-btn');
+    var audioIcon = document.getElementById('audio-icon');
+    var audioLabel = document.getElementById('audio-label');
+    var isPlaying = false;
+
+    if (audioBtn) {
+      audioBtn.addEventListener('click', function() {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+          audioIcon.textContent = 'pause_circle';
+          audioIcon.classList.add('text-secondary');
+          audioLabel.textContent = 'వింటున్నారు...';
+          audioBtn.classList.add('bg-secondary-fixed');
+        } else {
+          audioIcon.textContent = 'volume_up';
+          audioIcon.classList.remove('text-secondary');
+          audioLabel.textContent = 'తెలుగులో వినండి';
+          audioBtn.classList.remove('bg-secondary-fixed');
+        }
+      });
+    }
+  })();
+</script></main><aside class="fixed bottom-24 right-4 z-40 pb-safe pointer-events-auto"><button class="h-12 px-space-md rounded-full bg-primary-container text-on-primary shadow-[0_8px_24px_-4px_rgba(66,0,0,0.2)] flex items-center gap-space-xs active:scale-95 transition-transform"><span class="material-symbols-outlined text-[22px]">record_voice_over</span><span class="font-headline-sm text-label-lg font-bold">Ask Sakhi</span></button></aside><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_12px_rgba(66,0,0,0.06)]" data-active-classes="text-primary-container font-bold"><div class="flex items-center justify-between h-16 px-gutter-mobile"><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[22px]">home</span><span class="font-label-sm text-label-sm">Home</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 transition-colors text-primary-container font-bold" data-path="my-money" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm">Money</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="journey" href="#"><span class="material-symbols-outlined text-[22px]">explore</span><span class="font-label-sm text-label-sm">Journey</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="goals" href="#"><span class="material-symbols-outlined text-[22px]">ads_click</span><span class="font-label-sm text-label-sm">Goals</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="benefits" href="#"><span class="material-symbols-outlined text-[22px]">verified_user</span><span class="font-label-sm text-label-sm">Benefits</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="learn" href="#"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm">Learn</span></a></div></nav>
+
+
+
+</body></html>

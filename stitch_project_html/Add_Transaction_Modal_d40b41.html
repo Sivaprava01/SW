@@ -1,0 +1,383 @@
+<!DOCTYPE html><html class="h-full" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><title>Sakhi - Financial Companion</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&amp;family=Karla:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100%;margin:0;padding:0;min-height:100%;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'surface-container-high': '#f6e6d2', 'error': '#ba1a1a', 'on-primary': '#ffffff', 'primary-container': '#f97316', 'on-primary-fixed-variant': '#783200', 'background': '#fff8f3', 'on-tertiary': '#ffffff', 'surface-tint': '#9d4300', 'surface-container-lowest': '#ffffff', 'on-surface-variant': '#584237', 'on-secondary-container': '#610000', 'on-error-container': '#93000a', 'surface': '#fff8f3', 'tertiary-fixed': '#ffdad4', 'tertiary-fixed-dim': '#ffb4a8', 'secondary-container': '#fd5e49', 'on-tertiary-fixed-variant': '#7e2a20', 'inverse-primary': '#ffb690', 'on-secondary-fixed-variant': '#900c05', 'tertiary-container': '#e87b6b', 'on-primary-container': '#582200', 'inverse-surface': '#382f22', 'on-error': '#ffffff', 'secondary': '#b3291b', 'error-container': '#ffdad6', 'secondary-fixed': '#ffdad4', 'inverse-on-surface': '#ffeedb', 'on-primary-fixed': '#341100', 'on-secondary-fixed': '#410000', 'primary-fixed-dim': '#ffb690', 'surface-container': '#fcebd7', 'on-surface': '#221a0e', 'on-secondary': '#ffffff', 'surface-container-highest': '#f1e0cc', 'surface-dim': '#e8d8c4', 'on-tertiary-fixed': '#410000', 'outline-variant': '#e0c0b1', 'on-background': '#221a0e', 'outline': '#8c7164', 'primary-fixed': '#ffdbca', 'surface-container-low': '#fff1e3', 'tertiary': '#9d4135', 'on-tertiary-container': '#62160e', 'primary': '#9d4300', 'secondary-fixed-dim': '#ffb4a8', 'surface-bright': '#fff8f3', 'surface-variant': '#f1e0cc' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'gutter-mobile': '0.75rem', 'gutter': '1rem', 'gutter-desktop': '1.5rem', 'space-xs': '0.25rem', 'space-sm': '0.5rem', 'space-lg': '1.5rem', 'margin-mobile': '1rem', 'space-md': '1rem', 'margin': '1rem', 'margin-desktop': '2rem', 'space-xl': '2.5rem' }, fontFamily: { 'body-md': ['Inconsolata'], 'headline-lg-mobile': ['Karla'], 'display': ['Karla'], 'display-mobile': ['Karla'], 'label-lg': ['Inconsolata'], 'label-md': ['Inconsolata'], 'headline-md': ['Karla'], 'body-lg': ['Inconsolata'], 'body-sm': ['Inconsolata'], 'headline-sm': ['Karla'], 'headline-lg': ['Karla'], 'label-sm': ['Inconsolata'] }, fontSize: { 'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0em', fontWeight: '400' }], 'headline-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.02em', fontWeight: '700' }], 'display': ['56px', { lineHeight: '64px', letterSpacing: '-0.035em', fontWeight: '700' }], 'display-mobile': ['38px', { lineHeight: '44px', letterSpacing: '-0.025em', fontWeight: '700' }], 'label-lg': ['15px', { lineHeight: '20px', letterSpacing: '0.04em', fontWeight: '600' }], 'label-md': ['13px', { lineHeight: '18px', letterSpacing: '0.05em', fontWeight: '600' }], 'headline-md': ['28px', { lineHeight: '36px', letterSpacing: '-0.02em', fontWeight: '600' }], 'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0em', fontWeight: '400' }], 'body-sm': ['14px', { lineHeight: '22px', letterSpacing: '0.01em', fontWeight: '400' }], 'headline-sm': ['22px', { lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: '600' }], 'headline-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.03em', fontWeight: '700' }], 'label-sm': ['11px', { lineHeight: '16px', letterSpacing: '0.06em', fontWeight: '600' }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-full"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 px-gutter flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="Brand logo. - Primary color: #f97316
+- Font: karla
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VHmpITbe783gkT9AbwXgdyMxBVLp3RIzhk_M7zFrR6iyl9s88bIl2yFVO_ysDZNcZrLGCDz6ixa555dRcpDJX53qqaP2ovUngGsMNKOclNRRTL21vNxY6_ZWG6DvkJ7-7IbrPo32uxLh7h9MQvioY-fTeNGsu2qNh210F-LkhK-JwuYnwOFtWejUvivCJPArnD1jTBHU14tiK_Rlnf3mdmffj038rd4ljm6vvogqc9HQ86XIxd2u9vbqrA"><div class="w-11 h-11 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 font-bold shadow-sm">L</div><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface truncate">Namaste, Lakshmi 👋</span></div><div class="flex items-center gap-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-0.5 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px] text-primary">location_on</span>Telangana • Journey</span></div></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><button aria-label="Open Settings Menu" class="w-12 h-12 flex items-center justify-center text-on-surface active:scale-95 transition-transform rounded-full hover:bg-surface-container-high"><span class="material-symbols-outlined text-[28px]">menu</span></button></div></div></header><main class="flex-1 flex flex-col relative w-full pt-20 pb-36 px-gutter bg-surface"><div class="flex flex-col w-full relative">
+<!-- Dimmed Background Representation of My Money Passbook -->
+<div aria-hidden="true" class="flex flex-col gap-space-md opacity-40 select-none pointer-events-none filter blur-[2px]">
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Household Balance</span>
+<span class="font-label-sm text-label-sm text-primary">Live Passbook</span>
+</div>
+<div class="font-display-mobile text-display-mobile text-on-surface mt-space-xs font-bold font-['Inconsolata']">₹ 14,200</div>
+<div class="flex items-center gap-space-sm mt-space-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Surplus this month:</span>
+<span class="font-body-sm text-body-sm font-bold text-primary">₹ 4,200</span>
+</div>
+</div>
+<div class="bg-surface-container p-space-md rounded-xl">
+<div class="flex justify-between items-center mb-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface">Recent Logs</span>
+<span class="font-label-md text-label-md text-on-surface-variant">October</span>
+</div>
+<div class="space-y-space-sm">
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-bold">Paddy Harvest Sale</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">22 Oct 2024</p>
+</div>
+</div>
+<span class="font-body-lg text-body-lg font-bold text-on-surface">+₹ 3,500</span>
+</div>
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">shopping_basket</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-bold">Ration &amp; Provisions</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">20 Oct 2024</p>
+</div>
+</div>
+<span class="font-body-lg text-body-lg font-bold text-secondary">-₹ 920</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Dialog / Sheet Container -->
+<div class="relative z-30 -mt-[19rem] sm:-mt-[22rem] w-full bg-surface-container-lowest rounded-xl shadow-2xl p-space-md flex flex-col gap-space-md">
+<!-- Modal Header -->
+<div class="flex items-start justify-between">
+<div class="flex flex-col min-w-0 pr-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-primary-container/20 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Log Income or Expense</h2>
+</div>
+
+</div>
+<button aria-label="Close modal" class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-surface-container-highest active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- 1. Transaction Type Toggle -->
+<div class="w-full bg-surface-container-high p-1 rounded-full flex gap-1 items-center" role="tablist">
+<button aria-selected="true" class="flex-1 min-h-[48px] py-2 px-space-sm rounded-full bg-primary-container text-on-primary font-headline-sm text-label-lg font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all" id="tab-income" onclick="switchType('income')" role="tab" type="button">
+<span class="material-symbols-outlined text-[18px]" id="income-check">check_circle</span>
+<span class="">Income (+)</span>
+</button>
+<button aria-selected="false" class="flex-1 min-h-[48px] py-2 px-space-sm rounded-full bg-transparent text-on-surface-variant font-headline-sm text-label-lg font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-all" id="tab-expense" onclick="switchType('expense')" role="tab" type="button">
+<span class="material-symbols-outlined text-[18px] hidden" id="expense-check">check_circle</span>
+<span class="">Expense (-)</span>
+</button>
+</div>
+<!-- 2. Large Amount Input + Quick Chips -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider" for="amount-input">Amount</label>
+
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-space-sm rounded-lg">
+<span class="font-display-mobile text-display-mobile font-bold text-primary select-none font-['Inconsolata']">₹</span>
+<input class="w-full bg-transparent font-display-mobile text-display-mobile text-on-surface font-bold focus:outline-none font-['Inconsolata'] placeholder:text-outline-variant" id="amount-input" inputmode="numeric" oninput="updateImpactPreview(this.value)" placeholder="0" type="number" value="1400">
+<button aria-label="Clear amount" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-90 transition-transform" onclick="clearAmount()" type="button">
+<span class="material-symbols-outlined text-[18px]">backspace</span>
+</button>
+</div>
+<!-- Quick Preset Chips -->
+<div class="flex items-center gap-space-xs overflow-x-auto pt-1 no-scrollbar">
+<button class="flex-shrink-0 min-h-[48px] px-space-md rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-bold hover:bg-surface-container-high active:scale-95 transition-transform flex items-center justify-center" onclick="addAmount(200)" type="button">
+          +₹200
+        </button>
+<button class="flex-shrink-0 min-h-[48px] px-space-md rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-bold hover:bg-surface-container-high active:scale-95 transition-transform flex items-center justify-center" onclick="addAmount(500)" type="button">
+          +₹500
+        </button>
+<button class="flex-shrink-0 min-h-[48px] px-space-md rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-bold hover:bg-surface-container-high active:scale-95 transition-transform flex items-center justify-center" onclick="addAmount(1000)" type="button">
+          +₹1,000
+        </button>
+<button class="flex-shrink-0 min-h-[48px] px-space-md rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-bold hover:bg-surface-container-high active:scale-95 transition-transform flex items-center justify-center" onclick="addAmount(2000)" type="button">
+          +₹2,000
+        </button>
+</div>
+</div>
+<!-- 3. Category Selector -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Select Category</label>
+
+</div>
+<!-- Income Grid -->
+<div class="grid grid-cols-2 gap-space-xs" id="grid-income">
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Salary / Wages" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">payments</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Salary / Wages</span>
+<span class="material-symbols-outlined text-[18px] text-primary hidden check-icon">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-primary-container/15 text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Shop Sales / Market" data-selected="true" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">storefront</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Shop Sales / Market</span>
+<span class="material-symbols-outlined text-[18px] text-primary check-icon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Agricultural / Livestock" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">agriculture</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Agri / Livestock</span>
+<span class="material-symbols-outlined text-[18px] text-primary hidden check-icon">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="SHG Loan Disbursed" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">diversity_3</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">SHG Disbursed</span>
+<span class="material-symbols-outlined text-[18px] text-primary hidden check-icon">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Government Benefit" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">assured_workload</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Govt Benefit</span>
+<span class="material-symbols-outlined text-[18px] text-primary hidden check-icon">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Other Income" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">savings</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Other Income</span>
+<span class="material-symbols-outlined text-[18px] text-primary hidden check-icon">check_circle</span>
+</button>
+</div>
+<!-- Expense Grid (Hidden by default) -->
+<div class="grid grid-cols-2 gap-space-xs hidden" id="grid-expense">
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Food &amp; Groceries" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">shopping_cart</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Food &amp; Groceries</span>
+<span class="material-symbols-outlined text-[18px] text-secondary hidden check-icon">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Rent &amp; Electricity" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">lightbulb</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Rent &amp; Utility</span>
+<span class="material-symbols-outlined text-[18px] text-secondary hidden check-icon">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Healthcare / Medicine" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">medical_services</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Healthcare</span>
+<span class="material-symbols-outlined text-[18px] text-secondary hidden check-icon">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Children's School / Fees" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">school</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">School Fees</span>
+<span class="material-symbols-outlined text-[18px] text-secondary hidden check-icon">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Loan Interest / Repayment" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">assignment_return</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Loan Repayment</span>
+<span class="material-symbols-outlined text-[18px] text-secondary hidden check-icon">check_circle</span>
+</button>
+<button class="category-btn min-h-[52px] p-space-sm rounded-lg bg-surface-container-low text-left flex items-center gap-space-xs active:scale-98 transition-transform" data-category="Festival / Family Function" onclick="selectCategory(this)" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary">celebration</span>
+<span class="font-label-md text-label-md text-on-surface font-bold flex-1 truncate">Festival / Family</span>
+<span class="material-symbols-outlined text-[18px] text-secondary hidden check-icon">check_circle</span>
+</button>
+</div>
+</div>
+<!-- 4. Transaction Date -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Transaction Date</label>
+<div class="w-full min-h-[48px] bg-surface-container-low rounded-lg px-space-md py-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-primary">calendar_today</span>
+<span class="font-body-md text-body-md font-bold text-on-surface font-['Inconsolata']">Today, 24 Oct 2024</span>
+</div>
+
+</div>
+
+</div>
+<!-- 5. Description / Note with Voice Mic -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider" for="desc-input">Note / Description</label>
+
+</div>
+<div class="flex items-center bg-surface-container-low rounded-lg px-space-md py-space-xs">
+<input class="w-full bg-transparent min-h-[48px] font-body-md text-body-md text-on-surface focus:outline-none placeholder:text-outline-variant" id="desc-input" placeholder="e.g., Weekly handloom bazaar sales" type="text" value="Weekly handloom bazaar sales">
+<button aria-label="Dictate note using voice in Telugu or Hindi" class="flex-shrink-0 w-11 h-11 rounded-full bg-primary-container text-on-primary flex items-center justify-center active:scale-90 transition-transform shadow-sm" onclick="triggerVoiceInput()" type="button">
+<span class="material-symbols-outlined text-[20px]" id="mic-icon">mic</span>
+</button>
+</div>
+<p class="font-label-sm text-label-sm text-primary hidden flex items-center gap-1" id="voice-status">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+        Listening in Telugu / Hindi... speak now
+      </p>
+</div>
+<!-- 6. Real-time Impact Preview Note -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-start gap-space-sm" id="impact-card">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 mt-0.5" id="impact-icon-wrapper">
+<span class="material-symbols-outlined text-[20px]" id="impact-icon">trending_up</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Projected Household Impact</span>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5" id="impact-text">
+          Adding <span class="font-bold font-['Inconsolata']">₹1,400</span> will increase your monthly surplus to <span class="font-bold font-['Inconsolata'] text-primary">₹5,600</span>.
+        </p>
+</div>
+</div>
+<!-- Cultural Encouragement Snippet with Image Placeholder -->
+
+<!-- Modal Footer Actions -->
+<div class="flex items-center gap-space-sm pt-space-xs">
+<button class="w-1/3 min-h-[48px] py-space-sm px-space-md rounded-full bg-surface-container-high text-on-surface font-headline-sm text-label-lg font-bold hover:bg-surface-container-highest active:scale-95 transition-transform flex items-center justify-center" onclick="cancelModal()" type="button">
+        Cancel
+      </button>
+<button class="w-2/3 min-h-[48px] py-space-sm px-space-md rounded-full bg-primary-container text-on-primary font-headline-sm text-label-lg font-bold hover:bg-primary-container/90 active:scale-95 shadow-md transition-all flex items-center justify-center gap-1.5" id="save-btn" onclick="saveTransaction()" type="button">
+<span class="material-symbols-outlined text-[20px]">check</span>
+<span class="">Save Transaction</span>
+</button>
+</div>
+</div>
+<!-- Toast Notification Overlay -->
+<div class="fixed top-24 left-4 right-4 z-50 bg-primary text-on-primary px-space-md py-space-sm rounded-xl shadow-xl flex items-center gap-space-sm transform -translate-y-32 transition-transform duration-300 pointer-events-none" id="save-toast">
+<div class="w-8 h-8 rounded-full bg-on-primary text-primary flex items-center justify-center flex-shrink-0 font-bold">✓</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-label-lg font-bold">Transaction Recorded!</span>
+<span class="font-body-sm text-body-sm text-on-primary/90 truncate" id="toast-details">Added ₹1,400 to Shop Sales</span>
+</div>
+</div>
+<!-- Inline Micro-interactions Script -->
+<script>
+    let currentType = 'income';
+    const baseSurplus = 4200;
+
+    function switchType(type) {
+      currentType = type;
+      const tabIncome = document.getElementById('tab-income');
+      const tabExpense = document.getElementById('tab-expense');
+      const iconIncome = document.getElementById('income-check');
+      const iconExpense = document.getElementById('expense-check');
+      const gridIncome = document.getElementById('grid-income');
+      const gridExpense = document.getElementById('grid-expense');
+      const catHint = document.getElementById('category-hint');
+      const saveBtn = document.getElementById('save-btn');
+
+      if (type === 'income') {
+        tabIncome.className = 'flex-1 min-h-[48px] py-2 px-space-sm rounded-full bg-primary-container text-on-primary font-headline-sm text-label-lg font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all';
+        tabExpense.className = 'flex-1 min-h-[48px] py-2 px-space-sm rounded-full bg-transparent text-on-surface-variant font-headline-sm text-label-lg font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-all';
+        iconIncome.classList.remove('hidden');
+        iconExpense.classList.add('hidden');
+        gridIncome.classList.remove('hidden');
+        gridExpense.classList.add('hidden');
+        catHint.innerText = 'Income stream';
+        saveBtn.className = 'w-2/3 min-h-[48px] py-space-sm px-space-md rounded-full bg-primary-container text-on-primary font-headline-sm text-label-lg font-bold hover:bg-primary-container/90 active:scale-95 shadow-md transition-all flex items-center justify-center gap-1.5';
+      } else {
+        tabExpense.className = 'flex-1 min-h-[48px] py-2 px-space-sm rounded-full bg-secondary text-on-secondary font-headline-sm text-label-lg font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all';
+        tabIncome.className = 'flex-1 min-h-[48px] py-2 px-space-sm rounded-full bg-transparent text-on-surface-variant font-headline-sm text-label-lg font-bold flex items-center justify-center gap-1.5 active:scale-98 transition-all';
+        iconExpense.classList.remove('hidden');
+        iconIncome.classList.add('hidden');
+        gridExpense.classList.remove('hidden');
+        gridIncome.classList.add('hidden');
+        catHint.innerText = 'Expense category';
+        saveBtn.className = 'w-2/3 min-h-[48px] py-space-sm px-space-md rounded-full bg-secondary text-on-secondary font-headline-sm text-label-lg font-bold hover:bg-secondary/90 active:scale-95 shadow-md transition-all flex items-center justify-center gap-1.5';
+      }
+      const val = document.getElementById('amount-input').value;
+      updateImpactPreview(val);
+    }
+
+    function addAmount(delta) {
+      const input = document.getElementById('amount-input');
+      let currentVal = parseInt(input.value, 10);
+      if (isNaN(currentVal)) currentVal = 0;
+      input.value = currentVal + delta;
+      updateImpactPreview(input.value);
+    }
+
+    function clearAmount() {
+      const input = document.getElementById('amount-input');
+      input.value = '';
+      updateImpactPreview(0);
+    }
+
+    function updateImpactPreview(val) {
+      const amount = parseInt(val, 10) || 0;
+      const impactText = document.getElementById('impact-text');
+      const impactIconWrapper = document.getElementById('impact-icon-wrapper');
+      const impactIcon = document.getElementById('impact-icon');
+
+      if (currentType === 'income') {
+        const newSurplus = baseSurplus + amount;
+        impactIconWrapper.className = 'w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 mt-0.5';
+        impactIcon.innerText = 'trending_up';
+        impactText.innerHTML = `Adding <span class="font-bold font-['Inconsolata']">₹${amount.toLocaleString()}</span> will increase your monthly surplus to <span class="font-bold font-['Inconsolata'] text-primary">₹${newSurplus.toLocaleString()}</span>.`;
+      } else {
+        const newSurplus = baseSurplus - amount;
+        impactIconWrapper.className = 'w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0 mt-0.5';
+        impactIcon.innerText = 'trending_down';
+        const signText = newSurplus >= 0 ? `₹${newSurplus.toLocaleString()}` : `-₹${Math.abs(newSurplus).toLocaleString()}`;
+        impactText.innerHTML = `Deducting <span class="font-bold font-['Inconsolata']">₹${amount.toLocaleString()}</span> adjusts your remaining monthly surplus to <span class="font-bold font-['Inconsolata'] text-secondary">${signText}</span>.`;
+      }
+    }
+
+    function selectCategory(el) {
+      const parent = el.closest('#grid-income, #grid-expense');
+      parent.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('bg-primary-container/15', 'bg-secondary-container/20');
+        btn.classList.add('bg-surface-container-low');
+        const icon = btn.querySelector('.check-icon');
+        if (icon) icon.classList.add('hidden');
+        btn.removeAttribute('data-selected');
+      });
+
+      if (currentType === 'income') {
+        el.classList.add('bg-primary-container/15');
+      } else {
+        el.classList.add('bg-secondary-container/20');
+      }
+      el.classList.remove('bg-surface-container-low');
+      const check = el.querySelector('.check-icon');
+      if (check) check.classList.remove('hidden');
+      el.setAttribute('data-selected', 'true');
+    }
+
+    function triggerVoiceInput() {
+      const status = document.getElementById('voice-status');
+      const input = document.getElementById('desc-input');
+      status.classList.remove('hidden');
+      setTimeout(() => {
+        status.classList.add('hidden');
+        input.value = "Kalamkari cotton rolls sales in weekly bazaar";
+      }, 1800);
+    }
+
+    function cancelModal() {
+      const modal = document.querySelector('.relative.z-30');
+      if (modal) {
+        modal.style.opacity = '0.5';
+        modal.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          modal.style.opacity = '1';
+          modal.style.transform = 'scale(1)';
+        }, 300);
+      }
+    }
+
+    function saveTransaction() {
+      const amount = document.getElementById('amount-input').value || '0';
+      const toast = document.getElementById('save-toast');
+      const toastDetails = document.getElementById('toast-details');
+      toastDetails.innerText = `${currentType === 'income' ? 'Received' : 'Spent'} ₹${amount} logged instantly`;
+      
+      toast.classList.remove('-translate-y-32');
+      toast.classList.add('translate-y-0');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0');
+        toast.classList.add('-translate-y-32');
+      }, 2500);
+    }
+  </script>
+</div></main><aside class="fixed bottom-24 right-4 z-40 pb-safe pointer-events-auto"><button class="h-12 px-space-md rounded-full bg-primary-container text-on-primary shadow-[0_8px_24px_-4px_rgba(66,0,0,0.2)] flex items-center gap-space-xs active:scale-95 transition-transform"><span class="material-symbols-outlined text-[22px]">record_voice_over</span><span class="font-headline-sm text-label-lg font-bold">Ask Sakhi</span></button></aside><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_12px_rgba(66,0,0,0.06)]" data-active-classes="text-primary-container font-bold"><div class="flex items-center justify-between h-16 px-gutter-mobile"><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[22px]">home</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="my-money" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm">Money</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 transition-colors text-primary-container font-bold" data-path="journey" href="#"><span class="material-symbols-outlined text-[22px]">explore</span><span class="font-label-sm text-label-sm">Journey</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="goals" href="#"><span class="material-symbols-outlined text-[22px]">ads_click</span><span class="font-label-sm text-label-sm">Goals</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="benefits" href="#"><span class="material-symbols-outlined text-[22px]">verified_user</span><span class="font-label-sm text-label-sm">Benefits</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="learn" href="#"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm">Learn</span></a></div></nav>
+
+</body></html>

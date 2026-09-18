@@ -1,0 +1,242 @@
+<!DOCTYPE html><html class="h-full" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><title>Sakhi - Financial Companion</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&amp;family=Karla:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100%;margin:0;padding:0;min-height:100%;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'surface-container-high': '#f6e6d2', 'error': '#ba1a1a', 'on-primary': '#ffffff', 'primary-container': '#f97316', 'on-primary-fixed-variant': '#783200', 'background': '#fff8f3', 'on-tertiary': '#ffffff', 'surface-tint': '#9d4300', 'surface-container-lowest': '#ffffff', 'on-surface-variant': '#584237', 'on-secondary-container': '#610000', 'on-error-container': '#93000a', 'surface': '#fff8f3', 'tertiary-fixed': '#ffdad4', 'tertiary-fixed-dim': '#ffb4a8', 'secondary-container': '#fd5e49', 'on-tertiary-fixed-variant': '#7e2a20', 'inverse-primary': '#ffb690', 'on-secondary-fixed-variant': '#900c05', 'tertiary-container': '#e87b6b', 'on-primary-container': '#582200', 'inverse-surface': '#382f22', 'on-error': '#ffffff', 'secondary': '#b3291b', 'error-container': '#ffdad6', 'secondary-fixed': '#ffdad4', 'inverse-on-surface': '#ffeedb', 'on-primary-fixed': '#341100', 'on-secondary-fixed': '#410000', 'primary-fixed-dim': '#ffb690', 'surface-container': '#fcebd7', 'on-surface': '#221a0e', 'on-secondary': '#ffffff', 'surface-container-highest': '#f1e0cc', 'surface-dim': '#e8d8c4', 'on-tertiary-fixed': '#410000', 'outline-variant': '#e0c0b1', 'on-background': '#221a0e', 'outline': '#8c7164', 'primary-fixed': '#ffdbca', 'surface-container-low': '#fff1e3', 'tertiary': '#9d4135', 'on-tertiary-container': '#62160e', 'primary': '#9d4300', 'secondary-fixed-dim': '#ffb4a8', 'surface-bright': '#fff8f3', 'surface-variant': '#f1e0cc' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'gutter-mobile': '0.75rem', 'gutter': '1rem', 'gutter-desktop': '1.5rem', 'space-xs': '0.25rem', 'space-sm': '0.5rem', 'space-lg': '1.5rem', 'margin-mobile': '1rem', 'space-md': '1rem', 'margin': '1rem', 'margin-desktop': '2rem', 'space-xl': '2.5rem' }, fontFamily: { 'body-md': ['Inconsolata'], 'headline-lg-mobile': ['Karla'], 'display': ['Karla'], 'display-mobile': ['Karla'], 'label-lg': ['Inconsolata'], 'label-md': ['Inconsolata'], 'headline-md': ['Karla'], 'body-lg': ['Inconsolata'], 'body-sm': ['Inconsolata'], 'headline-sm': ['Karla'], 'headline-lg': ['Karla'], 'label-sm': ['Inconsolata'] }, fontSize: { 'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0em', fontWeight: '400' }], 'headline-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.02em', fontWeight: '700' }], 'display': ['56px', { lineHeight: '64px', letterSpacing: '-0.035em', fontWeight: '700' }], 'display-mobile': ['38px', { lineHeight: '44px', letterSpacing: '-0.025em', fontWeight: '700' }], 'label-lg': ['15px', { lineHeight: '20px', letterSpacing: '0.04em', fontWeight: '600' }], 'label-md': ['13px', { lineHeight: '18px', letterSpacing: '0.05em', fontWeight: '600' }], 'headline-md': ['28px', { lineHeight: '36px', letterSpacing: '-0.02em', fontWeight: '600' }], 'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0em', fontWeight: '400' }], 'body-sm': ['14px', { lineHeight: '22px', letterSpacing: '0.01em', fontWeight: '400' }], 'headline-sm': ['22px', { lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: '600' }], 'headline-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.03em', fontWeight: '700' }], 'label-sm': ['11px', { lineHeight: '16px', letterSpacing: '0.06em', fontWeight: '600' }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-full"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 px-gutter flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="Brand logo. - Primary color: #f97316
+- Font: karla
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VHmpITbe783gkT9AbwXgdyMxBVLp3RIzhk_M7zFrR6iyl9s88bIl2yFVO_ysDZNcZrLGCDz6ixa555dRcpDJX53qqaP2ovUngGsMNKOclNRRTL21vNxY6_ZWG6DvkJ7-7IbrPo32uxLh7h9MQvioY-fTeNGsu2qNh210F-LkhK-JwuYnwOFtWejUvivCJPArnD1jTBHU14tiK_Rlnf3mdmffj038rd4ljm6vvogqc9HQ86XIxd2u9vbqrA"><div class="w-11 h-11 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 font-bold shadow-sm">L</div><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface truncate">Namaste, Lakshmi 👋</span></div><div class="flex items-center gap-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-0.5 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px] text-primary">location_on</span>Telangana • My Money</span></div></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><button aria-label="Open Settings Menu" class="w-12 h-12 flex items-center justify-center text-on-surface active:scale-95 transition-transform rounded-full hover:bg-surface-container-high"><span class="material-symbols-outlined text-[28px]">menu</span></button></div></div></header><main class="flex-1 flex flex-col relative w-full pt-20 pb-36 px-gutter bg-surface"><div class="flex flex-col w-full gap-space-md">
+<!-- Wizard Header Context Card -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-ping"></span>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Government Scheme Matcher</span>
+</div>
+<button aria-label="Exit Scheme Matcher" class="w-10 h-10 -mr-2 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface active:scale-95 transition-transform" onclick="window.history.back()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-on-surface">Preliminary Eligibility Check</h1>
+
+</div>
+<!-- Segmented Step Progress -->
+<div class="pt-space-xs flex flex-col gap-1.5">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-md text-label-md font-bold text-on-surface">Question 3 of 5</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">60% Complete</span>
+</div>
+<div class="grid grid-cols-5 gap-1.5 w-full h-2">
+<div class="bg-primary-container rounded-full h-full"></div>
+<div class="bg-primary-container rounded-full h-full"></div>
+<div class="bg-primary-container rounded-full h-full"></div>
+<div class="bg-surface-container-highest rounded-full h-full"></div>
+<div class="bg-surface-container-highest rounded-full h-full"></div>
+</div>
+</div>
+</div>
+<!-- Audio Assistance Bar -->
+<div class="bg-surface-container-low rounded-xl p-space-sm shadow-sm flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[22px]">record_voice_over</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wide">సహాయం</span>
+<span class="font-headline-sm text-label-lg font-bold text-on-surface truncate">ప్రశ్న తెలుగులో వినండి (Telugu)</span>
+</div>
+</div>
+<button class="h-10 px-space-sm rounded-full bg-surface-container-highest text-primary font-label-md text-label-md flex items-center gap-1 active:scale-95 transition-transform flex-shrink-0" id="voiceBtn" onclick="toggleAudioWave()">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+<span class="flex items-end gap-0.5 h-3.5 px-0.5" id="waveBars">
+<span class="w-0.5 h-2 bg-primary rounded-full animate-bounce"></span>
+<span class="w-0.5 h-3.5 bg-primary rounded-full animate-bounce [animation-delay:0.15s]"></span>
+<span class="w-0.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:0.3s]"></span>
+</span>
+<span class="">Play</span>
+</button>
+</div>
+<!-- Question & Instructions Container -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">distance</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">Location &amp; Regional Benefits</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Where do you live and do your work?</h2>
+
+</div>
+<!-- Visual State Illustration Strip -->
+
+<!-- Interactive Selection Cards -->
+<div class="flex flex-col gap-space-sm" id="stateSelectionGroup">
+<!-- Option 1: Telangana (Active Selected) -->
+<div class="state-card group relative rounded-xl p-space-md cursor-pointer transition-all active:scale-[0.99] bg-surface-container-lowest shadow-sm" data-selected="false" onclick="selectState(this, 'Telangana')">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center flex-shrink-0 font-bold state-radio">
+<span class="material-symbols-outlined text-[22px] opacity-0">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Telangana</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(తెలంగాణ)</span>
+</div>
+
+<div class="mt-space-xs flex flex-wrap gap-1.5">
+<span class="inline-flex items-center gap-1 bg-primary-container text-on-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+                SERP &amp; Stree Nidhi Active
+              </span>
+<span class="inline-flex items-center bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-2 py-0.5 rounded-full">
+                4 Matching Schemes
+              </span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end flex-shrink-0">
+<span class="font-label-sm text-label-sm text-primary font-bold">Current Profile</span>
+</div>
+</div>
+</div>
+<!-- Option 2: Andhra Pradesh -->
+<div class="state-card rounded-xl p-space-md cursor-pointer transition-all active:scale-[0.99] bg-surface-container-lowest shadow-sm" data-selected="false" onclick="selectState(this, 'Andhra Pradesh')">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center flex-shrink-0 font-bold state-radio">
+<span class="material-symbols-outlined text-[20px] opacity-0">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Andhra Pradesh</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(ఆంధ్రప్రదేశ్)</span>
+</div>
+
+<div class="mt-space-xs flex flex-wrap gap-1.5">
+<span class="inline-flex items-center bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-0.5 rounded-full">
+                YSR Aasara &amp; Sunna Vaddi
+              </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Option 3: Maharashtra -->
+<div class="state-card rounded-xl p-space-md cursor-pointer transition-all active:scale-[0.99] bg-surface-container-lowest shadow-sm" data-selected="false" onclick="selectState(this, 'Maharashtra')">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center flex-shrink-0 font-bold state-radio">
+<span class="material-symbols-outlined text-[20px] opacity-0">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Maharashtra</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(महाराष्ट्र)</span>
+</div>
+
+<div class="mt-space-xs flex flex-wrap gap-1.5">
+<span class="inline-flex items-center bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-0.5 rounded-full">
+                MAVIM &amp; MSRLM
+              </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Option 4: Other Indian State / All India -->
+<div class="state-card rounded-xl p-space-md cursor-pointer transition-all active:scale-[0.99] bg-surface-container-low shadow-md" data-selected="true" onclick="selectState(this, 'Other')">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 font-bold">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface">Other Indian State</span>
+</div>
+
+<div class="mt-space-xs flex flex-wrap gap-1.5">
+<span class="inline-flex items-center bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-0.5 rounded-full">
+                DAY-NRLM Central Focus
+              </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Question Micro-Tip -->
+
+<!-- Wizard Bottom Navigation Controls -->
+<div class="pt-space-sm flex items-center gap-space-sm">
+<!-- Previous Button -->
+<button class="flex-1 h-12 rounded-xl bg-surface-container-high text-on-surface font-headline-sm text-label-lg font-bold flex items-center justify-center gap-1 active:scale-95 transition-transform" onclick="window.history.back()">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span class="">Previous</span>
+</button>
+<!-- Next Button -->
+<button class="flex-[1.8] h-12 rounded-xl bg-primary-container text-on-primary font-headline-sm text-label-lg font-bold flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-transform" id="nextQuestionBtn" onclick="submitStep()">
+<span class="">Next Question (4/5)</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<script>
+  function selectState(selectedElement, stateName) {
+    const allCards = document.querySelectorAll('.state-card');
+    
+    allCards.forEach(card => {
+      card.setAttribute('data-selected', 'false');
+      card.classList.remove('bg-surface-container-low', 'shadow-md');
+      card.classList.add('bg-surface-container-lowest', 'shadow-sm');
+      
+      const radioIcon = card.querySelector('.state-radio') || card.querySelector('.rounded-full');
+      if (radioIcon) {
+        radioIcon.className = 'w-10 h-10 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center flex-shrink-0 font-bold state-radio';
+        const iconSpan = radioIcon.querySelector('.material-symbols-outlined');
+        if (iconSpan) {
+          iconSpan.classList.add('opacity-0');
+        }
+      }
+    });
+
+    selectedElement.setAttribute('data-selected', 'true');
+    selectedElement.classList.remove('bg-surface-container-lowest', 'shadow-sm');
+    selectedElement.classList.add('bg-surface-container-low', 'shadow-md');
+
+    const activeBadge = selectedElement.querySelector('.state-radio') || selectedElement.querySelector('.rounded-full');
+    if (activeBadge) {
+      activeBadge.className = 'w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 font-bold';
+      const iconSpan = activeBadge.querySelector('.material-symbols-outlined');
+      if (iconSpan) {
+        iconSpan.classList.remove('opacity-0');
+      }
+    }
+  }
+
+  function toggleAudioWave() {
+    const btn = document.getElementById('voiceBtn');
+    const wave = document.getElementById('waveBars');
+    if (btn.getAttribute('data-playing') === 'true') {
+      btn.setAttribute('data-playing', 'false');
+      wave.classList.add('opacity-40');
+    } else {
+      btn.setAttribute('data-playing', 'true');
+      wave.classList.remove('opacity-40');
+    }
+  }
+
+  function submitStep() {
+    const nextBtn = document.getElementById('nextQuestionBtn');
+    nextBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span><span>Calculating...</span>';
+    setTimeout(() => {
+      window.location.hash = '#question-4';
+      nextBtn.innerHTML = '<span>Next Question (4/5)</span><span class="material-symbols-outlined text-[20px]">arrow_forward</span>';
+    }, 450);
+  }
+</script></main><aside class="fixed bottom-24 right-4 z-40 pb-safe pointer-events-auto"><button class="h-12 px-space-md rounded-full bg-primary-container text-on-primary shadow-[0_8px_24px_-4px_rgba(66,0,0,0.2)] flex items-center gap-space-xs active:scale-95 transition-transform"><span class="material-symbols-outlined text-[22px]">record_voice_over</span><span class="font-headline-sm text-label-lg font-bold">Ask Sakhi</span></button></aside><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_12px_rgba(66,0,0,0.06)]" data-active-classes="text-primary-container font-bold"><div class="flex items-center justify-between h-16 px-gutter-mobile"><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[22px]">home</span><span class="font-label-sm text-label-sm">Home</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 transition-colors text-primary-container font-bold" data-path="my-money" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm">Money</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="journey" href="#"><span class="material-symbols-outlined text-[22px]">explore</span><span class="font-label-sm text-label-sm">Journey</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="goals" href="#"><span class="material-symbols-outlined text-[22px]">ads_click</span><span class="font-label-sm text-label-sm">Goals</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="benefits" href="#"><span class="material-symbols-outlined text-[22px]">verified_user</span><span class="font-label-sm text-label-sm">Benefits</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="learn" href="#"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm">Learn</span></a></div></nav>
+
+</body></html>
