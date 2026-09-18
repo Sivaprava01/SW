@@ -23,6 +23,13 @@ export function UserProvider({ children }) {
   // Interactive tutorial state
   const [showTutorial, setShowTutorial] = useState(false);
 
+  // Startup splash screen state
+  const [showSplash, setShowSplash] = useState(true);
+
+  const replaySplash = () => {
+    setShowSplash(true);
+  };
+
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -127,7 +134,9 @@ export function UserProvider({ children }) {
     <UserContext.Provider
       value={{
         user,
+        setUser,
         financialHealth,
+        setFinancialHealth,
         loading,
         error,
         language,
@@ -137,6 +146,9 @@ export function UserProvider({ children }) {
         showTutorial,
         startTutorial,
         completeTutorial,
+        showSplash,
+        setShowSplash,
+        replaySplash,
         t,
         loginUser,
         logoutUser,

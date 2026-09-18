@@ -1,52 +1,145 @@
 @import "tailwindcss";
 
-:root {
-  --primary-saffron: #ea580c;
-  --primary-emerald: #059669;
-  --bg-sand: #fbfbf9;
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --font-headline: 'Karla', sans-serif;
+    --font-body: 'Inconsolata', monospace;
+    
+    /* Stitch Light Colors */
+    --color-surface-canvas: #fff8f3;
+    --color-surface-lowest: #ffffff;
+    --color-surface-low: #fff1e3;
+    --color-surface-container: #fcebd7;
+    --color-surface-high: #f6e6d2;
+    --color-surface-highest: #f1e0cc;
+    --color-primary: #9d4300;
+    --color-primary-container: #f97316;
+    --color-secondary: #b3291b;
+    --color-on-surface: #221a0e;
+    --color-on-surface-variant: #584237;
+    --color-positive: #059669;
+  }
+
+  html.dark {
+    /* Stitch Dark Colors */
+    color-scheme: dark;
+    --color-surface-canvas: #14110F;
+    --color-surface-lowest: #100e0c;
+    --color-surface-low: #1e1b19;
+    --color-surface-container: #28211C;
+    --color-surface-high: #322A23;
+    --color-surface-highest: #383431;
+    --color-border-subtle: #3D332B;
+    --color-border-strong: #4A3E35;
+    --color-primary: #ffb690;
+    --color-primary-container: #f97316;
+    --color-secondary: #ffb599;
+    --color-on-surface: #FFF5EB;
+    --color-on-surface-variant: #D4C4B5;
+    --color-text-muted: #A8988A;
+    --color-turmeric: #EAB308;
+    --color-positive: #22C55E;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--color-surface-canvas);
+    color: var(--color-on-surface);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-headline {
+    font-family: var(--font-headline), -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Browser Autofill Dark & Light Theme Resets */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #221a0e !important;
+    -webkit-box-shadow: 0 0 0 1000px #fffaf5 inset !important;
+    box-shadow: 0 0 0 1000px #fffaf5 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  html.dark input:-webkit-autofill,
+  html.dark input:-webkit-autofill:hover, 
+  html.dark input:-webkit-autofill:focus, 
+  html.dark input:-webkit-autofill:active,
+  html.dark textarea:-webkit-autofill,
+  html.dark textarea:-webkit-autofill:hover,
+  html.dark textarea:-webkit-autofill:focus,
+  html.dark select:-webkit-autofill,
+  html.dark select:-webkit-autofill:hover,
+  html.dark select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #FFF5EB !important;
+    -webkit-box-shadow: 0 0 0 1000px #100e0c inset !important;
+    box-shadow: 0 0 0 1000px #100e0c inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: #FFF5EB !important;
+  }
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f8fafc;
-  color: #0f172a;
-  -webkit-font-smoothing: antialiased;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-html.dark body {
-  background-color: #020617;
-  color: #f8fafc;
-}
-
-/* Custom utility classes */
+/* App Centered Container */
 .app-container {
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #fffaf5;
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 24px -2px rgba(120, 50, 0, 0.08);
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 html.dark .app-container {
-  background-color: #0b132b;
-  box-shadow: 0 4px 25px -2px rgba(0, 0, 0, 0.5);
-  border-left: 1px solid #1e293b;
-  border-right: 1px solid #1e293b;
+  background-color: #14110F;
+  box-shadow: 0 4px 30px -2px rgba(0, 0, 0, 0.8);
+  border-left: 1px solid #28211C;
+  border-right: 1px solid #28211C;
 }
 
 @media (min-width: 640px) {
   body {
-    background-color: #f1f5f9;
+    background-color: #efe8df;
   }
   html.dark body {
-    background-color: #020617;
+    background-color: #0d0a09;
   }
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  display: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Touch active micro-animations */
+.active-scale:active {
+  transform: scale(0.97);
+}

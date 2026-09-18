@@ -13,33 +13,9 @@ import StartupGreeting from './components/StartupGreeting';
 import InteractiveTutorial from './components/InteractiveTutorial';
 
 function MainApp() {
-  const { user, loading, showTutorial, completeTutorial } = useUser();
+  const { user, loading, showTutorial, completeTutorial, showSplash, setShowSplash } = useUser();
   const [activeTab, setActiveTab] = useState('home');
   const [showAskSakhi, setShowAskSakhi] = useState(false);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-black text-2xl flex items-center justify-center mx-auto mb-3 shadow-md animate-pulse">
-            स
-          </div>
-          <p className="text-xs font-bold text-slate-600 dark:text-slate-400">Loading Sakhi...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // If no user is logged in, show Onboarding
-  if (!user) {
-    return (
-      <div className="app-container">
-        <div className="p-4 flex-1 flex flex-col justify-center">
-          <Onboarding onComplete={() => setActiveTab('home')} />
-        </div>
-      </div>
-    );
-  }
 
   // Render the selected tab
   const renderTab = () => {
@@ -73,24 +49,48 @@ function MainApp() {
 
   return (
     <>
-      <StartupGreeting name={user.name} />
-      <Layout
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onOpenAskSakhi={() => setShowAskSakhi(true)}
-      >
-        {renderTab()}
-
-        <AskSakhiModal
-          isOpen={showAskSakhi}
-          onClose={() => setShowAskSakhi(false)}
+      {/* 1:1 Stitch Startup Splash & Greeting */}
+      {showSplash && (
+        <StartupGreeting 
+          name={user?.name || 'Lakshmi'} 
+          onComplete={() => setShowSplash(false)} 
         />
+      )}
 
-        <InteractiveTutorial
-          isOpen={showTutorial}
-          onClose={completeTutorial}
-        />
-      </Layout>
+      {loading ? (
+        <div className="min-h-screen bg-[#fff8f3] dark:bg-[#14110F] flex items-center justify-center p-4">
+          <div className="text-center flex flex-col items-center">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-rose-600 text-white font-black text-2xl flex items-center justify-center shadow-lg animate-pulse border-2 border-white/60 dark:border-stone-800">
+              स
+            </div>
+            <p className="text-xs font-bold text-stone-600 dark:text-[#A8988A] mt-3">Loading Sakhi...</p>
+          </div>
+        </div>
+      ) : !user ? (
+        <div className="app-container">
+          <div className="p-4 flex-1 flex flex-col justify-center">
+            <Onboarding onComplete={() => setActiveTab('home')} />
+          </div>
+        </div>
+      ) : (
+        <Layout
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          onOpenAskSakhi={() => setShowAskSakhi(true)}
+        >
+          {renderTab()}
+
+          <AskSakhiModal
+            isOpen={showAskSakhi}
+            onClose={() => setShowAskSakhi(false)}
+          />
+
+          <InteractiveTutorial
+            isOpen={showTutorial}
+            onClose={completeTutorial}
+          />
+        </Layout>
+      )}
     </>
   );
 }

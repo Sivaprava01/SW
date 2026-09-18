@@ -1,11 +1,21 @@
 import React from 'react';
-import { Bot, Wallet, Compass, Target, Shield, BookOpen, ArrowUpRight, TrendingUp, Sparkles, ChevronRight } from 'lucide-react';
+import {
+  IconWallet,
+  IconCompass,
+  IconTarget,
+  IconShieldCheck,
+  IconBook,
+  IconArrowUpRight,
+  IconMicrophone,
+  IconChevronRight,
+  IconCheck,
+  IconSparkles,
+} from '@tabler/icons-react';
 import { useUser } from '../context/UserContext';
-import MoneyCard from '../components/MoneyCard';
 import ProgressBar from '../components/ProgressBar';
 
 export default function Home({ onNavigate, onOpenAskSakhi }) {
-  const { user, financialHealth } = useUser();
+  const { user, financialHealth, t } = useUser();
 
   const income = financialHealth?.monthly_income ?? user?.monthly_income ?? 0;
   const surplus = financialHealth?.surplus ?? ((user?.monthly_income || 0) - (user?.monthly_expenses || 0));
@@ -13,197 +23,266 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
   const journey = financialHealth?.journey;
 
   return (
-    <div className="space-y-4">
-      {/* Welcome Banner */}
-      <div className="bg-linear-to-br from-emerald-700 via-emerald-800 to-teal-900 text-white rounded-3xl p-5 shadow-md relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-36 h-36 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-
-        <div className="flex items-center justify-between mb-1">
-          <span className="text-xs font-semibold text-emerald-200">
-            Namaste, {user?.name || 'Sister'}
-          </span>
-          <span className="text-[10px] font-bold bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">
-            {user?.state || 'India'}
-          </span>
+    <div className="space-y-3.5 pb-6">
+      {/* Financial Health Summary Hero Banner (Stitch Design) */}
+      <div className="relative overflow-hidden rounded-2xl bg-[#fff1e3] dark:bg-[#1e1b19] border border-amber-200/70 dark:border-[#3D332B] p-4 sm:p-5 shadow-xs">
+        <div className="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-orange-500/10 dark:bg-orange-500/5 pointer-events-none blur-xl" />
+        
+        {/* Header Badges */}
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
+            <span className="text-[11px] uppercase tracking-wider font-bold text-stone-600 dark:text-[#D4C4B5]">
+              {t('monthly_snapshot') || 'Monthly Snapshot • Active Cycle'}
+            </span>
+          </div>
+          {user?.is_shg_member && (
+            <span className="text-[11px] font-bold bg-amber-200/80 dark:bg-[#28211C] text-amber-900 dark:text-[#ffb690] px-2.5 py-0.5 rounded-full border border-amber-300/40 dark:border-[#3D332B]">
+              SHG Member
+            </span>
+          )}
         </div>
 
-        <div className="mt-2 mb-3">
-          <span className="text-xs text-emerald-100 font-medium block">
-            Your Monthly Income
-          </span>
-          <div className="text-3xl sm:text-4xl font-black tracking-tight">
+        {/* Income Stat */}
+        <div className="flex items-center justify-between py-1 mb-3">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-orange-100 dark:bg-[#28211C] flex items-center justify-center text-orange-600 dark:text-[#ffb690]">
+              <IconWallet size={18} />
+            </div>
+            <span className="text-xs sm:text-sm font-bold text-stone-600 dark:text-[#D4C4B5]">
+              {t('your_monthly_income') || 'Your Monthly Income'}
+            </span>
+          </div>
+          <span className="font-headline text-xl sm:text-2xl font-black text-[#221a0e] dark:text-[#FFF5EB]">
             ₹{Number(income).toLocaleString('en-IN')}
-          </div>
+          </span>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-3 flex items-center justify-between border border-white/15">
-          <div>
-            <span className="text-[11px] text-emerald-200 block">
-              Calculated Monthly Surplus
+        {/* Surplus Highlight Container */}
+        <div className="rounded-xl bg-white dark:bg-[#14110F] p-3.5 shadow-xs border border-amber-100 dark:border-[#3D332B] flex flex-col gap-1.5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-stone-500 dark:text-[#A8988A]">
+              {t('calculated_surplus') || 'Calculated Monthly Surplus'}
             </span>
-            <span className="text-lg font-black text-amber-300">
-              ₹{Number(surplus).toLocaleString('en-IN')}
+            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 flex items-center gap-1 border border-emerald-300/40">
+              <IconCheck size={12} className="stroke-[3]" /> {t('safe_to_save') || 'Safe to Save'}
             </span>
           </div>
-          <button
-            onClick={() => onNavigate('money')}
-            className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-xl text-xs font-bold transition flex items-center gap-1"
-          >
-            <span>Breakdown</span>
-            <ArrowUpRight size={13} />
-          </button>
+          <div className="flex items-baseline justify-between mt-0.5">
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-headline text-2xl sm:text-3xl font-black text-orange-600 dark:text-[#ffb690]">
+                ₹{Number(surplus).toLocaleString('en-IN')}
+              </span>
+              <span className="text-[11px] text-stone-500 dark:text-[#A8988A] font-medium">
+                ready to allocate
+              </span>
+            </div>
+            <button
+              onClick={() => onNavigate('money')}
+              className="text-xs font-bold text-orange-600 dark:text-[#ffb690] hover:text-orange-700 inline-flex items-center gap-0.5 active:scale-95 transition-transform cursor-pointer"
+            >
+              <span>Breakdown</span>
+              <IconArrowUpRight size={15} />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Primary Hero Action: Ask Sakhi */}
-      <button
+      {/* Primary Hero Action: Talk to Sakhi (Stitch Gradient Card) */}
+      <div
         onClick={onOpenAskSakhi}
-        className="w-full bg-linear-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-slate-950 p-4 rounded-3xl shadow-md flex items-center justify-between transition-all hover:scale-[1.01] active:scale-[0.99] border border-amber-300/60 text-left"
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 p-4 text-white shadow-md active:scale-[0.99] transition-all cursor-pointer group border border-orange-400/40"
       >
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center text-slate-950 shadow-xs">
-            <Bot size={26} />
+        <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-white/10 pointer-events-none blur-sm" />
+        <div className="flex items-center gap-3.5 relative z-10">
+          {/* Companion Avatar */}
+          <div className="relative shrink-0">
+            <div className="w-13 h-13 rounded-2xl bg-white text-orange-600 flex items-center justify-center shadow-md font-black text-xl">
+              स
+            </div>
+            <span className="absolute -bottom-1 -right-1 bg-amber-400 text-stone-950 text-[10px] font-black px-1.5 py-0.2 rounded-full shadow-xs">
+              AI
+            </span>
           </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-base font-black tracking-tight">
-                Talk to Sakhi
+          
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="text-[10px] bg-white/25 text-white px-2 py-0.5 rounded-full font-black uppercase tracking-wider">
+                Voice & Text
               </span>
-              <span className="text-[10px] font-bold bg-slate-950 text-amber-300 px-1.5 py-0.2 rounded-full">
-                AI Voice/Text
+              <span className="w-1 h-1 rounded-full bg-white/80" />
+              <span className="text-[11px] text-orange-100 font-semibold">
+                Telugu, Hindi & English
               </span>
             </div>
-            <p className="text-xs font-semibold text-slate-900/80">
+            <h2 className="font-headline text-base font-black text-white leading-tight">
+              Talk to Sakhi
+            </h2>
+            <p className="text-xs text-orange-100/90 truncate font-medium">
               Ask about your ₹{Number(surplus).toLocaleString('en-IN')} surplus, debt or schemes
             </p>
           </div>
-        </div>
-        <ChevronRight size={20} className="text-slate-950/70 shrink-0" />
-      </button>
 
-      {/* Primary Action Grid (as required by Section 5.2) */}
-      <div className="grid grid-cols-2 gap-3">
-        {/* 1. My Money */}
+          {/* Action Button Indicator */}
+          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white shrink-0 group-hover:bg-white group-hover:text-orange-600 transition-colors shadow-xs">
+            <IconMicrophone size={20} />
+          </div>
+        </div>
+      </div>
+
+      {/* 2x2 Feature Navigation Grid (Stitch 2x2 Layout) */}
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+        {/* Card 1: My Money */}
         <button
           onClick={() => onNavigate('money')}
-          className="bg-white border border-slate-200 hover:border-emerald-400 p-4 rounded-2xl text-left shadow-xs transition hover:shadow-sm flex flex-col justify-between"
+          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] shadow-xs hover:border-orange-300 dark:hover:border-stone-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
         >
-          <div className="flex items-center justify-between mb-2">
-            <div className="p-2.5 rounded-xl bg-emerald-100 text-emerald-800">
-              <Wallet size={20} />
+          <div className="flex items-center justify-between w-full mb-2">
+            <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-[#28211C] flex items-center justify-center text-orange-600 dark:text-[#ffb690]">
+              <IconWallet size={20} />
             </div>
-            <ArrowUpRight size={14} className="text-slate-400" />
+            <span className="text-[11px] font-bold bg-[#fff1e3] dark:bg-[#28211C] text-orange-700 dark:text-[#ffb690] px-2 py-0.5 rounded-full border border-amber-200/50 dark:border-[#3D332B]">
+              ₹{Number(surplus).toLocaleString('en-IN')}
+            </span>
           </div>
           <div>
-            <h4 className="font-bold text-sm text-slate-900">My Money</h4>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Income, expenses & transactions
+            <h3 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB]">
+              {t('nav_money') || 'My Money'}
+            </h3>
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] line-clamp-1">
+              Income, expenses & logs
             </p>
           </div>
         </button>
 
-        {/* 2. My Journey */}
+        {/* Card 2: My Journey */}
         <button
           onClick={() => onNavigate('journey')}
-          className="bg-white border border-slate-200 hover:border-emerald-400 p-4 rounded-2xl text-left shadow-xs transition hover:shadow-sm flex flex-col justify-between"
+          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] shadow-xs hover:border-orange-300 dark:hover:border-stone-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
         >
-          <div className="flex items-center justify-between mb-2">
-            <div className="p-2.5 rounded-xl bg-teal-100 text-teal-800">
-              <Compass size={20} />
+          <div className="flex items-center justify-between w-full mb-2">
+            <div className="w-9 h-9 rounded-xl bg-teal-100 dark:bg-[#28211C] flex items-center justify-center text-teal-700 dark:text-teal-400">
+              <IconCompass size={20} />
             </div>
-            <span className="text-[10px] font-bold bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded">
+            <span className="text-[11px] font-bold bg-teal-50 dark:bg-[#28211C] text-teal-700 dark:text-teal-300 px-2 py-0.5 rounded-full border border-teal-200/50 dark:border-[#3D332B]">
               Stage {journey?.current_stage_id || 2}
             </span>
           </div>
           <div>
-            <h4 className="font-bold text-sm text-slate-900">My Journey</h4>
-            <p className="text-xs text-slate-500 mt-0.5">
-              {journey?.current_stage_name || 'Emergency Fund'}
+            <h3 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB]">
+              {t('nav_journey') || 'My Journey'}
+            </h3>
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] line-clamp-1">
+              {journey?.current_stage_name || 'Emergency Shield'}
             </p>
           </div>
         </button>
 
-        {/* 3. My Goals */}
+        {/* Card 3: My Goals */}
         <button
           onClick={() => onNavigate('goals')}
-          className="bg-white border border-slate-200 hover:border-emerald-400 p-4 rounded-2xl text-left shadow-xs transition hover:shadow-sm flex flex-col justify-between"
+          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] shadow-xs hover:border-orange-300 dark:hover:border-stone-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
         >
-          <div className="flex items-center justify-between mb-2">
-            <div className="p-2.5 rounded-xl bg-blue-100 text-blue-800">
-              <Target size={20} />
+          <div className="flex items-center justify-between w-full mb-2">
+            <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-[#28211C] flex items-center justify-center text-orange-700 dark:text-[#ffb690]">
+              <IconTarget size={20} />
             </div>
             {primaryGoal && (
-              <span className="text-[10px] font-bold bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded">
+              <span className="text-[11px] font-bold bg-[#fff1e3] dark:bg-[#28211C] text-orange-900 dark:text-[#ffb690] px-2 py-0.5 rounded-full border border-orange-200/50 dark:border-[#3D332B]">
                 {primaryGoal.percent_complete}%
               </span>
             )}
           </div>
           <div>
-            <h4 className="font-bold text-sm text-slate-900">My Goals</h4>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <h3 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB]">
+              {t('nav_goals') || 'My Goals'}
+            </h3>
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] line-clamp-1">
               {primaryGoal?.name || "Save for future"}
             </p>
           </div>
         </button>
 
-        {/* 4. Benefits / Government Schemes */}
+        {/* Card 4: Benefits */}
         <button
           onClick={() => onNavigate('benefits')}
-          className="bg-white border border-slate-200 hover:border-emerald-400 p-4 rounded-2xl text-left shadow-xs transition hover:shadow-sm flex flex-col justify-between"
+          className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] shadow-xs hover:border-orange-300 dark:hover:border-stone-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
         >
-          <div className="flex items-center justify-between mb-2">
-            <div className="p-2.5 rounded-xl bg-amber-100 text-amber-800">
-              <Shield size={20} />
+          <div className="flex items-center justify-between w-full mb-2">
+            <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-[#28211C] flex items-center justify-center text-amber-700 dark:text-[#ffb690]">
+              <IconShieldCheck size={20} />
             </div>
-            <span className="text-[10px] font-bold bg-amber-50 text-amber-800 px-1.5 py-0.5 rounded">
+            <span className="text-[11px] font-bold bg-amber-50 dark:bg-[#28211C] text-amber-800 dark:text-[#ffb690] px-2 py-0.5 rounded-full border border-amber-200/50 dark:border-[#3D332B]">
               15 Schemes
             </span>
           </div>
           <div>
-            <h4 className="font-bold text-sm text-slate-900">Benefits</h4>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Government schemes & loans
+            <h3 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB]">
+              {t('nav_benefits') || 'Benefits'}
+            </h3>
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] line-clamp-1">
+              Govt schemes & grants
             </p>
           </div>
         </button>
       </div>
 
-      {/* Learn Card */}
-      <button
-        onClick={() => onNavigate('learn')}
-        className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 p-3.5 rounded-2xl text-left shadow-2xs flex items-center justify-between transition cursor-pointer min-h-[52px]"
-      >
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-purple-100 text-purple-800">
-            <BookOpen size={18} />
-          </div>
-          <div>
-            <h4 className="font-bold text-xs text-slate-900">Learn: Financial Guides</h4>
-            <p className="text-[11px] text-slate-500">
-              Emergency Fund • Managing Loans • Disciplined Savings • Micro-Insurance
-            </p>
-          </div>
-        </div>
-        <ChevronRight size={16} className="text-slate-400" />
-      </button>
-
-      {/* Goal Preview Banner if available */}
+      {/* Active Dream Progress Preview Card */}
       {primaryGoal && (
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-slate-600">Active Dream</span>
-            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+        <div className="rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] p-4 shadow-xs flex flex-col gap-2.5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <IconSparkles size={16} className="text-orange-500" />
+              <span className="text-[11px] uppercase font-bold text-orange-600 dark:text-[#ffb690] tracking-wider">
+                Active Dream
+              </span>
+            </div>
+            <span className="text-[11px] font-bold text-stone-600 dark:text-[#D4C4B5] bg-[#fff1e3] dark:bg-[#28211C] px-2.5 py-0.5 rounded-full border border-amber-200/50 dark:border-[#3D332B]">
               ₹{Number(primaryGoal.monthly_saving_required).toLocaleString('en-IN')}/mo required
             </span>
           </div>
-          <h4 className="font-bold text-sm text-slate-900 mb-1.5">{primaryGoal.name}</h4>
+          <div>
+            <div className="flex justify-between items-baseline mb-1">
+              <h3 className="font-headline text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB]">
+                {primaryGoal.name}
+              </h3>
+              <span className="font-mono text-xs font-bold text-orange-600 dark:text-[#ffb690]">
+                {primaryGoal.percent_complete}%
+              </span>
+            </div>
+          </div>
           <ProgressBar value={primaryGoal.current_amount} max={primaryGoal.target_amount} />
-          <div className="flex justify-between text-xs text-slate-500 mt-2 font-medium">
+          <div className="flex items-center justify-between text-xs text-stone-500 dark:text-[#A8988A] pt-1 font-medium font-mono">
             <span>Saved: ₹{Number(primaryGoal.current_amount).toLocaleString('en-IN')}</span>
             <span>Target: ₹{Number(primaryGoal.target_amount).toLocaleString('en-IN')}</span>
           </div>
         </div>
       )}
+
+      {/* Learn Guides Shortcut Banner */}
+      <button
+        onClick={() => onNavigate('learn')}
+        className="w-full rounded-2xl bg-[#fff1e3]/70 dark:bg-[#1e1b19] border border-amber-200/70 dark:border-[#3D332B] p-3.5 shadow-xs flex items-center justify-between gap-3 active:scale-95 transition-transform text-left cursor-pointer min-h-[54px]"
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-[#28211C] flex items-center justify-center text-orange-600 dark:text-[#ffb690] shrink-0">
+            <IconBook size={20} />
+          </div>
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <h4 className="font-headline font-bold text-xs sm:text-sm text-[#221a0e] dark:text-[#FFF5EB] truncate">
+                {t('nav_learn') || 'Learn'}: Financial Guides
+              </h4>
+              <span className="w-2 h-2 rounded-full bg-orange-500 shrink-0" />
+            </div>
+            <p className="text-[11px] text-stone-500 dark:text-[#A8988A] truncate">
+              Emergency Fund • Managing Loans • Micro-Insurance
+            </p>
+          </div>
+        </div>
+        <IconChevronRight size={18} className="text-stone-400 shrink-0" />
+      </button>
     </div>
   );
 }

@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
-import { Home, Wallet, Compass, Target, Shield, BookOpen, Bot, Sparkles, Menu, User as UserIcon } from 'lucide-react';
+import {
+  IconHome,
+  IconWallet,
+  IconCompass,
+  IconTarget,
+  IconShieldCheck,
+  IconBook,
+  IconSparkles,
+  IconMenu2,
+  IconMapPin,
+} from '@tabler/icons-react';
 import { useUser } from '../context/UserContext';
+import { FloatingDock } from '@/components/ui/floating-dock';
 import ProfileModal from './ProfileModal';
 import SettingsDrawer from './SettingsDrawer';
 
@@ -11,21 +22,57 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
 
   // Avatar state
   const avatarUrl = typeof window !== 'undefined' ? localStorage.getItem('sakhi_avatar') : null;
-  const avatarColor = (typeof window !== 'undefined' ? localStorage.getItem('sakhi_avatar_color') : null) || 'from-emerald-600 to-teal-500';
+  const avatarColor = (typeof window !== 'undefined' ? localStorage.getItem('sakhi_avatar_color') : null) || 'from-orange-500 to-amber-500';
 
-  const navItems = [
-    { id: 'home', label: t('nav_home'), icon: Home },
-    { id: 'money', label: t('nav_money'), icon: Wallet },
-    { id: 'journey', label: t('nav_journey'), icon: Compass },
-    { id: 'goals', label: t('nav_goals'), icon: Target },
-    { id: 'benefits', label: t('nav_benefits'), icon: Shield },
-    { id: 'learn', label: t('nav_learn'), icon: BookOpen },
+  const dockItems = [
+    {
+      title: t('nav_home') || 'Home',
+      icon: <IconHome className="h-full w-full stroke-[2.2]" />,
+      onClick: () => setActiveTab('home'),
+      isActive: activeTab === 'home',
+    },
+    {
+      title: t('nav_money') || 'My Money',
+      icon: <IconWallet className="h-full w-full stroke-[2.2]" />,
+      onClick: () => setActiveTab('money'),
+      isActive: activeTab === 'money',
+    },
+    {
+      title: t('nav_journey') || 'Journey',
+      icon: <IconCompass className="h-full w-full stroke-[2.2]" />,
+      onClick: () => setActiveTab('journey'),
+      isActive: activeTab === 'journey',
+    },
+    {
+      title: t('nav_goals') || 'Goals',
+      icon: <IconTarget className="h-full w-full stroke-[2.2]" />,
+      onClick: () => setActiveTab('goals'),
+      isActive: activeTab === 'goals',
+    },
+    {
+      title: t('nav_benefits') || 'Benefits',
+      icon: <IconShieldCheck className="h-full w-full stroke-[2.2]" />,
+      onClick: () => setActiveTab('benefits'),
+      isActive: activeTab === 'benefits',
+    },
+    {
+      title: t('nav_learn') || 'Learn',
+      icon: <IconBook className="h-full w-full stroke-[2.2]" />,
+      onClick: () => setActiveTab('learn'),
+      isActive: activeTab === 'learn',
+    },
+    {
+      title: t('nav_ask') || 'Ask Sakhi',
+      icon: <IconSparkles className="h-full w-full stroke-[2.2] text-orange-500" />,
+      onClick: onOpenAskSakhi,
+      isActive: false,
+    },
   ];
 
   return (
-    <div className="app-container">
+    <div className="app-container bg-[#fffaf5] dark:bg-[#14110F] text-[#221a0e] dark:text-[#FFF5EB]">
       {/* Top Header */}
-      <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-[#fff8f3]/95 dark:bg-[#14110F]/95 backdrop-blur-md border-b border-amber-200/70 dark:border-[#28211C] px-4 py-3 flex items-center justify-between">
         {/* User clickable profile target (VIEW-ONLY PROFILE) */}
         <button
           onClick={() => (user ? setShowProfile(true) : null)}
@@ -36,20 +83,21 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
             <img
               src={avatarUrl}
               alt={user?.name || 'User'}
-              className="w-9 h-9 rounded-2xl object-cover border border-emerald-400 shadow-xs group-hover:scale-105 transition"
+              className="w-9 h-9 rounded-2xl object-cover border border-orange-400 shadow-xs group-hover:scale-105 transition"
             />
           ) : (
-            <div className={`w-9 h-9 rounded-2xl bg-linear-to-tr ${avatarColor} flex items-center justify-center text-white font-black text-lg shadow-xs group-hover:scale-105 transition`}>
+            <div className={`w-9 h-9 rounded-2xl bg-gradient-to-tr ${avatarColor} flex items-center justify-center text-white font-black text-lg shadow-xs group-hover:scale-105 transition border border-white/30 dark:border-stone-800`}>
               {user?.name ? user.name[0] : 'स'}
             </div>
           )}
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-black text-base tracking-tight text-slate-900 dark:text-slate-100 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">
-                {user ? `${t('greeting_namaste')}, ${user.name} 👋` : 'Sakhi (सखी)'}
+              <span className="font-bold text-base tracking-tight text-[#221a0e] dark:text-[#FFF5EB] group-hover:text-orange-600 dark:group-hover:text-[#ffb690] transition">
+                {user ? `${t('greeting_namaste')}, ${user.name} 👋` : 'Sakhi'}
               </span>
             </div>
-            <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1">
+            <p className="text-[11px] font-semibold text-stone-500 dark:text-[#A8988A] flex items-center gap-1">
+              <IconMapPin size={11} className="text-orange-600 dark:text-[#ffb690]" />
               <span>{user?.state || t('tagline')}</span>
             </p>
           </div>
@@ -60,10 +108,10 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
           {!user && (
             <button
               onClick={loadDemoUser}
-              className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-black transition flex items-center gap-1 shadow-xs cursor-pointer min-h-[38px]"
+              className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs cursor-pointer min-h-[38px]"
             >
-              <Sparkles size={14} />
-              <span>Demo (Lakshmi)</span>
+              <IconSparkles size={16} />
+              <span>Explore Preview</span>
             </button>
           )}
 
@@ -72,59 +120,29 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
               onClick={() => setShowSettings(true)}
               title={t('settings')}
               aria-label="Open Settings and Edit Information"
-              className="p-2 text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center border border-slate-200 dark:border-slate-700 shadow-2xs"
+              className="p-2 text-stone-700 dark:text-[#D4C4B5] hover:text-orange-600 dark:hover:text-[#ffb690] bg-[#fff1e3] dark:bg-[#1e1b19] hover:bg-amber-100 dark:hover:bg-[#28211C] rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center border border-amber-200/70 dark:border-[#3D332B] shadow-xs"
             >
-              <Menu size={20} />
+              <IconMenu2 size={20} />
             </button>
           )}
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 pb-24 px-4 pt-4 overflow-y-auto">
+      <main className="flex-1 pb-28 px-4 pt-4 overflow-y-auto">
         {children}
       </main>
 
-      {/* Floating Ask Sakhi button on mobile (for tabs other than Home) */}
-      {user && activeTab !== 'home' && (
-        <button
-          onClick={onOpenAskSakhi}
-          aria-label={t('nav_ask')}
-          className="fixed bottom-20 right-4 sm:right-[max(1rem,calc(50%-220px))] z-40 px-3.5 py-2.5 bg-linear-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-2xl shadow-xl flex items-center gap-2 hover:scale-105 active:scale-95 transition-all border border-emerald-400/40 cursor-pointer min-h-[44px]"
-        >
-          <Bot size={18} className="text-amber-300" />
-          <span className="text-xs">{t('nav_ask')}</span>
-        </button>
-      )}
-
-      {/* Bottom Navigation with Accessible Active State Highlight */}
-      <nav
-        aria-label="Main Navigation"
-        className="fixed bottom-0 left-0 right-0 sm:max-w-[480px] sm:mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-40 px-2 py-1.5 flex justify-around items-center"
-      >
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              aria-current={isActive ? 'page' : undefined}
-              className={`flex flex-col items-center py-1.5 px-3 rounded-2xl transition cursor-pointer min-h-[48px] relative ${
-                isActive
-                  ? 'text-emerald-800 dark:text-emerald-300 font-black bg-emerald-50/80 dark:bg-emerald-950/60 shadow-2xs'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-medium'
-              }`}
-            >
-              <Icon size={20} className={isActive ? 'stroke-[2.5] text-emerald-700 dark:text-emerald-400' : 'stroke-2'} />
-              <span className="text-[10px] mt-0.5 tracking-tight">{item.label}</span>
-              {isActive && (
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400 mt-0.5 shadow-xs" />
-              )}
-            </button>
-          );
-        })}
-      </nav>
+      {/* Aceternity UI Floating Dock Navbar */}
+      <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 w-auto max-w-[calc(100vw-1rem)] px-1 sm:px-4 flex justify-center pointer-events-none">
+        <div className="pointer-events-auto">
+          <FloatingDock
+            items={dockItems}
+            desktopClassName="shadow-2xl border-amber-200/80 dark:border-[#3D332B] bg-[#fff8f3]/90 dark:bg-[#14110F]/90"
+            mobileClassName="shadow-2xl"
+          />
+        </div>
+      </div>
 
       {/* View-Only Profile Modal */}
       <ProfileModal
@@ -141,5 +159,3 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
     </div>
   );
 }
-
-

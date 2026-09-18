@@ -67,7 +67,7 @@ export default function JourneyCard({ journey, onExplore }) {
       {onExplore && (
         <button
           onClick={onExplore}
-          className="w-full mt-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5"
+          className="w-full mt-1 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-stone-950 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5"
         >
           <span>View All 7 Milestones</span>
           <ChevronRight size={15} />

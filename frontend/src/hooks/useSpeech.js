@@ -17,14 +17,18 @@ export function useSpeech() {
     const updateVoices = () => {
       try {
         const available = window.speechSynthesis.getVoices() || [];
-        setVoices(available);
+        if (available.length > 0) {
+          setVoices(available);
+        }
       } catch (err) {
         console.warn('Could not retrieve speech voices:', err);
       }
     };
 
     updateVoices();
-    window.speechSynthesis.onvoiceschanged = updateVoices;
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = updateVoices;
+    }
 
     return () => {
       if (window.speechSynthesis) {
@@ -35,7 +39,11 @@ export function useSpeech() {
 
   const stop = useCallback(() => {
     if (isSupported) {
-      window.speechSynthesis.cancel();
+      try {
+        window.speechSynthesis.cancel();
+      } catch {
+        // Safe fallback
+      }
       activeUtterance = null;
       setIsSpeaking(false);
       setSpeakingId(null);
@@ -51,8 +59,15 @@ export function useSpeech() {
       return;
     }
 
-    // Cancel any current utterance
-    window.speechSynthesis.cancel();
+    // Cancel any current utterance safely
+    try {
+      window.speechSynthesis.cancel();
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+    } catch {
+      // ignore
+    }
 
     // Clean markdown/special characters from text for natural speech
     const cleanText = text
@@ -70,12 +85,24 @@ export function useSpeech() {
     if (targetLang === 'te') langCode = 'te-IN';
 
     utterance.lang = langCode;
-    utterance.rate = 0.95; // slightly slower for better clarity and accessibility
+    utterance.rate = 0.95; // slightly slower for natural rhythm
     utterance.pitch = 1.0;
 
-    // Find best matching voice
-    if (voices.length > 0) {
-      const match = voices.find(v => v.lang === langCode || v.lang.startsWith(langCode.split('-')[0]));
+    // Retrieve fresh voices list dynamically
+    const allVoices = (window.speechSynthesis.getVoices() || []).concat(voices);
+    if (allVoices.length > 0) {
+      let match = null;
+      if (targetLang === 'te') {
+        match = allVoices.find(v => v.lang && (v.lang.toLowerCase().includes('te') || v.lang.startsWith('te')));
+        if (!match) {
+          match = allVoices.find(v => v.lang && (v.lang.toLowerCase().includes('hi') || v.lang.startsWith('hi')));
+        }
+      } else if (targetLang === 'hi') {
+        match = allVoices.find(v => v.lang && (v.lang.toLowerCase().includes('hi') || v.lang.startsWith('hi')));
+      }
+      if (!match) {
+        match = allVoices.find(v => v.lang && (v.lang.toLowerCase().includes('in') || v.lang.startsWith(langCode.split('-')[0])));
+      }
       if (match) {
         utterance.voice = match;
       }
@@ -100,7 +127,16 @@ export function useSpeech() {
       setSpeakingId(null);
     };
 
-    window.speechSynthesis.speak(utterance);
+    try {
+      window.speechSynthesis.speak(utterance);
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+    } catch (err) {
+      console.warn('SpeechSynthesis speak failed:', err);
+      setIsSpeaking(false);
+      setSpeakingId(null);
+    }
   }, [isSupported, language, voices, isSpeaking, speakingId, stop]);
 
   return {
@@ -111,3 +147,4 @@ export function useSpeech() {
     stop
   };
 }
+
