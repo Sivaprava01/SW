@@ -40,7 +40,18 @@ def create_application() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # 1. CORS Middleware
+    # 1. Production Security & Tracing Middlewares
+    from app.core.middleware import (
+        RequestTracingMiddleware,
+        SecurityHeadersMiddleware,
+        RateLimitMiddleware,
+    )
+
+    application.add_middleware(RequestTracingMiddleware)
+    application.add_middleware(SecurityHeadersMiddleware)
+    application.add_middleware(RateLimitMiddleware, requests_per_minute=settings.RATE_LIMIT_PER_MINUTE)
+
+    # 2. CORS Middleware
     application.add_middleware(
         CORSMiddleware,
         allow_origins=settings.CORS_ORIGINS if isinstance(settings.CORS_ORIGINS, list) else [settings.CORS_ORIGINS],
@@ -49,7 +60,7 @@ def create_application() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # 2. Register Global Error Handlers
+    # 3. Register Global Error Handlers
     register_error_handlers(application)
 
     # 3. Mount API v1 Router
