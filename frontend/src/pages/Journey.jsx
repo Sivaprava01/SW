@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Compass, CheckCircle2, Circle, ArrowRight, ShieldCheck, Sparkles, ChevronRight, Lock, Volume2, VolumeX } from 'lucide-react';
+import {
+  IconCompass,
+  IconCircleCheck,
+  IconLock,
+  IconVolume,
+  IconVolumeOff,
+  IconSparkles,
+  IconChevronRight,
+  IconArrowRight,
+} from '@tabler/icons-react';
 import { useUser } from '../context/UserContext';
 import { api } from '../services/api';
 import { useSpeech } from '../hooks/useSpeech';
-import ProgressBar from '../components/ProgressBar';
 
 export default function Journey({ onOpenAskSakhi }) {
   const { user, financialHealth, t } = useUser();
@@ -29,7 +37,7 @@ export default function Journey({ onOpenAskSakhi }) {
 
   if (loading || !journey) {
     return (
-      <div className="p-8 text-center text-slate-500 text-xs font-medium">
+      <div className="p-8 text-center text-stone-500 dark:text-stone-400 text-xs font-medium">
         Evaluating your financial stage...
       </div>
     );
@@ -39,28 +47,31 @@ export default function Journey({ onOpenAskSakhi }) {
   const isMilestoneSpeaking = isSpeaking && speakingId === 'active-milestone';
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3.5 pb-6">
+      {/* Header */}
       <div>
         <div className="flex items-center gap-1.5 mb-1">
-          <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
+          <span className="text-[11px] font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-0.5 rounded-full border border-orange-200/60 dark:border-orange-800/40">
             Financial Freedom Roadmap
           </span>
         </div>
-        <h2 className="text-xl font-black text-slate-900 tracking-tight">
+        <h2 className="text-xl font-black text-stone-900 dark:text-stone-100 tracking-tight">
           Your 7-Stage Journey
         </h2>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-stone-500 dark:text-stone-400">
           Step-by-step guidance tailored to your real surplus and savings
         </p>
       </div>
 
-      {/* Hero Current Stage Focus */}
-      <div className="bg-linear-to-br from-emerald-800 to-teal-950 text-white rounded-3xl p-5 shadow-lg relative overflow-hidden">
+      {/* Hero Current Stage Focus (Stitch Hero Card) */}
+      <div className="bg-gradient-to-br from-stone-900 via-orange-950 to-emerald-950 text-white rounded-3xl p-5 shadow-xl relative overflow-hidden border border-orange-900/40">
+        <div className="absolute top-0 right-0 w-36 h-36 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
+
         <div className="flex items-center justify-between mb-2">
           <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider">
             Current Active Milestone
           </span>
-          <span className="text-xs font-bold bg-white/20 px-2 py-0.5 rounded-full">
+          <span className="text-xs font-bold bg-white/20 text-white px-2.5 py-0.5 rounded-full">
             Stage {journey.current_stage_id} of 7
           </span>
         </div>
@@ -68,22 +79,24 @@ export default function Journey({ onOpenAskSakhi }) {
         <h3 className="text-xl font-black tracking-tight mb-1 text-white">
           {journey.current_stage_name}
         </h3>
-        <p className="text-xs text-emerald-100/80 leading-relaxed mb-4">
+        <p className="text-xs text-stone-200/90 leading-relaxed mb-4">
           {journey.current_stage_description}
         </p>
 
+        {/* Immediate Action Box */}
         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-3.5 border border-white/15">
           <div className="text-xs font-bold text-amber-300 mb-1 flex items-center gap-1.5">
-            <Sparkles size={14} /> Immediate Action:
+            <IconSparkles size={15} /> Immediate Action:
           </div>
           <div className="text-sm font-semibold text-white">
             {journey.action_title}
           </div>
-          <p className="text-xs text-emerald-100/70 mt-1">
+          <p className="text-xs text-stone-300/80 mt-1 leading-relaxed">
             {journey.action_description}
           </p>
         </div>
 
+        {/* Actions Bar */}
         <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             {isTtsSupported && (
@@ -92,25 +105,25 @@ export default function Journey({ onOpenAskSakhi }) {
                 onClick={() => speak(activeMilestoneSpeech, 'active-milestone')}
                 className={`px-3 py-2 text-xs font-bold rounded-xl transition cursor-pointer min-h-[38px] flex items-center gap-1.5 border ${
                   isMilestoneSpeaking
-                    ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-xs font-black'
+                    ? 'bg-amber-400 text-stone-950 border-amber-300 shadow-xs font-black'
                     : 'bg-white/15 hover:bg-white/25 text-white border-white/20'
                 }`}
                 aria-label={isMilestoneSpeaking ? t('stop_listening') : t('listen')}
               >
                 {isMilestoneSpeaking ? (
                   <>
-                    <VolumeX size={14} />
+                    <IconVolumeOff size={15} />
                     <span>{t('stop_listening')}</span>
                   </>
                 ) : (
                   <>
-                    <Volume2 size={14} />
+                    <IconVolume size={15} />
                     <span>🔊 {t('listen')}</span>
                   </>
                 )}
               </button>
             )}
-            <span className="text-xs text-emerald-200">
+            <span className="text-xs text-orange-200">
               Next: <strong>{journey.next_stage}</strong>
             </span>
           </div>
@@ -118,9 +131,9 @@ export default function Journey({ onOpenAskSakhi }) {
           {onOpenAskSakhi && (
             <button
               onClick={onOpenAskSakhi}
-              className="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold rounded-xl transition cursor-pointer min-h-[38px] flex items-center gap-1"
+              className="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-black rounded-xl transition cursor-pointer min-h-[38px] flex items-center gap-1 shadow-xs"
             >
-              <Sparkles size={13} />
+              <IconSparkles size={14} />
               <span>Ask Sakhi Advice</span>
             </button>
           )}
@@ -128,8 +141,8 @@ export default function Journey({ onOpenAskSakhi }) {
       </div>
 
       {/* 7-Stage Interactive Roadmap List */}
-      <div className="space-y-2.5 pt-2">
-        <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+      <div className="space-y-2 pt-2">
+        <h4 className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
           Complete Roadmap
         </h4>
 
@@ -140,53 +153,53 @@ export default function Journey({ onOpenAskSakhi }) {
           return (
             <div
               key={stage.id}
-              className={`p-4 rounded-2xl border transition-all ${
+              className={`p-3.5 sm:p-4 rounded-2xl border transition-all ${
                 isCurrent
-                  ? 'bg-emerald-50/90 border-emerald-400 shadow-sm'
+                  ? 'bg-orange-50/80 dark:bg-orange-950/40 border-orange-400 dark:border-orange-800 shadow-xs'
                   : isDone
-                  ? 'bg-white border-slate-200 opacity-90'
-                  : 'bg-slate-50/70 border-slate-200 opacity-60'
+                  ? 'bg-white dark:bg-slate-900 border-amber-100 dark:border-slate-800 opacity-95'
+                  : 'bg-stone-50/60 dark:bg-slate-900/50 border-stone-200 dark:border-slate-800/80 opacity-60'
               }`}
             >
               <div className="flex items-start gap-3">
-                <div className="mt-0.5">
+                <div className="mt-0.5 shrink-0">
                   {isDone ? (
                     <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs">
-                      <CheckCircle2 size={16} />
+                      <IconCircleCheck size={16} />
                     </div>
                   ) : isCurrent ? (
-                    <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs shadow-xs animate-pulse">
+                    <div className="w-6 h-6 rounded-full bg-orange-600 text-white flex items-center justify-center font-black text-xs shadow-xs animate-pulse">
                       {stage.id}
                     </div>
                   ) : (
-                    <div className="w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs">
+                    <div className="w-6 h-6 rounded-full bg-stone-200 dark:bg-slate-800 text-stone-500 dark:text-stone-400 flex items-center justify-center font-bold text-xs">
                       {stage.id}
                     </div>
                   )}
                 </div>
 
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h4 className={`text-sm font-bold ${isCurrent ? 'text-emerald-950' : 'text-slate-800'}`}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <h4 className={`text-xs sm:text-sm font-bold truncate ${isCurrent ? 'text-orange-950 dark:text-orange-200' : 'text-stone-900 dark:text-stone-100'}`}>
                       {stage.name}
                     </h4>
                     {isDone && (
-                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-full shrink-0">
                         Completed
                       </span>
                     )}
                     {isCurrent && (
-                      <span className="text-[10px] font-bold text-amber-900 bg-amber-200 px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold text-amber-950 dark:text-amber-300 bg-amber-200 dark:bg-amber-950 px-2 py-0.5 rounded-full shrink-0">
                         In Progress
                       </span>
                     )}
                     {!isDone && !isCurrent && (
-                      <span className="text-[10px] text-slate-400 flex items-center gap-1">
-                        <Lock size={10} /> Locked
+                      <span className="text-[10px] text-stone-400 dark:text-stone-500 flex items-center gap-0.5 shrink-0">
+                        <IconLock size={11} /> Locked
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 leading-relaxed">
                     {stage.description}
                   </p>
                 </div>
