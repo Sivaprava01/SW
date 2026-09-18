@@ -100,7 +100,7 @@ const FloatingDockDesktop = ({ items, className }) => {
       }}
       onTouchEnd={() => mouseX.set(Infinity)}
       className={cn(
-        "flex h-14 sm:h-16 gap-1 sm:gap-2 md:gap-3 items-end rounded-2xl bg-[#fff8f3]/95 dark:bg-[#14110F]/95 backdrop-blur-lg border border-amber-200/80 dark:border-[#3D332B] px-2 sm:px-3.5 pb-2 sm:pb-3 shadow-2xl shadow-stone-900/10 dark:shadow-black/70 max-w-full overflow-x-auto no-scrollbar will-change-transform",
+        "flex h-14 sm:h-16 gap-1 sm:gap-2 md:gap-3 items-end rounded-2xl bg-[#fff8f3]/80 dark:bg-[#14110F]/80 backdrop-blur-xl border border-amber-200/70 dark:border-[#3D332B]/80 px-2 sm:px-3.5 pb-2 sm:pb-3 shadow-2xl shadow-stone-900/15 dark:shadow-black/80 max-w-full overflow-x-auto no-scrollbar will-change-transform",
         className
       )}
     >
