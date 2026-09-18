@@ -120,7 +120,7 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
               onClick={() => setShowSettings(true)}
               title={t('settings')}
               aria-label="Open Settings and Edit Information"
-              className="p-2 text-stone-700 dark:text-stone-300 hover:text-orange-600 dark:hover:text-[#ffb690] bg-[#fff1e3] dark:bg-[#1e1b19] hover:bg-amber-100 dark:hover:bg-[#28211C] rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center border border-amber-200/70 dark:border-[#3D332B] shadow-xs"
+              className="p-2 text-stone-700 dark:text-[#D4C4B5] hover:text-orange-600 dark:hover:text-[#ffb690] bg-[#fff1e3] dark:bg-[#1e1b19] hover:bg-amber-100 dark:hover:bg-[#28211C] rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center border border-amber-200/70 dark:border-[#3D332B] shadow-xs"
             >
               <IconMenu2 size={20} />
             </button>
@@ -134,7 +134,7 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
       </main>
 
       {/* Aceternity UI Floating Dock Navbar */}
-      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-[480px] w-full px-4 flex justify-center pointer-events-none">
+      <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 w-auto max-w-[calc(100vw-1rem)] px-1 sm:px-4 flex justify-center pointer-events-none">
         <div className="pointer-events-auto">
           <FloatingDock
             items={dockItems}

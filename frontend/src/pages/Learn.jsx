@@ -10,11 +10,9 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconVolume,
-  IconVolumeOff,
   IconPlayerPlay,
   IconPlayerPause,
   IconArrowRight,
-  IconUsers,
   IconInfoCircle,
   IconBulb,
 } from '@tabler/icons-react';
@@ -29,10 +27,9 @@ const TOPICS = [
     badgeColor: 'bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300',
     subtitle: 'Build your safety net against hospital visits & emergencies',
     icon: IconShieldCheck,
-    iconColor: 'bg-orange-100 dark:bg-orange-950/80 text-orange-700 dark:text-orange-300',
+    iconColor: 'bg-orange-100 dark:bg-[#28211C] text-orange-700 dark:text-[#ffb690]',
     ruleTitle: 'The Golden Rule',
     summary: 'Keep 3 months of kitchen & living expenses in a bank or post office account. When medical emergencies strike, you never have to borrow from private moneylenders at 36%–60% high interest.',
-    targetFormula: (expenses) => (expenses > 0 ? expenses * 3 : 21000),
     bestLocation: 'Post Office / MSSC',
     allocation: '₹1,500 / month',
     points: [
@@ -79,10 +76,10 @@ const TOPICS = [
     id: 'government-insurance',
     title: 'Micro-Insurance',
     badge: 'Govt Scheme',
-    badgeColor: 'bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300',
+    badgeColor: 'bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-[#ffb690]',
     subtitle: 'Protect your family for ₹20/year with government PMSBY',
     icon: IconHeartHandshake,
-    iconColor: 'bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300',
+    iconColor: 'bg-amber-100 dark:bg-[#28211C] text-amber-800 dark:text-[#ffb690]',
     ruleTitle: 'Tiny Premium, Huge Security',
     summary: 'Government-backed micro-insurance policies provide ₹2 Lakh protection for your family with tiny annual bank deductions.',
     insightPill: '₹2 Lakh accidental security for less than the cost of a single cup of tea.',
@@ -113,37 +110,37 @@ export default function Learn({ onOpenAskSakhi }) {
 
   return (
     <div className="space-y-4 pb-12">
-      {/* Top Header Context (Stitch 1:1) */}
+      {/* Top Header Context */}
       <div className="space-y-2">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950/80 text-orange-900 dark:text-orange-300 font-bold text-[11px] uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40 shadow-2xs">
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-orange-100 dark:bg-[#28211C] text-orange-900 dark:text-[#ffb690] font-bold text-[11px] uppercase tracking-wider border border-orange-200/60 dark:border-[#3D332B] shadow-2xs">
             <IconBook size={13} />
             Financial Guidance
           </span>
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold text-[11px]">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 dark:bg-[#1e1b19] text-stone-700 dark:text-[#D4C4B5] font-bold text-[11px] border border-stone-200/60 dark:border-[#3D332B]">
             <IconShieldCheck size={13} />
             Plain Language
           </span>
         </div>
 
-        <h1 className="text-xl sm:text-2xl font-black text-stone-900 dark:text-stone-100 tracking-tight leading-tight">
+        <h1 className="text-xl sm:text-2xl font-black text-[#221a0e] dark:text-[#FFF5EB] tracking-tight leading-tight">
           What do you want to learn?
         </h1>
-        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+        <p className="text-xs sm:text-sm text-stone-600 dark:text-[#A8988A] leading-relaxed">
           Simple audio guides to protect your family and grow your savings with zero bank jargon.
         </p>
 
         {/* Mother Tongue Audio Selector Banner */}
-        <div className="p-3.5 rounded-2xl bg-[#fff1e3] dark:bg-slate-800/90 border border-orange-200/70 dark:border-slate-700 flex items-center justify-between shadow-2xs">
+        <div className="p-3.5 rounded-2xl bg-[#fff1e3] dark:bg-[#1e1b19] border border-orange-200/70 dark:border-[#3D332B] flex items-center justify-between shadow-2xs">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-10 h-10 rounded-2xl bg-orange-600 text-white flex items-center justify-center shrink-0 shadow-xs">
               <IconVolume size={20} />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-xs font-bold text-orange-950 dark:text-orange-200">
+              <span className="text-xs font-bold text-orange-950 dark:text-[#FFF5EB]">
                 Listen in your mother tongue
               </span>
-              <span className="text-[11px] text-stone-600 dark:text-stone-400 truncate">
+              <span className="text-[11px] text-stone-600 dark:text-[#A8988A] truncate">
                 Telugu • Hindi • English voiceovers
               </span>
             </div>
@@ -154,31 +151,31 @@ export default function Learn({ onOpenAskSakhi }) {
               const next = language === 'te' ? 'hi' : language === 'hi' ? 'en' : 'te';
               setLanguage(next);
             }}
-            className="px-3 py-1.5 rounded-full bg-white dark:bg-slate-700 text-orange-900 dark:text-orange-200 font-bold text-xs shadow-2xs border border-orange-200 dark:border-slate-600 active:scale-95 transition cursor-pointer shrink-0"
+            className="px-3 py-1.5 rounded-full bg-white dark:bg-[#28211C] text-orange-900 dark:text-[#ffb690] font-bold text-xs shadow-2xs border border-orange-200 dark:border-[#3D332B] active:scale-95 transition cursor-pointer shrink-0"
           >
             {langNames[language] || 'Telugu'} ▾
           </button>
         </div>
       </div>
 
-      {/* Educational Visual Card (Delight + Contextual Trust) */}
-      <div className="relative w-full rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 p-3.5 shadow-2xs flex items-center gap-3.5">
+      {/* Educational Visual Card */}
+      <div className="relative w-full rounded-2xl overflow-hidden bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] p-3.5 shadow-2xs flex items-center gap-3.5">
         <img
-          className="w-18 h-18 sm:w-20 sm:h-20 rounded-xl object-cover shrink-0 border border-amber-100 dark:border-slate-700 shadow-xs"
+          className="w-18 h-18 sm:w-20 sm:h-20 rounded-xl object-cover shrink-0 border border-amber-100 dark:border-[#3D332B] shadow-xs"
           alt="Indian woman reviewing passbook in sunlit courtyard"
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcVmgv_uYzxirRMwxZusOIPQFf74usILkdpiFR_ZxaKV2N20IiDOzpFD_YL9Jgca5NKvOv6XoesasiUTZcdg-khHqRAdZeSev9bnq4pSkY4cp88m5E4IddEQn2CHExoHfH_U4Fm61H4X8YhbZAY1IDbKzcFlFQgMc8kGpxsq6e3bfEOiVXmrnFHMW9mRyW365euKST6JhaXvw0CQoCqaBcletY_1EGHbx7e_N4A6lvN8m2tnZFi6uS0w"
         />
         <div className="flex flex-col min-w-0">
-          <div className="flex items-center gap-1 text-orange-600 dark:text-orange-400">
+          <div className="flex items-center gap-1 text-orange-600 dark:text-[#ffb690]">
             <IconSparkles size={13} />
             <span className="text-[10px] font-bold uppercase tracking-wider">
               Personalized for {user?.name || 'Lakshmi'}
             </span>
           </div>
-          <p className="text-sm font-black text-stone-900 dark:text-stone-100 leading-tight mt-0.5">
+          <p className="text-sm font-black text-[#221a0e] dark:text-[#FFF5EB] leading-tight mt-0.5">
             Based on your ₹{Number(surplus).toLocaleString('en-IN')} surplus
           </p>
-          <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-1 leading-snug">
+          <p className="text-[11px] text-stone-500 dark:text-[#A8988A] mt-1 leading-snug">
             Starting small today keeps moneylenders away forever.
           </p>
         </div>
@@ -196,17 +193,17 @@ export default function Learn({ onOpenAskSakhi }) {
           return (
             <div
               key={topic.id}
-              className={`bg-white dark:bg-slate-900 border rounded-2xl overflow-hidden shadow-xs transition ${
+              className={`bg-white dark:bg-[#1e1b19] border rounded-2xl overflow-hidden shadow-xs transition ${
                 isExpanded
-                  ? 'border-orange-400 dark:border-orange-600 ring-2 ring-orange-100 dark:ring-orange-950/40'
-                  : 'border-amber-100 dark:border-slate-800 hover:border-amber-200'
+                  ? 'border-orange-400 dark:border-orange-500 ring-2 ring-orange-100 dark:ring-orange-950/40'
+                  : 'border-amber-100 dark:border-[#3D332B] hover:border-amber-200 dark:hover:border-stone-700'
               }`}
             >
               {/* Card Header */}
               <button
                 type="button"
                 onClick={() => setExpandedId(isExpanded ? null : topic.id)}
-                className="w-full p-4 text-left flex items-start justify-between gap-3 hover:bg-stone-50/50 dark:hover:bg-slate-800/50 transition cursor-pointer"
+                className="w-full p-4 text-left flex items-start justify-between gap-3 hover:bg-stone-50/50 dark:hover:bg-[#28211C]/50 transition cursor-pointer"
                 aria-expanded={isExpanded}
               >
                 <div className="flex items-start gap-3 min-w-0">
@@ -215,7 +212,7 @@ export default function Learn({ onOpenAskSakhi }) {
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <h3 className="font-black text-sm text-stone-900 dark:text-stone-100 leading-snug">
+                      <h3 className="font-black text-sm text-[#221a0e] dark:text-[#FFF5EB] leading-snug">
                         {topic.title}
                       </h3>
                       {topic.badge && (
@@ -224,64 +221,64 @@ export default function Learn({ onOpenAskSakhi }) {
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5 leading-snug">
+                    <p className="text-xs text-stone-500 dark:text-[#A8988A] mt-0.5 leading-snug">
                       {topic.subtitle}
                     </p>
                   </div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-stone-100 dark:bg-slate-800 flex items-center justify-center text-stone-500 dark:text-stone-400 shrink-0 ml-1">
+                <div className="w-8 h-8 rounded-full bg-stone-100 dark:bg-[#28211C] flex items-center justify-center text-stone-500 dark:text-[#D4C4B5] shrink-0 ml-1">
                   {isExpanded ? <IconChevronUp size={18} /> : <IconChevronDown size={18} />}
                 </div>
               </button>
 
               {/* Card Expanded Content */}
               {isExpanded && (
-                <div className="px-4 pb-4 pt-1 border-t border-amber-100 dark:border-slate-800 bg-[#fffaf5]/50 dark:bg-slate-900/60 space-y-3 animate-in fade-in">
+                <div className="px-4 pb-4 pt-1 border-t border-amber-100 dark:border-[#28211C] bg-[#fffaf5]/50 dark:bg-[#14110F] space-y-3 animate-in fade-in">
                   {/* Summary / Golden Rule Box */}
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800 border border-amber-100 dark:border-slate-700 space-y-1">
-                    <span className="text-[11px] font-black uppercase tracking-wider text-orange-700 dark:text-orange-400 flex items-center gap-1">
+                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] space-y-1">
+                    <span className="text-[11px] font-black uppercase tracking-wider text-orange-700 dark:text-[#ffb690] flex items-center gap-1">
                       <IconBulb size={14} />
                       {topic.ruleTitle}
                     </span>
-                    <p className="text-xs text-stone-700 dark:text-stone-300 leading-relaxed font-medium">
+                    <p className="text-xs text-stone-700 dark:text-[#D4C4B5] leading-relaxed font-medium">
                       {topic.summary}
                     </p>
                   </div>
 
                   {/* Custom Infographic for Emergency Fund */}
                   {topic.id === 'emergency-fund' && (
-                    <div className="p-3.5 rounded-xl bg-[#fff1e3]/60 dark:bg-slate-800/80 border border-orange-200/60 dark:border-slate-700 space-y-2">
+                    <div className="p-3.5 rounded-xl bg-[#fff1e3]/60 dark:bg-[#1e1b19] border border-orange-200/60 dark:border-[#3D332B] space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-stone-600 dark:text-stone-400">
+                        <span className="text-xs font-bold text-stone-600 dark:text-[#A8988A]">
                           Recommended Fund Goal
                         </span>
-                        <span className="text-sm font-black text-orange-600 dark:text-orange-400">
+                        <span className="text-sm font-black text-orange-600 dark:text-[#ffb690]">
                           ₹{Number(emergencyTarget).toLocaleString('en-IN')}
                         </span>
                       </div>
 
-                      <div className="w-full bg-stone-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                      <div className="w-full bg-stone-200 dark:bg-[#28211C] h-2.5 rounded-full overflow-hidden">
                         <div
                           className="bg-orange-500 h-full rounded-full transition-all duration-500"
                           style={{ width: `${emergencyPercent}%` }}
                         />
                       </div>
 
-                      <div className="flex justify-between items-center text-[11px] text-stone-500 dark:text-stone-400 font-semibold">
+                      <div className="flex justify-between items-center text-[11px] text-stone-500 dark:text-[#A8988A] font-semibold">
                         <span>Saved so far: ₹{Number(savedAmount).toLocaleString('en-IN')} ({emergencyPercent}%)</span>
                         <span>Target: 3 Months</span>
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 pt-1">
-                        <div className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-700 flex flex-col">
-                          <span className="text-[10px] text-stone-400 uppercase font-bold">Monthly Allocation</span>
-                          <span className="text-xs font-black text-stone-900 dark:text-stone-100">
+                        <div className="p-2 rounded-lg bg-white dark:bg-[#100e0c] border border-amber-100 dark:border-[#3D332B] flex flex-col">
+                          <span className="text-[10px] text-stone-400 dark:text-[#A8988A] uppercase font-bold">Monthly Allocation</span>
+                          <span className="text-xs font-black text-[#221a0e] dark:text-[#FFF5EB]">
                             {topic.allocation}
                           </span>
                         </div>
-                        <div className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-700 flex flex-col">
-                          <span className="text-[10px] text-stone-400 uppercase font-bold">Best Safe Location</span>
-                          <span className="text-xs font-black text-stone-900 dark:text-stone-100 truncate">
+                        <div className="p-2 rounded-lg bg-white dark:bg-[#100e0c] border border-amber-100 dark:border-[#3D332B] flex flex-col">
+                          <span className="text-[10px] text-stone-400 dark:text-[#A8988A] uppercase font-bold">Best Safe Location</span>
+                          <span className="text-xs font-black text-[#221a0e] dark:text-[#FFF5EB] truncate">
                             {topic.bestLocation}
                           </span>
                         </div>
@@ -291,9 +288,9 @@ export default function Learn({ onOpenAskSakhi }) {
 
                   {/* Insight Pill for Other Cards */}
                   {topic.insightPill && (
-                    <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 flex items-center gap-2">
-                      <IconInfoCircle size={16} className="text-orange-600 dark:text-orange-400 shrink-0" />
-                      <p className="text-xs text-stone-700 dark:text-stone-300 font-medium leading-snug">
+                    <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-[#1e1b19] border border-amber-200 dark:border-[#3D332B] flex items-center gap-2">
+                      <IconInfoCircle size={16} className="text-orange-600 dark:text-[#ffb690] shrink-0" />
+                      <p className="text-xs text-stone-700 dark:text-[#D4C4B5] font-medium leading-snug">
                         {topic.insightPill}
                       </p>
                     </div>
@@ -302,7 +299,7 @@ export default function Learn({ onOpenAskSakhi }) {
                   {/* Bullet Points */}
                   <ul className="space-y-2">
                     {topic.points.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+                      <li key={idx} className="flex items-start gap-2 text-xs text-stone-600 dark:text-[#D4C4B5] leading-relaxed">
                         <IconCircleCheck size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </li>
@@ -310,7 +307,7 @@ export default function Learn({ onOpenAskSakhi }) {
                   </ul>
 
                   {/* Audio Player Strip + Sakhi Trigger */}
-                  <div className="pt-2 border-t border-amber-100 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                  <div className="pt-2 border-t border-amber-100 dark:border-[#28211C] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
                     {/* Audio Player Button */}
                     {isTtsSupported && (
                       <button
@@ -325,7 +322,7 @@ export default function Learn({ onOpenAskSakhi }) {
                         aria-label={isTopicSpeaking ? t('stop_listening') : t('listen')}
                         className={`px-4 py-2 rounded-full font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer min-h-[40px] border shadow-xs ${
                           isTopicSpeaking
-                            ? 'bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border-amber-300'
+                            ? 'bg-amber-100 dark:bg-[#28211C] text-amber-950 dark:text-[#ffb690] border-amber-300 dark:border-[#3D332B]'
                             : 'bg-orange-600 hover:bg-orange-700 text-white border-orange-600'
                         }`}
                       >
@@ -334,9 +331,9 @@ export default function Learn({ onOpenAskSakhi }) {
                             <IconPlayerPause size={16} />
                             <span>{t('stop_listening')}</span>
                             <div className="flex items-center gap-0.5 ml-1">
-                              <span className="w-1 h-3 bg-amber-800 dark:bg-amber-200 rounded-full animate-pulse" />
-                              <span className="w-1 h-4 bg-amber-800 dark:bg-amber-200 rounded-full animate-bounce" />
-                              <span className="w-1 h-2 bg-amber-800 dark:bg-amber-200 rounded-full animate-pulse" />
+                              <span className="w-1 h-3 bg-amber-800 dark:bg-[#ffb690] rounded-full animate-pulse" />
+                              <span className="w-1 h-4 bg-amber-800 dark:bg-[#ffb690] rounded-full animate-bounce" />
+                              <span className="w-1 h-2 bg-amber-800 dark:bg-[#ffb690] rounded-full animate-pulse" />
                             </div>
                           </>
                         ) : (
@@ -353,9 +350,9 @@ export default function Learn({ onOpenAskSakhi }) {
                       <button
                         type="button"
                         onClick={onOpenAskSakhi}
-                        className="py-2 px-3 rounded-xl bg-orange-100/70 hover:bg-orange-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-orange-950 dark:text-orange-200 font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] border border-orange-200/60 dark:border-slate-700 active:scale-95"
+                        className="py-2 px-3 rounded-xl bg-orange-100/70 hover:bg-orange-100 dark:bg-[#28211C] dark:hover:bg-[#383431] text-orange-950 dark:text-[#ffb690] font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] border border-orange-200/60 dark:border-[#3D332B] active:scale-95"
                       >
-                        <IconSparkles size={15} className="text-orange-600 dark:text-orange-400" />
+                        <IconSparkles size={15} className="text-orange-600 dark:text-[#ffb690]" />
                         <span className="truncate">Ask Sakhi how this applies to your surplus</span>
                         <IconArrowRight size={14} className="text-stone-400" />
                       </button>
@@ -368,18 +365,18 @@ export default function Learn({ onOpenAskSakhi }) {
         })}
       </div>
 
-      {/* Community Learning Circle Trust Box (Stitch Screen 1:1) */}
-      <div className="p-4 rounded-2xl bg-[#fff1e3]/70 dark:bg-slate-800/80 border border-orange-200/60 dark:border-slate-700 flex items-center gap-3.5 shadow-2xs">
+      {/* Community Learning Circle Trust Box */}
+      <div className="p-4 rounded-2xl bg-[#fff1e3]/70 dark:bg-[#1e1b19] border border-orange-200/60 dark:border-[#3D332B] flex items-center gap-3.5 shadow-2xs">
         <img
           className="w-14 h-14 rounded-full object-cover shrink-0 border-2 border-orange-400 shadow-xs"
           alt="Rural South Asian village women conversing outdoors"
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtNPHnO1y3OMpfYT7c93IGzr-6a-9fHGOsyLYXB7n_Eq8sJN-CqxfMXwDiPuFrsaJ0P5S4jvMDv9ndfoBqGVRy5SyUOzxbJSHlEv9cemRI64AaICfR0CanrkApwFPRynkzJMJtitGjktviGSfWim8r3H_dW6NKfkGqiVThXGspL6P8O2sIiKaTbqpWUgjWKcHAtNfEJjjm0jaVvnXWHd9np9LZm3S9XjMjhYqSndfq6nrSHKkF2IjGpA"
         />
         <div className="flex flex-col min-w-0">
-          <span className="text-xs font-black text-stone-900 dark:text-stone-100">
+          <span className="text-xs font-black text-[#221a0e] dark:text-[#FFF5EB]">
             Community Learning Circle
           </span>
-          <p className="text-[11px] text-stone-600 dark:text-stone-400 leading-snug mt-0.5">
+          <p className="text-[11px] text-stone-600 dark:text-[#A8988A] leading-snug mt-0.5">
             38 women in your {user?.state || 'Telangana'} SHG group completed this guide this week.
           </p>
         </div>

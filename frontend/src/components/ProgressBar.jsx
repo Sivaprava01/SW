@@ -6,7 +6,7 @@ export default function ProgressBar({ value = 0, max = 100, color = 'bg-emerald-
   const percent = safeMax <= 0 ? 0 : Math.min(100, Math.max(0, Math.round((safeVal / safeMax) * 100)));
 
   return (
-    <div className={`w-full bg-slate-100 rounded-full overflow-hidden ${height}`}>
+    <div className={`w-full bg-stone-100 dark:bg-[#28211C] rounded-full overflow-hidden ${height}`}>
       <div
         className={`${color} ${height} rounded-full transition-all duration-500 ease-out`}
         style={{ width: `${percent}%` }}

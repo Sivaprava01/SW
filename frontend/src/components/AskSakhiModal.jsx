@@ -9,7 +9,6 @@ import {
   IconPlayerPlay,
   IconPlayerPause,
   IconCheck,
-  IconLock,
   IconShieldCheck,
   IconKeyboard,
   IconMessageDots,
@@ -49,16 +48,6 @@ const EXAMPLE_QUESTIONS = {
   ]
 };
 
-const STAGE_LABELS = {
-  1: { en: "1 (Starter Fund)", hi: "1 (शुरुआती फंड)", te: "1 (ప్రారంభ నిధి)" },
-  2: { en: "2 (Emergency Shield)", hi: "2 (इमरजेंसी शील्ड)", te: "2 (అత్యవసర రక్షణ)" },
-  3: { en: "3 (High-Debt Zero)", hi: "3 (उच्च कर्ज़ मुक्ति)", te: "3 (అధిక వడ్డీ అప్పుల విముక్తి)" },
-  4: { en: "4 (Family Shield)", hi: "4 (पारिवारिक सुरक्षा)", te: "4 (కుటుంబ బీమా రక్షణ)" },
-  5: { en: "5 (Goal Fuel)", hi: "5 (लक्ष्य संचय)", te: "5 (లక్ష్యాల సాధన)" },
-  6: { en: "6 (All Debt Free)", hi: "6 (पूर्ण कर्ज़ मुक्ति)", te: "6 (సంపూర్ణ అప్పుల విముక్తి)" },
-  7: { en: "7 (Lakshmi Freedom)", hi: "7 (लक्ष्मी संवृद्धि)", te: "7 (లక్ష్మీ సమృద్ధి)" }
-};
-
 export default function AskSakhiModal({ isOpen, onClose }) {
   const { user, financialHealth, language, setLanguage, t } = useUser();
   const { isSpeaking, speakingId, speak, stop, isSupported: isTtsSupported } = useSpeech();
@@ -81,11 +70,11 @@ export default function AskSakhiModal({ isOpen, onClose }) {
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       const name = user?.name || 'Sister';
-      let greeting = `Namaste, ${name}! I am Sakhi, your personal AI financial companion. I have reviewed your monthly surplus of ₹${Number(financialHealth?.surplus || 4200).toLocaleString('en-IN')} and verified your active progress. You can ask me anything in Telugu, Hindi or English about your budget, loans, savings, or government schemes.`;
+      let greeting = `Namaste, ${name}! I am Sakhi, your personal AI financial companion. You can ask me anything in Telugu, Hindi or English about your budget, loans, savings, or government schemes.`;
       if (language === 'hi') {
-        greeting = `नमस्ते, ${name}! मैं आपकी सखी हूँ। मैंने आपकी ₹${Number(financialHealth?.surplus || 4200).toLocaleString('en-IN')} की मासिक बचत और प्रगति की समीक्षा की है। आप मुझसे तेलुगु, हिंदी या अंग्रेजी में कर्ज़, बचत या सरकारी योजनाओं के बारे में कोई भी सवाल पूछ सकती हैं।`;
+        greeting = `नमस्ते, ${name}! मैं आपकी सखी हूँ। आप मुझसे तेलुगु, हिंदी या अंग्रेजी में कर्ज़, बचत या सरकारी योजनाओं के बारे में कोई भी सवाल पूछ सकती हैं।`;
       } else if (language === 'te') {
-        greeting = `నమస్తే, ${name}! నేను మీ సఖిని. మీ నెలవారీ ₹${Number(financialHealth?.surplus || 4200).toLocaleString('en-IN')} మిగులు మరియు మీ పురోగతిని నేను పరిశీలించాను. మీరు తెలుగు, హిందీ లేదా ఇంగ్లీషులో పొదుపు, అప్పులు లేదా ప్రభుత్వ పథకాల గురించి ఏమైనా అడగవచ్చు.`;
+        greeting = `నమస్తే, ${name}! నేను మీ సఖిని. మీరు తెలుగు, హిందీ లేదా ఇంగ్లీషులో పొదుపు, అప్పులు లేదా ప్రభుత్వ పథకాల గురించి ఏమైనా అడగవచ్చు.`;
       }
 
       setMessages([
@@ -194,8 +183,6 @@ export default function AskSakhiModal({ isOpen, onClose }) {
   };
 
   const currentQuestions = EXAMPLE_QUESTIONS[language] || EXAMPLE_QUESTIONS['en'];
-  const stageNum = financialHealth?.current_milestone || 2;
-  const stageName = STAGE_LABELS[stageNum]?.[language] || STAGE_LABELS[stageNum]?.['en'] || `Stage ${stageNum}`;
 
   return (
     <div
@@ -206,11 +193,11 @@ export default function AskSakhiModal({ isOpen, onClose }) {
     >
       <div className="bg-[#fff8f3] dark:bg-[#14110F] text-[#221a0e] dark:text-[#FFF5EB] w-full sm:max-w-md h-[95vh] sm:h-[700px] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden border border-amber-200/60 dark:border-[#3D332B] animate-in slide-in-from-bottom-4">
         
-        {/* Stitch Identity Header */}
+        {/* Identity Header */}
         <div className="bg-[#fff1e3] dark:bg-[#1e1b19] border-b border-amber-200/70 dark:border-[#28211C] px-4 py-3 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2.5 min-w-0">
             <div className="relative shrink-0">
-              <div className="w-11 h-11 rounded-full bg-orange-600 text-white flex items-center justify-center shadow-md font-black text-lg border-2 border-white/60 dark:border-stone-800">
+              <div className="w-11 h-11 rounded-full bg-orange-600 text-white flex items-center justify-center shadow-md font-black text-lg border-2 border-white/60 dark:border-[#3D332B]">
                 स
               </div>
               <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-[#fff1e3] dark:ring-[#1e1b19] flex items-center justify-center">
@@ -226,7 +213,7 @@ export default function AskSakhiModal({ isOpen, onClose }) {
                   AI Companion
                 </span>
               </div>
-              <p className="text-[11px] text-orange-700 dark:text-[#EAB308] font-semibold flex items-center gap-1 truncate">
+              <p className="text-[11px] text-orange-700 dark:text-[#ffb690] font-semibold flex items-center gap-1 truncate">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 Online • Telugu, Hindi & English
               </p>
@@ -234,13 +221,6 @@ export default function AskSakhiModal({ isOpen, onClose }) {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            {/* Animated Audio Wave Indicator */}
-            <div className="flex items-center gap-0.5 px-2 py-1.5 rounded-full bg-amber-100/70 dark:bg-[#28211C]">
-              <span className="w-1 h-2.5 bg-orange-600 dark:bg-[#ffb690] rounded-full animate-pulse"></span>
-              <span className="w-1 h-4 bg-orange-600 dark:bg-[#ffb690] rounded-full animate-pulse [animation-delay:150ms]"></span>
-              <span className="w-1 h-2 bg-orange-600 dark:bg-[#ffb690] rounded-full animate-pulse [animation-delay:300ms]"></span>
-            </div>
-
             {/* Close Button */}
             <button
               onClick={() => {
@@ -248,55 +228,10 @@ export default function AskSakhiModal({ isOpen, onClose }) {
                 onClose();
               }}
               aria-label="Close Ask Sakhi"
-              className="w-8 h-8 rounded-full bg-stone-200/70 dark:bg-[#28211C] hover:bg-stone-300 dark:hover:bg-[#383431] text-stone-700 dark:text-stone-300 flex items-center justify-center transition active:scale-95 cursor-pointer"
+              className="w-8 h-8 rounded-full bg-stone-200/70 dark:bg-[#28211C] hover:bg-stone-300 dark:hover:bg-[#383431] text-stone-700 dark:text-[#D4C4B5] flex items-center justify-center transition active:scale-95 cursor-pointer"
             >
               <IconX size={18} />
             </button>
-          </div>
-        </div>
-
-        {/* Deterministic Calculations Live Data Strip */}
-        <div className="bg-[#fcebd7] dark:bg-[#28211C] mx-3 mt-2.5 p-2.5 rounded-2xl shadow-xs border border-amber-200/60 dark:border-[#3D332B] flex flex-col gap-1.5">
-          <div className="flex items-center justify-between text-[11px] text-stone-600 dark:text-[#A8988A] font-semibold">
-            <span className="flex items-center gap-1">
-              <IconLock size={12} className="text-orange-700 dark:text-[#ffb690]" />
-              Deterministic calculations locked & private
-            </span>
-            <span className="text-orange-700 dark:text-[#ffb690] font-black uppercase tracking-wider text-[10px] flex items-center gap-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              Live Data
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-1.5">
-            <div className="bg-white dark:bg-[#100e0c] rounded-xl p-2 flex items-center justify-between shadow-xs border border-amber-100 dark:border-[#383431]">
-              <span className="text-[11px] text-stone-500 dark:text-[#A8988A] font-medium">Surplus</span>
-              <span className="text-xs font-bold text-orange-800 dark:text-[#ffb690]">
-                ₹{Number(financialHealth?.surplus || 4200).toLocaleString('en-IN')}
-                <span className="text-[10px] font-normal text-stone-500">/mo</span>
-              </span>
-            </div>
-
-            <div className="bg-white dark:bg-[#100e0c] rounded-xl p-2 flex items-center justify-between shadow-xs border border-amber-100 dark:border-[#383431]">
-              <span className="text-[11px] text-stone-500 dark:text-[#A8988A] font-medium">Debt</span>
-              <span className="text-xs font-bold text-rose-700 dark:text-[#ffb599]">
-                ₹{Number(financialHealth?.debt || 12000).toLocaleString('en-IN')}
-              </span>
-            </div>
-
-            <div className="bg-white dark:bg-[#100e0c] rounded-xl p-2 flex items-center justify-between shadow-xs border border-amber-100 dark:border-[#383431]">
-              <span className="text-[11px] text-stone-500 dark:text-[#A8988A] font-medium">Savings</span>
-              <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
-                ₹{Number(financialHealth?.savings || 18000).toLocaleString('en-IN')}
-              </span>
-            </div>
-
-            <div className="bg-white dark:bg-[#100e0c] rounded-xl p-2 flex items-center justify-between shadow-xs border border-amber-100 dark:border-[#383431]">
-              <span className="text-[11px] text-stone-500 dark:text-[#A8988A] font-medium">Stage</span>
-              <span className="text-xs font-bold text-orange-700 dark:text-[#ffb690] truncate max-w-[90px]">
-                {stageName}
-              </span>
-            </div>
           </div>
         </div>
 
@@ -343,8 +278,8 @@ export default function AskSakhiModal({ isOpen, onClose }) {
         <div className="flex-1 overflow-y-auto p-3.5 space-y-3 bg-[#fffaf5]/40 dark:bg-[#100e0c]/50">
           {/* Date separator */}
           <div className="flex items-center justify-center my-1">
-            <span className="px-3 py-0.5 rounded-full bg-[#fcebd7] dark:bg-[#1e1b19] text-stone-600 dark:text-[#A8988A] text-[10px] font-bold tracking-wider uppercase">
-              Today • Household & SHG Micro-advice
+            <span className="px-3 py-0.5 rounded-full bg-[#fcebd7] dark:bg-[#1e1b19] text-stone-600 dark:text-[#A8988A] text-[10px] font-bold tracking-wider uppercase border border-amber-200/50 dark:border-[#28211C]">
+              Household & SHG Financial Guidance
             </span>
           </div>
 
@@ -359,17 +294,17 @@ export default function AskSakhiModal({ isOpen, onClose }) {
                 className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
               >
                 {!isUser && (
-                  <div className="w-8 h-8 rounded-full bg-orange-600 text-white flex items-center justify-center shrink-0 text-xs font-black mt-1 shadow-xs border border-white/50 dark:border-stone-800">
+                  <div className="w-8 h-8 rounded-full bg-orange-600 text-white flex items-center justify-center shrink-0 text-xs font-black mt-1 shadow-xs border border-white/50 dark:border-[#3D332B]">
                     स
                   </div>
                 )}
 
                 <div className="flex flex-col space-y-1 max-w-[86%]">
                   {/* Sender Name & Time */}
-                  <div className={`flex items-center gap-1 px-1 text-[11px] ${isUser ? 'justify-end text-stone-500 dark:text-stone-400' : 'text-orange-700 dark:text-[#ffb690] font-bold'}`}>
+                  <div className={`flex items-center gap-1 px-1 text-[11px] ${isUser ? 'justify-end text-stone-500 dark:text-[#A8988A]' : 'text-orange-700 dark:text-[#ffb690] font-bold'}`}>
                     {!isUser && <span className="w-1.5 h-1.5 rounded-full bg-orange-600"></span>}
                     <span>{isUser ? `${user?.name || 'You'}` : 'Sakhi Sister'}</span>
-                    <span className="text-[10px] text-stone-400 dark:text-stone-500 font-normal">
+                    <span className="text-[10px] text-stone-400 dark:text-[#A8988A] font-normal">
                       {m.time || 'Just now'}
                     </span>
                   </div>
@@ -415,11 +350,6 @@ export default function AskSakhiModal({ isOpen, onClose }) {
                             </>
                           )}
                         </button>
-
-                        <span className="inline-flex items-center gap-1 text-[10px] text-stone-600 dark:text-[#A8988A] bg-white dark:bg-[#100e0c] px-2 py-1 rounded-full border border-amber-100 dark:border-[#383431] font-semibold">
-                          <IconShieldCheck size={12} className="text-emerald-600 dark:text-emerald-400" />
-                          Verified calculations
-                        </span>
                       </div>
                     )}
                   </div>
@@ -492,7 +422,7 @@ export default function AskSakhiModal({ isOpen, onClose }) {
           
           {/* Main Giant Glowing Mic or Keypad Input */}
           {!showKeypad ? (
-            /* Voice-Centric Focus Mode (Matching Stitch) */
+            /* Voice-Centric Focus Mode */
             <div className="flex flex-col items-center justify-center py-2 relative">
               <div className="relative flex items-center justify-center">
                 {isListening && (

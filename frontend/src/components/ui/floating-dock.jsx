@@ -16,7 +16,7 @@ export const FloatingDock = ({
   className,
 }) => {
   return (
-    <div className={cn("relative flex items-center justify-center", className)}>
+    <div className={cn("relative flex items-center justify-center max-w-full", className)}>
       <FloatingDockDesktop items={items} className={desktopClassName} />
       <FloatingDockMobile items={items} className={mobileClassName} />
     </div>
@@ -100,7 +100,7 @@ const FloatingDockDesktop = ({ items, className }) => {
       }}
       onTouchEnd={() => mouseX.set(Infinity)}
       className={cn(
-        "flex h-16 gap-2 sm:gap-3.5 items-end rounded-2xl bg-[#fff8f3]/95 dark:bg-[#14110F]/95 backdrop-blur-lg border border-amber-200/80 dark:border-[#3D332B] px-3 sm:px-4 pb-3 shadow-2xl shadow-stone-900/10 dark:shadow-black/70 will-change-transform",
+        "flex h-14 sm:h-16 gap-1 sm:gap-2 md:gap-3 items-end rounded-2xl bg-[#fff8f3]/95 dark:bg-[#14110F]/95 backdrop-blur-lg border border-amber-200/80 dark:border-[#3D332B] px-2 sm:px-3.5 pb-2 sm:pb-3 shadow-2xl shadow-stone-900/10 dark:shadow-black/70 max-w-full overflow-x-auto no-scrollbar will-change-transform",
         className
       )}
     >
@@ -119,11 +119,11 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
     return val - bounds.x - bounds.width / 2;
   });
 
-  let widthTransform = useTransform(distance, [-150, 0, 150], [40, 70, 40]);
-  let heightTransform = useTransform(distance, [-150, 0, 150], [40, 70, 40]);
+  let widthTransform = useTransform(distance, [-120, 0, 120], [35, 54, 35]);
+  let heightTransform = useTransform(distance, [-120, 0, 120], [35, 54, 35]);
 
-  let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 34, 20]);
-  let heightTransformIcon = useTransform(distance, [-150, 0, 150], [20, 34, 20]);
+  let widthTransformIcon = useTransform(distance, [-120, 0, 120], [17, 26, 17]);
+  let heightTransformIcon = useTransform(distance, [-120, 0, 120], [17, 26, 17]);
 
   let width = useSpring(widthTransform, {
     mass: 0.1,
@@ -153,7 +153,7 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
     <button
       onClick={onClick}
       aria-label={title}
-      className="cursor-pointer focus:outline-none relative group flex items-end justify-center"
+      className="cursor-pointer focus:outline-none relative group flex items-end justify-center shrink-0"
     >
       <motion.div
         ref={ref}

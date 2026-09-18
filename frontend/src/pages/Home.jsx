@@ -185,11 +185,11 @@ export default function Home({ onNavigate, onOpenAskSakhi }) {
           className="flex flex-col justify-between p-3.5 rounded-2xl bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] shadow-xs hover:border-orange-300 dark:hover:border-stone-700 active:scale-95 transition-all text-left cursor-pointer min-h-[110px]"
         >
           <div className="flex items-center justify-between w-full mb-2">
-            <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-[#28211C] flex items-center justify-center text-blue-700 dark:text-blue-400">
+            <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-[#28211C] flex items-center justify-center text-orange-700 dark:text-[#ffb690]">
               <IconTarget size={20} />
             </div>
             {primaryGoal && (
-              <span className="text-[11px] font-bold bg-blue-50 dark:bg-[#28211C] text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full border border-blue-200/50 dark:border-[#3D332B]">
+              <span className="text-[11px] font-bold bg-[#fff1e3] dark:bg-[#28211C] text-orange-900 dark:text-[#ffb690] px-2 py-0.5 rounded-full border border-orange-200/50 dark:border-[#3D332B]">
                 {primaryGoal.percent_complete}%
               </span>
             )}
