@@ -61,8 +61,8 @@ const FloatingDockMobile = ({ items, className }) => {
                   className={cn(
                     "flex items-center gap-2.5 px-4 py-2.5 rounded-full shadow-lg border backdrop-blur-lg cursor-pointer min-h-[44px] transition-colors duration-200",
                     item.isActive
-                      ? "bg-emerald-600 text-white border-emerald-400 font-bold shadow-emerald-600/40 ring-2 ring-emerald-400/30"
-                      : "bg-white/95 dark:bg-slate-900/95 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      ? "bg-orange-600 text-white border-orange-400 font-bold shadow-orange-600/40 ring-2 ring-orange-400/30"
+                      : "bg-[#fff8f3]/95 dark:bg-[#14110F]/95 text-stone-700 dark:text-[#FFF5EB] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50 dark:hover:bg-[#28211C]"
                   )}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">{item.icon}</div>
@@ -79,8 +79,8 @@ const FloatingDockMobile = ({ items, className }) => {
         className={cn(
           "h-12 w-12 rounded-full flex items-center justify-center shadow-2xl border backdrop-blur-lg cursor-pointer active:scale-95 transition-colors duration-200",
           open
-            ? "bg-emerald-600 text-white border-emerald-400 shadow-emerald-600/40"
-            : "bg-white/95 dark:bg-slate-900/95 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800"
+            ? "bg-orange-600 text-white border-orange-400 shadow-orange-600/40"
+            : "bg-[#fff8f3]/95 dark:bg-[#14110F]/95 text-stone-800 dark:text-[#FFF5EB] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50 dark:hover:bg-[#28211C]"
         )}
       >
         <IconLayoutNavbarCollapse className="h-6 w-6 transition-transform duration-300" />
@@ -100,7 +100,7 @@ const FloatingDockDesktop = ({ items, className }) => {
       }}
       onTouchEnd={() => mouseX.set(Infinity)}
       className={cn(
-        "flex h-16 gap-2 sm:gap-3.5 items-end rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border border-slate-200/90 dark:border-slate-800/90 px-3 sm:px-4 pb-3 shadow-2xl shadow-slate-900/10 dark:shadow-black/60 will-change-transform",
+        "flex h-16 gap-2 sm:gap-3.5 items-end rounded-2xl bg-[#fff8f3]/95 dark:bg-[#14110F]/95 backdrop-blur-lg border border-amber-200/80 dark:border-[#3D332B] px-3 sm:px-4 pb-3 shadow-2xl shadow-stone-900/10 dark:shadow-black/70 will-change-transform",
         className
       )}
     >
@@ -119,11 +119,11 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
     return val - bounds.x - bounds.width / 2;
   });
 
-  let widthTransform = useTransform(distance, [-150, 0, 150], [40, 72, 40]);
-  let heightTransform = useTransform(distance, [-150, 0, 150], [40, 72, 40]);
+  let widthTransform = useTransform(distance, [-150, 0, 150], [40, 70, 40]);
+  let heightTransform = useTransform(distance, [-150, 0, 150], [40, 70, 40]);
 
-  let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 36, 20]);
-  let heightTransformIcon = useTransform(distance, [-150, 0, 150], [20, 36, 20]);
+  let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 34, 20]);
+  let heightTransformIcon = useTransform(distance, [-150, 0, 150], [20, 34, 20]);
 
   let width = useSpring(widthTransform, {
     mass: 0.1,
@@ -163,8 +163,8 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
         className={cn(
           "aspect-square rounded-full flex items-center justify-center relative shadow-xs transition-colors duration-200",
           isActive
-            ? "bg-emerald-600 dark:bg-emerald-500 text-white shadow-lg shadow-emerald-600/40 ring-2 ring-emerald-400/60"
-            : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 hover:text-emerald-700 dark:hover:text-emerald-400"
+            ? "bg-orange-600 dark:bg-orange-500 text-white shadow-lg shadow-orange-600/40 ring-2 ring-orange-400/60"
+            : "bg-[#fff1e3] dark:bg-[#1e1b19] text-stone-700 dark:text-[#D4C4B5] hover:bg-amber-100 dark:hover:bg-[#28211C] hover:text-orange-700 dark:hover:text-[#ffb690] border border-amber-200/50 dark:border-[#3D332B]"
         )}
       >
         <AnimatePresence>
@@ -174,7 +174,7 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: 2, x: "-50%" }}
               transition={{ duration: 0.15 }}
-              className="px-2.5 py-1 whitespace-pre rounded-lg bg-slate-900/95 dark:bg-slate-100/95 text-white dark:text-slate-900 absolute -top-9 left-1/2 -translate-x-1/2 w-fit text-[11px] font-bold shadow-xl pointer-events-none z-50 backdrop-blur-xs"
+              className="px-2.5 py-1 whitespace-pre rounded-lg bg-stone-900/95 dark:bg-stone-100/95 text-white dark:text-stone-900 absolute -top-9 left-1/2 -translate-x-1/2 w-fit text-[11px] font-bold shadow-xl pointer-events-none z-50 backdrop-blur-xs font-headline"
             >
               {title}
             </motion.div>
@@ -187,7 +187,7 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
           {icon}
         </motion.div>
         {isActive && (
-          <span className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400 shadow-xs pointer-events-none" />
+          <span className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-orange-600 dark:bg-orange-400 shadow-xs pointer-events-none" />
         )}
       </motion.div>
     </button>

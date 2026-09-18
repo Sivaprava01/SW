@@ -1,33 +1,63 @@
 @import "tailwindcss";
 
-:root {
-  --primary-saffron: #ea580c;
-  --primary-saffron-light: #f97316;
-  --primary-emerald: #059669;
-  --bg-sand: #fffaf5;
-  --surface-warm: #fff1e3;
-  --surface-warm-high: #fcebd7;
-  --terracotta: #9d4300;
+@layer base {
+  :root {
+    --font-headline: 'Karla', sans-serif;
+    --font-body: 'Inconsolata', monospace;
+    
+    /* Stitch Light Colors */
+    --color-surface-canvas: #fff8f3;
+    --color-surface-lowest: #ffffff;
+    --color-surface-low: #fff1e3;
+    --color-surface-container: #fcebd7;
+    --color-surface-high: #f6e6d2;
+    --color-surface-highest: #f1e0cc;
+    --color-primary: #9d4300;
+    --color-primary-container: #f97316;
+    --color-secondary: #b3291b;
+    --color-on-surface: #221a0e;
+    --color-on-surface-variant: #584237;
+    --color-positive: #059669;
+  }
+
+  html.dark {
+    /* Stitch Dark Colors */
+    --color-surface-canvas: #14110F;
+    --color-surface-lowest: #100e0c;
+    --color-surface-low: #1e1b19;
+    --color-surface-container: #28211C;
+    --color-surface-high: #322A23;
+    --color-surface-highest: #383431;
+    --color-border-subtle: #3D332B;
+    --color-border-strong: #4A3E35;
+    --color-primary: #ffb690;
+    --color-primary-container: #f97316;
+    --color-secondary: #ffb599;
+    --color-on-surface: #FFF5EB;
+    --color-on-surface-variant: #D4C4B5;
+    --color-text-muted: #A8988A;
+    --color-turmeric: #EAB308;
+    --color-positive: #22C55E;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-body), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--color-surface-canvas);
+    color: var(--color-on-surface);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-headline {
+    font-family: var(--font-headline), -apple-system, BlinkMacSystemFont, sans-serif;
+  }
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Karla', 'Inconsolata', Helvetica, Arial, sans-serif;
-  background-color: #f7f4ef;
-  color: #1c1917;
-  -webkit-font-smoothing: antialiased;
-  overscroll-behavior-y: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-html.dark body {
-  background-color: #030712;
-  color: #f9fafb;
-}
-
-/* Custom utility classes */
+/* App Centered Container */
 .app-container {
   max-width: 480px;
   margin: 0 auto;
@@ -36,23 +66,23 @@ html.dark body {
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 4px 24px -2px rgba(120, 50, 0, 0.06);
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 4px 24px -2px rgba(120, 50, 0, 0.08);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 html.dark .app-container {
-  background-color: #0b1120;
-  box-shadow: 0 4px 30px -2px rgba(0, 0, 0, 0.6);
-  border-left: 1px solid #1e293b;
-  border-right: 1px solid #1e293b;
+  background-color: #14110F;
+  box-shadow: 0 4px 30px -2px rgba(0, 0, 0, 0.8);
+  border-left: 1px solid #28211C;
+  border-right: 1px solid #28211C;
 }
 
 @media (min-width: 640px) {
   body {
-    background-color: #efeae2;
+    background-color: #efe8df;
   }
   html.dark body {
-    background-color: #020617;
+    background-color: #0d0a09;
   }
 }
 
@@ -60,14 +90,18 @@ html.dark .app-container {
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
+  display: none;
 }
-::-webkit-scrollbar-track {
-  background: transparent;
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.4);
-  border-radius: 9999px;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-html.dark ::-webkit-scrollbar-thumb {
-  background: rgba(75, 85, 99, 0.5);
+
+/* Touch active micro-animations */
+.active-scale:active {
+  transform: scale(0.97);
 }
