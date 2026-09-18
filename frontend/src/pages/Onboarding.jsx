@@ -209,16 +209,27 @@ export default function Onboarding({ onComplete }) {
                 </div>
               </div>
 
-              {/* Age Input with Preset Chips */}
+              {/* Age Input with Editable Number Field & Quick Select Chips */}
               <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3 border border-amber-200/70 dark:border-[#3D332B]">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]" htmlFor="ageInput">
-                    {t('onboarding_age_years')}
-                  </label>
-                  <div className="flex items-center gap-1 bg-[#fff1e3] dark:bg-[#28211C] px-3 py-0.5 rounded-full border border-amber-200/50 dark:border-[#3D332B]">
-                    <span className="text-sm font-bold text-orange-700 dark:text-[#ffb690]">{formData.age}</span>
-                    <span className="text-[10px] text-stone-500 font-medium">{language === 'te' ? 'సం.' : language === 'hi' ? 'वर्ष' : 'yrs'}</span>
-                  </div>
+                <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]" htmlFor="ageInput">
+                  {t('onboarding_age_years')}
+                </label>
+
+                <div className="relative flex items-center">
+                  <input
+                    id="ageInput"
+                    type="number"
+                    min="18"
+                    max="100"
+                    required
+                    placeholder="e.g. 28"
+                    value={formData.age}
+                    onChange={(e) => setFormData({ ...formData, age: e.target.value === '' ? '' : parseInt(e.target.value, 10) || '' })}
+                    className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 px-4 text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden transition"
+                  />
+                  <span className="absolute right-4 text-xs font-bold text-stone-400 pointer-events-none">
+                    {language === 'te' ? 'సం.' : language === 'hi' ? 'वर्ष' : 'yrs'}
+                  </span>
                 </div>
 
                 <div className="flex flex-col gap-1.5">
