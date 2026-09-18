@@ -1,31 +1,42 @@
-import uuid
-from datetime import datetime
-from sqlalchemy import Column, String, Float, Integer, DateTime, Boolean
-from sqlalchemy.orm import relationship
-from app.database import Base
+"""
+Sakhi User Database Model.
 
-class User(Base):
+Represents user demographic profiles, socio-economic attributes,
+SHG membership, language preferences, and baseline financial figures.
+"""
+
+from typing import Optional
+from sqlalchemy import String, Integer, Float, Boolean
+from sqlalchemy.orm import Mapped, mapped_column
+from app.models.base import Base, TimestampMixin
+
+
+class User(Base, TimestampMixin):
+    """User profile database model."""
     __tablename__ = "users"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    name = Column(String(100), nullable=False)
-    age = Column(Integer, nullable=False)
-    state = Column(String(100), nullable=False)
-    gender = Column(String(20), nullable=False, default="women")  # "women", "men", "other"
-    is_shg_member = Column(Boolean, nullable=False, default=False)
-    has_business_interest = Column(Boolean, nullable=False, default=False)
-    is_rural = Column(Boolean, nullable=False, default=True)
-    occupation = Column(String(100), nullable=True)  # e.g., "Tailor", "Farmer", "Daily Wage", "Kirana Shop"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    phone_number: Mapped[Optional[str]] = mapped_column(String(20), index=True, nullable=True)
+    age: Mapped[int] = mapped_column(Integer, nullable=False, default=25)
+    gender: Mapped[str] = mapped_column(String(20), nullable=False, default="female")
     
-    monthly_income = Column(Float, nullable=False, default=0.0)
-    monthly_expenses = Column(Float, nullable=False, default=0.0)
-    savings = Column(Float, nullable=False, default=0.0)
-    debt = Column(Float, nullable=False, default=0.0)
-    financial_goal = Column(String(200), nullable=True)
+    # Demographic & Geographic Attributes
+    state: Mapped[str] = mapped_column(String(100), nullable=False, default="Telangana")
+    district: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    locality_type: Mapped[str] = mapped_column(String(50), nullable=False, default="rural")
+    primary_language: Mapped[str] = mapped_column(String(10), nullable=False, default="te")
     
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    # Self-Help Group (SHG) & Livelihood Attributes
+    is_shg_member: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    shg_name: Mapped[Optional[str]] = mapped_column(String(150), nullable=True)
+    occupation: Mapped[Optional[str]] = mapped_column(String(100), nullable=True, default="Tailoring")
+    
+    # Baseline Financial Snapshot captured at onboarding (INR)
+    monthly_income: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    monthly_expenses: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    initial_savings: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    initial_debt: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
 
-    transactions = relationship("Transaction", back_populates="user", cascade="all, delete-orphan")
-    goals = relationship("Goal", back_populates="user", cascade="all, delete-orphan")
-    scheme_matches = relationship("UserSchemeMatch", back_populates="user", cascade="all, delete-orphan")
+    def __repr__(self) -> str:
+        return f"<User id={self.id} name='{self.name}' state='{self.state}' language='{self.primary_language}'>"

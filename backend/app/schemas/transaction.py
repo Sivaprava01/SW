@@ -1,34 +1,35 @@
-from pydantic import BaseModel, Field, field_validator
-from typing import Optional, Literal
-from datetime import datetime, date
+"""
+Sakhi Transaction Schemas.
+
+Pydantic v2 schemas for creating, updating, and returning income/expense transactions.
+"""
+
+import datetime as dt
+from typing import Optional
+from pydantic import BaseModel, Field, ConfigDict
+
 
 class TransactionBase(BaseModel):
-    amount: float = Field(..., gt=0)
-    type: Literal["income", "expense"]
-    category: str = Field(..., min_length=1)
-    date: str = Field(..., description="YYYY-MM-DD")
-    description: Optional[str] = None
+    """Base transaction attributes."""
+    amount: float = Field(..., gt=0.0, description="Positive transaction amount in INR")
+    type: str = Field(..., pattern="^(income|expense)$", description="Transaction type: 'income' or 'expense'")
+    category: str = Field(..., min_length=1, max_length=100, description="Transaction category")
+    date: dt.date = Field(default_factory=dt.date.today, description="Date of transaction")
+    description: Optional[str] = Field(default=None, max_length=255, description="Optional note or context")
 
-    @field_validator("date")
-    @classmethod
-    def validate_not_future(cls, v: str) -> str:
-        try:
-            tx_date = datetime.strptime(v[:10], "%Y-%m-%d").date()
-        except Exception as e:
-            raise ValueError("Invalid date format. Use YYYY-MM-DD.") from e
+    model_config = ConfigDict(populate_by_name=True, from_attributes=True)
 
-        if tx_date > date.today():
-            raise ValueError("Transaction date cannot be in the future.")
-
-        return v[:10]
 
 class TransactionCreate(TransactionBase):
-    user_id: str
+    """Schema for logging a new transaction."""
+    pass
+
 
 class TransactionResponse(TransactionBase):
-    id: str
-    user_id: str
-    created_at: datetime
+    """Output schema for a transaction record."""
+    id: int
+    user_id: int
+    created_at: dt.datetime
+    updated_at: dt.datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(populate_by_name=True, from_attributes=True)

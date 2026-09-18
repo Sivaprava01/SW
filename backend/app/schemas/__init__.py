@@ -1,13 +1,27 @@
-from app.schemas.user import UserBase, UserCreate, UserUpdate, UserResponse
+"""
+Sakhi Pydantic Schemas Package.
+"""
+
+from app.schemas.health import HealthResponse, ReadinessResponse
+from app.schemas.common import ErrorDetail, ErrorResponse, RootResponse
+from app.schemas.user import UserBase, UserCreate, UserUpdate, UserResponse, UserPreferencesUpdate
 from app.schemas.transaction import TransactionBase, TransactionCreate, TransactionResponse
-from app.schemas.goal import GoalBase, GoalCreate, GoalUpdate, GoalResponse
-from app.schemas.scheme import SchemeBase, SchemeResponse, SchemeMatchRequest, SchemeMatchResponse
-from app.schemas.ai import AIChatRequest, AIChatResponse, FinancialContextPayload
+from app.schemas.finance import CategoryBreakdown, FinancialSummaryResponse
 
 __all__ = [
-    "UserBase", "UserCreate", "UserUpdate", "UserResponse",
-    "TransactionBase", "TransactionCreate", "TransactionResponse",
-    "GoalBase", "GoalCreate", "GoalUpdate", "GoalResponse",
-    "SchemeBase", "SchemeResponse", "SchemeMatchRequest", "SchemeMatchResponse",
-    "AIChatRequest", "AIChatResponse", "FinancialContextPayload"
+    "HealthResponse",
+    "ReadinessResponse",
+    "ErrorDetail",
+    "ErrorResponse",
+    "RootResponse",
+    "UserBase",
+    "UserCreate",
+    "UserUpdate",
+    "UserResponse",
+    "UserPreferencesUpdate",
+    "TransactionBase",
+    "TransactionCreate",
+    "TransactionResponse",
+    "CategoryBreakdown",
+    "FinancialSummaryResponse",
 ]
