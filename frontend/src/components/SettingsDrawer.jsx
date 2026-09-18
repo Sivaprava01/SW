@@ -5,7 +5,6 @@ import {
   IconMapPin,
   IconCalendar,
   IconWallet,
-  IconTarget,
   IconWorld,
   IconLogout,
   IconCheck,
@@ -20,14 +19,19 @@ import {
   IconCompass,
   IconPlayerPlay,
   IconVolume,
+  IconPhone,
+  IconLock,
+  IconChecklist,
+  IconLanguage,
+  IconHelpCircle,
 } from '@tabler/icons-react';
 import { useUser } from '../context/UserContext';
 import { api } from '../services/api';
 
 const LANGUAGES = [
-  { code: 'en', name: 'English', native: 'English' },
-  { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
-  { code: 'te', name: 'Telugu', native: 'తెలుగు' },
+  { code: 'en', symbol: 'A', name: 'English', native: 'English' },
+  { code: 'hi', symbol: 'हिन्दी', name: 'Hindi', native: 'हिन्दी' },
+  { code: 'te', symbol: 'తెలుగు', name: 'Telugu', native: 'తెలుగు' },
 ];
 
 const STATES = [
@@ -44,11 +48,11 @@ const STATES = [
   'Other / Central'
 ];
 
-const AVATAR_COLORS = [
-  'from-orange-500 to-amber-400',
-  'from-emerald-600 to-teal-500',
-  'from-purple-600 to-indigo-600',
-  'from-rose-500 to-pink-600',
+const AVATAR_PALETTES = [
+  { id: 'primary', bg: 'bg-orange-600', gradient: 'from-orange-500 to-amber-400', ring: 'ring-orange-500' },
+  { id: 'secondary', bg: 'bg-rose-700', gradient: 'from-rose-600 to-pink-500', ring: 'ring-rose-500' },
+  { id: 'tertiary', bg: 'bg-amber-700', gradient: 'from-amber-600 to-yellow-500', ring: 'ring-amber-500' },
+  { id: 'emerald', bg: 'bg-emerald-600', gradient: 'from-emerald-500 to-teal-400', ring: 'ring-emerald-500' },
 ];
 
 export default function SettingsDrawer({ isOpen, onClose }) {
@@ -63,10 +67,10 @@ export default function SettingsDrawer({ isOpen, onClose }) {
 
   // Avatar state
   const [avatarUrl, setAvatarUrl] = useState(() => {
-    return localStorage.getItem('sakhi_avatar') || '';
+    return typeof window !== 'undefined' ? (localStorage.getItem('sakhi_avatar') || '') : '';
   });
-  const [avatarColor, setAvatarColor] = useState(() => {
-    return localStorage.getItem('sakhi_avatar_color') || AVATAR_COLORS[0];
+  const [selectedPalette, setSelectedPalette] = useState(() => {
+    return typeof window !== 'undefined' ? (localStorage.getItem('sakhi_avatar_palette') || 'primary') : 'primary';
   });
 
   // Edit profile form state
@@ -82,7 +86,7 @@ export default function SettingsDrawer({ isOpen, onClose }) {
     if (user) {
       setFormData({
         name: user.name || '',
-        monthly_income: user.monthly_income ?? 12000,
+        monthly_income: user.monthly_income ?? 18500,
         age: user.age ?? 28,
         state: user.state || 'Telangana',
         is_shg_member: Boolean(user.is_shg_member),
@@ -105,11 +109,13 @@ export default function SettingsDrawer({ isOpen, onClose }) {
     }
   };
 
-  const handleColorSelect = (color) => {
-    setAvatarColor(color);
-    localStorage.setItem('sakhi_avatar_color', color);
-    setAvatarUrl('');
-    localStorage.removeItem('sakhi_avatar');
+  const handlePaletteSelect = (paletteId) => {
+    setSelectedPalette(paletteId);
+    localStorage.setItem('sakhi_avatar_palette', paletteId);
+    const chosen = AVATAR_PALETTES.find(p => p.id === paletteId);
+    if (chosen) {
+      localStorage.setItem('sakhi_avatar_color', chosen.gradient);
+    }
   };
 
   const handleSaveProfile = async (e) => {
@@ -142,77 +148,62 @@ export default function SettingsDrawer({ isOpen, onClose }) {
     logoutUser();
   };
 
+  const currentPalette = AVATAR_PALETTES.find(p => p.id === selectedPalette) || AVATAR_PALETTES[0];
+
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="settings-drawer-title"
-      className="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in"
+      className="fixed inset-0 z-50 bg-stone-950/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in"
     >
-      <div className="bg-white dark:bg-slate-900 w-full sm:max-w-md h-[94vh] sm:h-[680px] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 border border-amber-100 dark:border-slate-800">
+      <div className="bg-white dark:bg-slate-900 w-full sm:max-w-md h-[95vh] sm:h-[720px] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 border border-amber-100 dark:border-slate-800">
         
-        {/* Header (Stitch Warm Gradient) */}
-        <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-700 text-white p-4 flex items-center justify-between shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-white/15 rounded-xl border border-white/20">
-              <IconUser size={18} className="text-amber-200" />
-            </div>
-            <div>
-              <h2 id="settings-drawer-title" className="font-black text-base tracking-tight">
-                {t('settings') || 'Settings'}
-              </h2>
-              <p className="text-xs text-orange-100 font-medium">
-                Edit Information & App Preferences
-              </p>
-            </div>
+        {/* Top Navigation / Drawer Header (Stitch 1:1) */}
+        <div className="bg-[#fff8f3] dark:bg-slate-900 px-4 py-3.5 flex items-center justify-between border-b border-amber-100 dark:border-slate-800 shrink-0">
+          <div className="flex flex-col">
+            <h2 id="settings-drawer-title" className="font-black text-base text-stone-900 dark:text-stone-100 tracking-tight">
+              Settings & Profile
+            </h2>
+            <p className="text-[11px] text-stone-500 dark:text-stone-400">
+              Personal info, language & voice preferences
+            </p>
           </div>
           <button
             onClick={onClose}
-            aria-label="Close settings"
-            className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="Close"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-stone-100 hover:bg-stone-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-stone-600 dark:text-stone-300 active:scale-95 transition cursor-pointer"
+            type="button"
           >
             <IconX size={20} />
           </button>
         </div>
 
         {/* Scrollable Settings Body */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#fffaf5]/60 dark:bg-slate-950 text-xs sm:text-sm">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#fffaf5]/50 dark:bg-slate-950 text-xs sm:text-sm">
           
-          {/* SECTION 1: 👤 Personal Information */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-amber-100 dark:border-slate-800 shadow-xs space-y-3.5">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xs font-black uppercase tracking-wider text-orange-800 dark:text-orange-400 flex items-center gap-1.5">
-                <IconEdit size={14} />
-                <span>Personal Information</span>
-              </h3>
-              {savedSuccess && (
-                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-                  <IconCircleCheck size={13} /> Updated!
-                </span>
-              )}
-            </div>
-
-            {/* Profile Picture Upload & Styles */}
-            <div className="flex items-center gap-3.5 p-3 bg-[#fff1e3]/40 dark:bg-slate-800/50 rounded-2xl border border-amber-100 dark:border-slate-800">
-              <div className="relative">
+          {/* Section 1: Personal Profile (Stitch 1:1) */}
+          <section className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-amber-100 dark:border-slate-800 shadow-2xs space-y-3.5">
+            <div className="flex items-center gap-3.5">
+              <div className="relative shrink-0">
                 {avatarUrl ? (
                   <img
                     src={avatarUrl}
-                    alt={user.name}
-                    className="w-14 h-14 rounded-2xl object-cover border-2 border-orange-500 shadow-xs"
+                    alt={formData.name || user.name}
+                    className="w-16 h-16 rounded-2xl object-cover border-2 border-orange-500 shadow-xs"
                   />
                 ) : (
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${avatarColor} flex items-center justify-center text-white font-black text-xl shadow-xs border border-white/20`}>
-                    {user.name ? user.name[0] : 'स'}
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-tr ${currentPalette.gradient} flex items-center justify-center text-white font-black text-2xl shadow-xs border border-white/20`}>
+                    {formData.name ? formData.name[0] : (user.name ? user.name[0] : 'स')}
                   </div>
                 )}
-                
+
                 <label
                   htmlFor="settings-avatar-upload"
-                  className="absolute -bottom-1 -right-1 p-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl shadow-md cursor-pointer transition min-h-[28px] min-w-[28px] flex items-center justify-center"
-                  title="Upload picture"
+                  className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-orange-600 hover:bg-orange-700 text-white flex items-center justify-center shadow-md cursor-pointer transition active:scale-95"
+                  title="Upload profile photo"
                 >
-                  <IconCamera size={13} />
+                  <IconCamera size={14} />
                   <input
                     id="settings-avatar-upload"
                     type="file"
@@ -223,254 +214,363 @@ export default function SettingsDrawer({ isOpen, onClose }) {
                 </label>
               </div>
 
-              <div className="flex-1">
-                <span className="text-xs font-bold text-stone-800 dark:text-stone-200 block mb-0.5">
-                  Profile Picture
+              <div className="flex flex-col min-w-0 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-black text-sm text-stone-900 dark:text-stone-100 truncate">
+                    {formData.name || 'Lakshmi Devi'}
+                  </span>
+                  <IconCircleCheck size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+                </div>
+                <span className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
+                  Tailoring & Micro-retail • {formData.state || 'Telangana'}
                 </span>
-                <p className="text-[11px] text-stone-500 dark:text-stone-400 mb-1.5">
-                  Upload photo or choose avatar color:
-                </p>
-                <div className="flex gap-1.5">
-                  {AVATAR_COLORS.map((c, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleColorSelect(c)}
-                      className={`w-5 h-5 rounded-full bg-gradient-to-tr ${c} cursor-pointer transition border ${
-                        avatarColor === c && !avatarUrl ? 'ring-2 ring-orange-500 scale-110' : 'border-stone-200 dark:border-slate-700'
-                      }`}
-                      title="Choose avatar color"
-                    />
-                  ))}
-                </div>
               </div>
             </div>
 
-            {/* Editable Fields */}
-            <div className="space-y-2.5">
-              <div>
-                <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400 mb-1">{t('full_name') || 'Full Name'}</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-xs font-bold text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
-                />
+            {/* Profile Tint Theme Picker */}
+            <div className="space-y-1.5 pt-1">
+              <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 tracking-wider uppercase">
+                Profile Tint Theme
+              </span>
+              <div className="flex items-center gap-2">
+                {AVATAR_PALETTES.map((pal) => (
+                  <button
+                    key={pal.id}
+                    type="button"
+                    onClick={() => handlePaletteSelect(pal.id)}
+                    className={`w-8 h-8 rounded-full ${pal.bg} flex items-center justify-center shadow-xs cursor-pointer transition text-white ${
+                      selectedPalette === pal.id ? 'ring-2 ring-offset-2 ring-orange-500 scale-110' : 'opacity-80 hover:opacity-100'
+                    }`}
+                  >
+                    {selectedPalette === pal.id && <IconCheck size={14} strokeWidth={3} />}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Form Inputs */}
+            <div className="space-y-2.5 pt-2 border-t border-amber-100 dark:border-slate-800">
+              {/* Registered Full Name */}
+              <div className="space-y-1">
+                <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400">
+                  Registered Full Name
+                </label>
+                <div className="flex items-center bg-stone-50 dark:bg-slate-800/80 rounded-xl px-3 py-2 border border-amber-200/80 dark:border-slate-700">
+                  <IconUser size={16} className="text-orange-600 dark:text-orange-400 mr-2 shrink-0" />
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full bg-transparent text-xs font-bold text-stone-900 dark:text-stone-100 focus:outline-hidden"
+                  />
+                </div>
               </div>
 
+              {/* Monthly Income & Age Row */}
               <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400 mb-1">{t('monthly_income') || 'Monthly Income'} (₹)</label>
-                  <input
-                    type="number"
-                    required
-                    min="0"
-                    value={formData.monthly_income}
-                    onChange={(e) => setFormData({ ...formData, monthly_income: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-xs font-bold text-orange-800 dark:text-orange-400 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
-                  />
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400">
+                    Monthly Income (₹)
+                  </label>
+                  <div className="flex items-center bg-stone-50 dark:bg-slate-800/80 rounded-xl px-3 py-2 border border-amber-200/80 dark:border-slate-700">
+                    <span className="text-xs font-black text-orange-600 dark:text-orange-400 mr-1.5">₹</span>
+                    <input
+                      type="number"
+                      required
+                      min="0"
+                      value={formData.monthly_income}
+                      onChange={(e) => setFormData({ ...formData, monthly_income: e.target.value })}
+                      className="w-full bg-transparent text-xs font-bold text-orange-700 dark:text-orange-300 focus:outline-hidden"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400 mb-1">{t('age') || 'Age'}</label>
-                  <input
-                    type="number"
-                    required
-                    min="18"
-                    max="100"
-                    value={formData.age}
-                    onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-xs font-bold text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
-                  />
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400">
+                    Member Age
+                  </label>
+                  <div className="flex items-center bg-stone-50 dark:bg-slate-800/80 rounded-xl px-3 py-2 border border-amber-200/80 dark:border-slate-700">
+                    <input
+                      type="number"
+                      required
+                      min="18"
+                      max="100"
+                      value={formData.age}
+                      onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                      className="w-full bg-transparent text-xs font-bold text-stone-900 dark:text-stone-100 focus:outline-hidden"
+                    />
+                    <span className="text-[11px] text-stone-400 font-medium">yrs</span>
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400 mb-1">{t('state') || 'State'}</label>
-                <select
-                  value={formData.state}
-                  onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-xl text-xs font-bold text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500"
+              {/* Operating State */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400">
+                    Operating State
+                  </label>
+                  <span className="px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/80 text-orange-900 dark:text-orange-300 text-[10px] font-bold">
+                    SERP Active
+                  </span>
+                </div>
+                <div className="flex items-center bg-stone-50 dark:bg-slate-800/80 rounded-xl px-3 py-2 border border-amber-200/80 dark:border-slate-700">
+                  <IconMapPin size={16} className="text-orange-600 dark:text-orange-400 mr-2 shrink-0" />
+                  <select
+                    value={formData.state}
+                    onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                    className="w-full bg-transparent text-xs font-bold text-stone-900 dark:text-stone-100 focus:outline-hidden cursor-pointer"
+                  >
+                    {STATES.map((st) => (
+                      <option key={st} value={st} className="bg-white dark:bg-slate-800 text-stone-900 dark:text-stone-100">
+                        {st}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* SHG Membership Toggle */}
+              <div className="flex items-center justify-between bg-stone-50 dark:bg-slate-800/80 rounded-xl p-3 border border-amber-200/80 dark:border-slate-700">
+                <div className="flex flex-col pr-2">
+                  <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
+                    SHG Membership
+                  </span>
+                  <span className="text-[10px] text-orange-600 dark:text-orange-400 font-medium">
+                    Velugu / SERP Federated
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={formData.is_shg_member}
+                  onClick={() => setFormData({ ...formData, is_shg_member: !formData.is_shg_member })}
+                  className={`w-12 h-6 rounded-full relative transition-colors cursor-pointer flex items-center px-0.5 ${
+                    formData.is_shg_member ? 'bg-orange-600' : 'bg-stone-300 dark:bg-slate-700'
+                  }`}
                 >
-                  {STATES.map((st) => (
-                    <option key={st} value={st}>{st}</option>
-                  ))}
-                </select>
+                  <div
+                    className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform ${
+                      formData.is_shg_member ? 'translate-x-6' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
               </div>
+            </div>
+          </section>
 
-              <div>
-                <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400 mb-1">SHG Membership</label>
-                <div className="grid grid-cols-2 gap-2">
+          {/* Section 2: Language & Voice Preferences (Stitch 1:1) */}
+          <section className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-amber-100 dark:border-slate-800 shadow-2xs space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <IconLanguage size={18} className="text-orange-600 dark:text-orange-400" />
+                <h3 className="font-black text-xs text-stone-900 dark:text-stone-100 uppercase tracking-wider">
+                  Language & Voice
+                </h3>
+              </div>
+              <span className="text-[10px] font-bold text-orange-800 dark:text-orange-300 bg-orange-100 dark:bg-orange-950/80 px-2 py-0.5 rounded-full">
+                Audio First
+              </span>
+            </div>
+
+            {/* 3 Large Accessible Cards */}
+            <div className="grid grid-cols-3 gap-2">
+              {LANGUAGES.map((lang) => {
+                const isSelected = language === lang.code;
+                return (
                   <button
+                    key={lang.code}
                     type="button"
-                    onClick={() => setFormData({ ...formData, is_shg_member: true })}
-                    className={`py-2 px-3 rounded-xl text-xs font-bold transition border min-h-[38px] cursor-pointer ${
-                      formData.is_shg_member
-                        ? 'bg-orange-600 text-white border-orange-600 shadow-2xs'
-                        : 'bg-white dark:bg-slate-800 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-700'
+                    onClick={() => setLanguage(lang.code)}
+                    className={`flex flex-col items-center justify-center p-2.5 rounded-2xl shadow-2xs h-20 transition-all cursor-pointer relative overflow-hidden border ${
+                      isSelected
+                        ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
+                        : 'bg-stone-50 dark:bg-slate-800/80 text-stone-800 dark:text-stone-200 border-stone-200/80 dark:border-slate-700 hover:bg-stone-100'
                     }`}
                   >
-                    {t('yes') || 'Yes'}
+                    {isSelected && (
+                      <div className="absolute top-1 right-1">
+                        <IconCircleCheck size={14} className="text-white" />
+                      </div>
+                    )}
+                    <span className="font-black text-base">{lang.symbol}</span>
+                    <span className="text-[11px] font-medium mt-0.5 opacity-90">{lang.name}</span>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setFormData({ ...formData, is_shg_member: false })}
-                    className={`py-2 px-3 rounded-xl text-xs font-bold transition border min-h-[38px] cursor-pointer ${
-                      !formData.is_shg_member
-                        ? 'bg-orange-600 text-white border-orange-600 shadow-2xs'
-                        : 'bg-white dark:bg-slate-800 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-700'
-                    }`}
-                  >
-                    {t('no') || 'No'}
-                  </button>
+                );
+              })}
+            </div>
+
+            {/* Voice Narration Status Card */}
+            <div className="bg-stone-50 dark:bg-slate-800/80 rounded-xl p-3 border border-amber-100 dark:border-slate-700 space-y-1">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-stone-900 dark:text-stone-100">
+                  <IconVolume size={15} className="text-orange-600 dark:text-orange-400" />
+                  <span>Voice Narration</span>
                 </div>
+                <span className="text-[10px] font-bold text-orange-700 dark:text-orange-300 bg-white dark:bg-slate-900 px-2 py-0.5 rounded shadow-2xs">
+                  Normal (Clear)
+                </span>
               </div>
-            </div>
-          </div>
-
-          {/* SECTION 2: 🌐 Language & Theme Preferences */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-amber-100 dark:border-slate-800 shadow-xs space-y-3">
-            <h3 className="text-xs font-black uppercase tracking-wider text-orange-800 dark:text-orange-400 flex items-center gap-1.5">
-              <IconWorld size={14} />
-              <span>Language & Theme</span>
-            </h3>
-
-            {/* Language Selector */}
-            <div>
-              <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400 mb-1.5">
-                {t('language_label') || 'Preferred Language'}
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {LANGUAGES.map((lang) => {
-                  const isSelected = language === lang.code;
-                  return (
-                    <button
-                      key={lang.code}
-                      type="button"
-                      onClick={() => setLanguage(lang.code)}
-                      className={`py-2 px-2 rounded-xl text-xs font-bold transition flex flex-col items-center justify-center gap-0.5 cursor-pointer min-h-[44px] border ${
-                        isSelected
-                          ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
-                          : 'bg-white dark:bg-slate-800 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-700 hover:bg-stone-50'
-                      }`}
-                    >
-                      <span className="text-xs">{lang.native}</span>
-                      <span className="text-[10px] opacity-80">{lang.name}</span>
-                    </button>
-                  );
-                })}
-              </div>
+              <p className="text-[11px] text-stone-500 dark:text-stone-400 leading-snug">
+                Sakhi speaks slowly with emphasized monetary terms in {language === 'te' ? 'Telugu' : language === 'hi' ? 'Hindi' : 'English'} dialect.
+              </p>
             </div>
 
-            {/* Theme Mode Toggle (Light / Dark) */}
-            <div className="pt-2 border-t border-amber-100 dark:border-slate-800">
-              <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400 mb-1.5">
-                App Appearance Mode
+            {/* Appearance Preference Mode (Light / Dark) */}
+            <div className="space-y-1.5 pt-1">
+              <label className="block text-[11px] font-bold text-stone-600 dark:text-stone-400">
+                Appearance Preference
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => setTheme('light')}
-                  className={`py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] border ${
+                  className={`py-2.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer min-h-[42px] border ${
                     theme === 'light'
-                      ? 'bg-amber-100 text-amber-950 border-amber-300 shadow-2xs font-black'
-                      : 'bg-white dark:bg-slate-800 text-stone-600 dark:text-stone-400 border-stone-200 dark:border-slate-700'
+                      ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
+                      : 'bg-stone-50 dark:bg-slate-800/80 text-stone-700 dark:text-stone-300 border-stone-200 dark:border-slate-700'
                   }`}
                 >
-                  <IconSun size={15} className="text-amber-600" />
+                  <IconSun size={16} />
                   <span>Light Mode ☀️</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setTheme('dark')}
-                  className={`py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] border ${
+                  className={`py-2.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer min-h-[42px] border ${
                     theme === 'dark'
-                      ? 'bg-slate-800 text-amber-300 border-slate-600 shadow-2xs font-black'
-                      : 'bg-white dark:bg-slate-800 text-stone-600 dark:text-stone-400 border-stone-200 dark:border-slate-700'
+                      ? 'bg-orange-600 text-white border-orange-600 shadow-xs'
+                      : 'bg-stone-50 dark:bg-slate-800/80 text-stone-700 dark:text-stone-300 border-stone-200 dark:border-slate-700'
                   }`}
                 >
-                  <IconMoon size={15} className="text-indigo-400" />
+                  <IconMoon size={16} />
                   <span>Dark Mode 🌙</span>
                 </button>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* SECTION 3: 🎓 Interactive App Tour & Splash Replay */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-amber-100 dark:border-slate-800 shadow-xs space-y-2">
-            <h3 className="text-xs font-black uppercase tracking-wider text-orange-800 dark:text-orange-400 flex items-center gap-1.5">
-              <IconSparkles size={14} />
-              <span>Help & Guided Tour</span>
-            </h3>
-            <p className="text-xs text-stone-600 dark:text-stone-400">
-              Need a reminder on how to use Sakhi? Walkthrough our simple guided tour or view the startup greeting.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  startTutorial();
-                }}
-                className="w-full py-2.5 bg-[#fff1e3] dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 text-orange-950 dark:text-orange-300 font-bold rounded-xl text-xs transition border border-orange-200 dark:border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] active:scale-95"
-              >
-                <IconPlayerPlay size={16} />
-                <span>Replay Tour</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  replaySplash();
-                }}
-                className="w-full py-2.5 bg-[#fff1e3] dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 text-orange-950 dark:text-orange-300 font-bold rounded-xl text-xs transition border border-orange-200 dark:border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] active:scale-95"
-              >
-                <IconSparkles size={16} />
-                <span>Replay Splash</span>
-              </button>
+          {/* Section 3: Assistance & Guides (Stitch 1:1) */}
+          <section className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-amber-100 dark:border-slate-800 shadow-2xs space-y-2.5">
+            <div className="flex items-center gap-1.5">
+              <IconHelpCircle size={18} className="text-orange-600 dark:text-orange-400" />
+              <h3 className="font-black text-xs text-stone-900 dark:text-stone-100 uppercase tracking-wider">
+                Assistance & Guides
+              </h3>
             </div>
-          </div>
 
-          {/* SECTION 4: 🔊 Audio & Voice Status */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-amber-100 dark:border-slate-800 shadow-xs space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-stone-800 dark:text-stone-200">
-              <IconVolume size={15} className="text-orange-600 dark:text-orange-400" />
-              <span>Voice Assistance</span>
+            {/* Replay Interactive Tour */}
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                startTutorial();
+              }}
+              className="w-full flex items-center justify-between p-3 bg-stone-50 hover:bg-stone-100 dark:bg-slate-800/80 dark:hover:bg-slate-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200/80 dark:border-slate-700 active:scale-98 transition cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-950/80 flex items-center justify-center text-orange-700 dark:text-orange-300">
+                  <IconCompass size={18} />
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="font-bold text-xs">Replay Interactive Tour</span>
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400">Step-by-step audio walkthrough</span>
+                </div>
+              </div>
+              <IconPlayerPlay size={16} className="text-stone-400" />
+            </button>
+
+            {/* Replay Startup Splash */}
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                replaySplash();
+              }}
+              className="w-full flex items-center justify-between p-3 bg-stone-50 hover:bg-stone-100 dark:bg-slate-800/80 dark:hover:bg-slate-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200/80 dark:border-slate-700 active:scale-98 transition cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-950/80 flex items-center justify-center text-amber-800 dark:text-amber-300">
+                  <IconSparkles size={18} />
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="font-bold text-xs">Replay Startup Greeting</span>
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400">Welcome screen & multilingual namaste</span>
+                </div>
+              </div>
+              <IconPlayerPlay size={16} className="text-stone-400" />
+            </button>
+
+            {/* Village BC Sakhi Coordinator Call Card */}
+            <div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-slate-800/80 rounded-xl border border-stone-200/80 dark:border-slate-700">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-950/80 flex items-center justify-center text-emerald-700 dark:text-emerald-300">
+                  <IconUser size={18} />
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="font-bold text-xs text-stone-900 dark:text-stone-100">Village BC Sakhi</span>
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400">Smt. Radha Rani (Khammam)</span>
+                </div>
+              </div>
+              <a
+                href="tel:1800000123"
+                className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs active:scale-95 transition"
+                title="Call Sakhi Coordinator"
+              >
+                <IconPhone size={15} />
+              </a>
             </div>
-            <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
-              Listen buttons (🔊) are available on Learn topics, Roadmaps, and AI responses with Indian accent support.
-            </p>
-          </div>
+          </section>
 
-          {/* ──────────────────────── SAVE CHANGES ACTION ──────────────────────── */}
-          <div className="pt-2">
+          {/* Section 4: Privacy & Deterministic Safety */}
+          <section className="bg-stone-100 dark:bg-slate-800/90 rounded-2xl p-3.5 border border-stone-200 dark:border-slate-700 space-y-1.5">
+            <div className="flex items-center gap-2 text-xs font-bold text-stone-900 dark:text-stone-100">
+              <IconShield size={16} className="text-orange-600 dark:text-orange-400" />
+              <span>100% Private Ledger</span>
+            </div>
+            <p className="text-[10px] text-stone-500 dark:text-stone-400 leading-snug">
+              All calculations run deterministically on this phone. Zero analytics trackers, encrypted local backup, and strictly no third-party data selling.
+            </p>
+            <div className="flex items-center gap-1 text-orange-700 dark:text-orange-300 text-[10px] font-bold pt-0.5">
+              <IconLock size={12} />
+              <span>Hardware-bound SHG Signature: Active</span>
+            </div>
+          </section>
+
+          {/* Action Buttons (Save & Logout) */}
+          <div className="space-y-2 pt-2">
             <button
               type="button"
               onClick={handleSaveProfile}
               disabled={saving}
               className="w-full py-3 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white font-black rounded-2xl text-xs sm:text-sm transition shadow-md flex items-center justify-center gap-2 cursor-pointer min-h-[48px] active:scale-95"
             >
-              <IconDeviceFloppy size={16} />
-              <span>{saving ? 'Saving...' : (t('save_changes') || 'Save Changes')}</span>
+              {savedSuccess ? (
+                <>
+                  <IconCircleCheck size={18} />
+                  <span>Saved to Device ✓</span>
+                </>
+              ) : (
+                <>
+                  <IconDeviceFloppy size={18} />
+                  <span>{saving ? 'Saving...' : 'Save Changes'}</span>
+                </>
+              )}
             </button>
-          </div>
 
-          {/* ──────────────────────── LOG OUT DANGEROUS ACTION ──────────────────────── */}
-          <div className="pt-2 border-t border-amber-100 dark:border-slate-800">
             {!showSignoutConfirm ? (
               <button
                 type="button"
                 onClick={() => setShowSignoutConfirm(true)}
-                className="w-full py-3 bg-transparent hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-600 dark:text-rose-400 font-bold rounded-2xl text-xs transition flex items-center justify-center gap-2 cursor-pointer min-h-[48px] border-2 border-rose-300 dark:border-rose-800 active:scale-95"
+                className="w-full py-3 bg-transparent hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-600 dark:text-rose-400 font-bold rounded-2xl text-xs transition flex items-center justify-center gap-2 cursor-pointer min-h-[46px] border border-rose-300 dark:border-rose-800 active:scale-95"
               >
                 <IconLogout size={16} />
-                <span>{t('sign_out') || 'Log Out'}</span>
+                <span>Log Out from Device</span>
               </button>
             ) : (
-              <div className="bg-rose-50 dark:bg-rose-950/50 p-3.5 rounded-2xl border border-rose-300 dark:border-rose-800 space-y-2 animate-in fade-in">
+              <div className="bg-rose-50 dark:bg-rose-950/50 p-3 rounded-2xl border border-rose-300 dark:border-rose-800 space-y-2 animate-in fade-in">
                 <p className="text-xs font-bold text-rose-900 dark:text-rose-200 text-center">
                   Are you sure you want to log out?
                 </p>
@@ -480,7 +580,7 @@ export default function SettingsDrawer({ isOpen, onClose }) {
                     onClick={() => setShowSignoutConfirm(false)}
                     className="py-2 bg-white dark:bg-slate-800 text-stone-700 dark:text-stone-200 font-bold rounded-xl text-xs border border-stone-200 dark:border-slate-700"
                   >
-                    {t('cancel') || 'Cancel'}
+                    Cancel
                   </button>
                   <button
                     type="button"
