@@ -2,23 +2,29 @@
 
 :root {
   --primary-saffron: #ea580c;
+  --primary-saffron-light: #f97316;
   --primary-emerald: #059669;
-  --bg-sand: #fbfbf9;
+  --bg-sand: #fffaf5;
+  --surface-warm: #fff1e3;
+  --surface-warm-high: #fcebd7;
+  --terracotta: #9d4300;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f8fafc;
-  color: #0f172a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Karla', 'Inconsolata', Helvetica, Arial, sans-serif;
+  background-color: #f7f4ef;
+  color: #1c1917;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 html.dark body {
-  background-color: #020617;
-  color: #f8fafc;
+  background-color: #030712;
+  color: #f9fafb;
 }
 
 /* Custom utility classes */
@@ -26,27 +32,42 @@ html.dark body {
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #fffaf5;
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 4px 24px -2px rgba(120, 50, 0, 0.06);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 html.dark .app-container {
-  background-color: #0b132b;
-  box-shadow: 0 4px 25px -2px rgba(0, 0, 0, 0.5);
+  background-color: #0b1120;
+  box-shadow: 0 4px 30px -2px rgba(0, 0, 0, 0.6);
   border-left: 1px solid #1e293b;
   border-right: 1px solid #1e293b;
 }
 
 @media (min-width: 640px) {
   body {
-    background-color: #f1f5f9;
+    background-color: #efeae2;
   }
   html.dark body {
     background-color: #020617;
   }
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 9999px;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.5);
+}
