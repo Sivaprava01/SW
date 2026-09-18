@@ -139,24 +139,6 @@ export default function Onboarding({ onComplete }) {
             </div>
           </div>
 
-          {/* Quick Action Demo Auto-Fill Banner */}
-          <div className="bg-[#fff1e3] dark:bg-[#28211C] rounded-xl p-2.5 flex items-center justify-between gap-2 border border-amber-200/50 dark:border-[#3D332B]">
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="text-base select-none">⚡</span>
-              <span className="text-xs text-stone-800 dark:text-[#D4C4B5] font-bold truncate">
-                Try instant guided preview
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={handleQuickDemo}
-              disabled={loading}
-              className="shrink-0 bg-rose-700 hover:bg-rose-800 active:scale-95 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-xs cursor-pointer"
-            >
-              <span>{loading ? 'Setting up...' : 'Explore as Lakshmi'}</span>
-              <IconSparkles size={13} />
-            </button>
-          </div>
         </section>
 
         {/* Stepper Indicator */}
