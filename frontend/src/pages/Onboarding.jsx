@@ -10,14 +10,23 @@ import {
   IconCheck,
   IconVolume,
   IconLanguage,
+  IconMicrophone,
 } from '@tabler/icons-react';
 import { api } from '../services/api';
 import { useUser } from '../context/UserContext';
 import { useSpeech } from '../hooks/useSpeech';
+import { useSTT } from '../hooks/useSTT';
+
+const DREAM_SUGGESTIONS = {
+  en: ["Daughter's Education", "Tailoring Machine", "House Repair", "Gold Savings", "Dairy Cow"],
+  te: ["పిల్లల చదువు", "కుట్టు మిషన్", "ఇంటి మరమ్మత్తు", "బంగారం పొదుపు", "పాడి ఆవు"],
+  hi: ["बेटी की पढ़ाई", "सिलाई मशीन", "घर की मरम्मत", "सोना बचत", "दुधारू गाय"],
+};
 
 export default function Onboarding({ onComplete }) {
   const { setUser, setFinancialHealth, language, setLanguage, t } = useUser();
   const { speak, isSpeaking, stop } = useSpeech();
+  const { isListening, listeningField, startListening, stopListening, errorNotice } = useSTT();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -200,8 +209,26 @@ export default function Onboarding({ onComplete }) {
                     placeholder={t('onboarding_name_placeholder')}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 pl-10 pr-4 text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden transition"
+                    className="w-full bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl py-3 pl-10 pr-12 text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden transition"
                   />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (isListening && listeningField === 'name') {
+                        stopListening();
+                      } else {
+                        startListening((spoken) => setFormData((prev) => ({ ...prev, name: spoken })), 'name');
+                      }
+                    }}
+                    title={language === 'te' ? 'పేరు మాట్లాడండి' : language === 'hi' ? 'नाम बोलें' : 'Speak Name'}
+                    className={`absolute right-2 p-2 rounded-lg transition cursor-pointer ${
+                      isListening && listeningField === 'name'
+                        ? 'bg-rose-500 text-white animate-pulse'
+                        : 'bg-[#fff1e3] dark:bg-[#28211C] text-orange-700 dark:text-[#ffb690] hover:bg-orange-100 dark:hover:bg-[#383431]'
+                    }`}
+                  >
+                    <IconMicrophone size={16} />
+                  </button>
                 </div>
               </div>
 
@@ -425,13 +452,51 @@ export default function Onboarding({ onComplete }) {
                   <label className="block text-xs font-bold text-stone-700 dark:text-[#D4C4B5] mb-1">
                     {t('onboarding_dream_question')}
                   </label>
-                  <input
-                    type="text"
-                    placeholder={t('onboarding_dream_placeholder')}
-                    value={formData.financial_goal}
-                    onChange={(e) => setFormData({ ...formData, financial_goal: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
-                  />
+                  <div className="relative flex items-center">
+                    <input
+                      type="text"
+                      placeholder={t('onboarding_dream_placeholder')}
+                      value={formData.financial_goal}
+                      onChange={(e) => setFormData({ ...formData, financial_goal: e.target.value })}
+                      className="w-full pl-3.5 pr-12 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (isListening && listeningField === 'goal') {
+                          stopListening();
+                        } else {
+                          startListening((spoken) => setFormData((prev) => ({ ...prev, financial_goal: spoken })), 'goal');
+                        }
+                      }}
+                      title={language === 'te' ? 'లక్ష్యాన్ని మాట్లాడండి' : language === 'hi' ? 'लक्ष्य बोलें' : 'Speak Goal'}
+                      className={`absolute right-2 p-2 rounded-lg transition cursor-pointer ${
+                        isListening && listeningField === 'goal'
+                          ? 'bg-rose-500 text-white animate-pulse'
+                          : 'bg-[#fff1e3] dark:bg-[#28211C] text-orange-700 dark:text-[#ffb690] hover:bg-orange-100 dark:hover:bg-[#383431]'
+                      }`}
+                    >
+                      <IconMicrophone size={15} />
+                    </button>
+                  </div>
+
+                  {/* Localized Quick Dream Chips */}
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    {(DREAM_SUGGESTIONS[language] || DREAM_SUGGESTIONS['en']).map((dream) => (
+                      <button
+                        key={dream}
+                        type="button"
+                        onClick={() => setFormData((prev) => ({ ...prev, financial_goal: dream }))}
+                        className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition cursor-pointer active:scale-95 ${
+                          formData.financial_goal === dream
+                            ? 'bg-orange-600 text-white border-orange-600 shadow-2xs'
+                            : 'bg-[#fffaf5] dark:bg-[#28211C] text-stone-700 dark:text-[#D4C4B5] border-amber-200/70 dark:border-[#3D332B] hover:bg-orange-50'
+                        }`}
+                      >
+                        {dream}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
