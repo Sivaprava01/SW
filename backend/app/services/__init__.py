@@ -1,3 +1,7 @@
 """
-Sakhi Business Logic & Service Layer Package.
+Sakhi Services Package.
 """
+
+from app.services.user_service import UserService
+
+__all__ = ["UserService"]

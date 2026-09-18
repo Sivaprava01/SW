@@ -71,8 +71,9 @@ uv run alembic upgrade head
 
 ---
 
-## 📡 Core API Endpoints (B1 Foundation)
+## 📡 Core API Endpoints
 
+### 🩺 Health & Diagnostics (B1)
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/` | Root service discovery and metadata |
@@ -80,6 +81,16 @@ uv run alembic upgrade head
 | `GET` | `/api/v1/health/ready` | Readiness probe (verifies database connectivity with `SELECT 1`) |
 | `GET` | `/docs` | Interactive Swagger OpenAPI documentation |
 | `GET` | `/redoc` | ReDoc API documentation |
+
+### 👤 Users & Personalization (B2)
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/v1/users` | Onboard a new user with demographic & baseline financial data |
+| `GET` | `/api/v1/users/demo/lakshmi` | Get or auto-seed the official Lakshmi reference demo profile |
+| `GET` | `/api/v1/users/{id}` | Get user profile by ID |
+| `PATCH` | `/api/v1/users/{id}` | Update user demographics, language, or SHG attributes |
+| `DELETE` | `/api/v1/users/{id}` | Delete a user profile |
+| `GET` | `/api/v1/users` | List users with pagination |
 
 ---
 
