@@ -12,9 +12,13 @@ import {
   IconLock,
   IconVolume,
   IconLanguage,
-  IconBuildingBank,
   IconHome,
   IconBuildingCommunity,
+  IconWallet,
+  IconPigMoney,
+  IconReceipt2,
+  IconTarget,
+  IconCircleCheck,
 } from '@tabler/icons-react';
 import { api } from '../services/api';
 import { useUser } from '../context/UserContext';
@@ -105,10 +109,10 @@ export default function Onboarding({ onComplete }) {
       {/* Warm Top Decorative Accent Bar */}
       <div className="w-full h-1.5 bg-gradient-to-r from-rose-700 via-orange-500 to-amber-600"></div>
 
-      <div className="px-3.5 pt-3 flex flex-col gap-4">
+      <div className="px-3.5 sm:px-4 pt-3 flex flex-col gap-4 max-w-md mx-auto w-full">
         
         {/* Mascot & Greeting Card */}
-        <section className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3 border border-amber-200/60 dark:border-[#3D332B] relative overflow-hidden">
+        <section className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3 border border-amber-200/70 dark:border-[#3D332B] relative overflow-hidden">
           <div className="flex items-center gap-3.5">
             {/* Cultural Emblem Mascot */}
             <div className="relative shrink-0">
@@ -125,11 +129,11 @@ export default function Onboarding({ onComplete }) {
             {/* Title & Subtitle */}
             <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-1.5">
-                <h1 className="font-bold text-xl sm:text-2xl text-[#221a0e] dark:text-[#FFF5EB] truncate">
+                <h1 className="font-headline font-bold text-xl sm:text-2xl text-[#221a0e] dark:text-[#FFF5EB] truncate">
                   Welcome to Sakhi <span className="text-orange-600 dark:text-[#ffb690] font-black">(సఖీ)</span>
                 </h1>
               </div>
-              <p className="text-xs text-stone-500 dark:text-[#A8988A] truncate">
+              <p className="font-mono text-xs text-stone-500 dark:text-[#A8988A] truncate">
                 Let's set up your profile in 3 simple steps
               </p>
             </div>
@@ -156,10 +160,10 @@ export default function Onboarding({ onComplete }) {
         </section>
 
         {/* Stepper Indicator */}
-        <nav aria-label="Onboarding Progress" className="bg-white dark:bg-[#1e1b19] rounded-2xl p-3 shadow-xs border border-amber-200/60 dark:border-[#3D332B] flex flex-col gap-2">
+        <nav aria-label="Onboarding Progress" className="bg-white dark:bg-[#1e1b19] rounded-2xl p-3.5 shadow-xs border border-amber-200/70 dark:border-[#3D332B] flex flex-col gap-2">
           <div className="grid grid-cols-3 gap-2">
             {/* Step 1 */}
-            <div className={`flex flex-col gap-1.5 items-center text-center ${step === 1 ? '' : 'opacity-60'}`}>
+            <div className={`flex flex-col gap-1.5 items-center text-center ${step === 1 ? '' : 'opacity-65'}`}>
               <div className={`w-full h-1.5 rounded-full ${step >= 1 ? 'bg-orange-600' : 'bg-stone-200 dark:bg-stone-800'}`}></div>
               <div className="flex items-center gap-1">
                 <span className={`w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center ${step >= 1 ? 'bg-orange-600 text-white' : 'bg-stone-300 text-stone-700'}`}>1</span>
@@ -168,7 +172,7 @@ export default function Onboarding({ onComplete }) {
             </div>
 
             {/* Step 2 */}
-            <div className={`flex flex-col gap-1.5 items-center text-center ${step === 2 ? '' : 'opacity-60'}`}>
+            <div className={`flex flex-col gap-1.5 items-center text-center ${step === 2 ? '' : 'opacity-65'}`}>
               <div className={`w-full h-1.5 rounded-full ${step >= 2 ? 'bg-orange-600' : 'bg-stone-200 dark:bg-stone-800'}`}></div>
               <div className="flex items-center gap-1">
                 <span className={`w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center ${step >= 2 ? 'bg-orange-600 text-white' : 'bg-stone-300 text-stone-700'}`}>2</span>
@@ -177,7 +181,7 @@ export default function Onboarding({ onComplete }) {
             </div>
 
             {/* Step 3 */}
-            <div className={`flex flex-col gap-1.5 items-center text-center ${step === 3 ? '' : 'opacity-60'}`}>
+            <div className={`flex flex-col gap-1.5 items-center text-center ${step === 3 ? '' : 'opacity-65'}`}>
               <div className={`w-full h-1.5 rounded-full ${step >= 3 ? 'bg-orange-600' : 'bg-stone-200 dark:bg-stone-800'}`}></div>
               <div className="flex items-center gap-1">
                 <span className={`w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center ${step >= 3 ? 'bg-orange-600 text-white' : 'bg-stone-300 text-stone-700'}`}>3</span>
@@ -186,6 +190,20 @@ export default function Onboarding({ onComplete }) {
             </div>
           </div>
         </nav>
+
+        {/* Warm Cultural Photo Card (Stitch Design) */}
+        {step === 1 && (
+          <div className="relative w-full rounded-2xl overflow-hidden shadow-xs h-28 bg-[#fff1e3] dark:bg-[#1e1b19] border border-amber-200/70 dark:border-[#3D332B]">
+            <div className="w-full h-full bg-gradient-to-r from-amber-600/90 via-orange-600/80 to-rose-700/90 p-4 flex items-end">
+              <div className="flex items-center gap-2 text-white">
+                <IconShieldCheck size={20} className="text-amber-200 shrink-0" />
+                <p className="text-xs font-medium leading-snug">
+                  Your personal confidante for family savings, SHG records, & government benefits.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {error && (
           <div className="p-3 bg-rose-50 dark:bg-rose-950/80 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 rounded-xl text-xs font-semibold">
@@ -200,7 +218,7 @@ export default function Onboarding({ onComplete }) {
           {step === 1 && (
             <div className="space-y-3.5 animate-in fade-in">
               {/* Full Name */}
-              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2 border border-amber-200/60 dark:border-[#3D332B]">
+              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2 border border-amber-200/70 dark:border-[#3D332B]">
                 <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB] flex items-center justify-between" htmlFor="fullNameInput">
                   <span>Full Name (పూర్తి పేరు)</span>
                   <span className="text-orange-600 dark:text-[#ffb690] text-[10px] uppercase font-bold">Step 1 of 3</span>
@@ -223,7 +241,7 @@ export default function Onboarding({ onComplete }) {
               </div>
 
               {/* Age Input with Preset Chips */}
-              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3 border border-amber-200/60 dark:border-[#3D332B]">
+              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3 border border-amber-200/70 dark:border-[#3D332B]">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]" htmlFor="ageInput">
                     Age in Years (వయస్సు)
@@ -258,7 +276,7 @@ export default function Onboarding({ onComplete }) {
               </div>
 
               {/* State Dropdown with SERP / Velugu Active Tag */}
-              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 border border-amber-200/60 dark:border-[#3D332B]">
+              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 border border-amber-200/70 dark:border-[#3D332B]">
                 <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]" htmlFor="stateSelect">
                   Operating State / Region (రాష్ట్రం)
                 </label>
@@ -288,7 +306,7 @@ export default function Onboarding({ onComplete }) {
               </div>
 
               {/* SHG Toggle Cards */}
-              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 border border-amber-200/60 dark:border-[#3D332B]">
+              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 border border-amber-200/70 dark:border-[#3D332B]">
                 <span className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]">
                   Are you a member of a Self-Help Group (SHG)?
                 </span>
@@ -340,7 +358,7 @@ export default function Onboarding({ onComplete }) {
               </div>
 
               {/* Rural / Urban Toggle Cards */}
-              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 border border-amber-200/60 dark:border-[#3D332B]">
+              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 border border-amber-200/70 dark:border-[#3D332B]">
                 <label className="text-xs font-bold text-stone-800 dark:text-[#FFF5EB]">
                   Where is your family home located?
                 </label>
@@ -396,7 +414,7 @@ export default function Onboarding({ onComplete }) {
           {/* STEP 2: Monthly Cashflow */}
           {step === 2 && (
             <div className="space-y-3.5 animate-in fade-in">
-              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3.5 border border-amber-200/60 dark:border-[#3D332B]">
+              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3.5 border border-amber-200/70 dark:border-[#3D332B]">
                 <h2 className="text-sm font-bold text-stone-900 dark:text-[#FFF5EB] flex items-center justify-between">
                   <span>Step 2: Monthly Money Flow</span>
                   <span className="text-orange-600 dark:text-[#ffb690] text-[10px] uppercase font-bold">Step 2 of 3</span>
@@ -407,14 +425,14 @@ export default function Onboarding({ onComplete }) {
                     Monthly Income (ఆదాయం - What comes in)
                   </label>
                   <div className="relative flex items-center">
-                    <span className="absolute left-3 text-stone-400 font-bold">₹</span>
+                    <span className="absolute left-3.5 text-stone-400 font-bold">₹</span>
                     <input
                       type="number"
                       required
                       min="0"
                       value={formData.monthly_income}
                       onChange={(e) => setFormData({ ...formData, monthly_income: e.target.value })}
-                      className="w-full pl-8 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
                     />
                   </div>
                 </div>
@@ -424,14 +442,14 @@ export default function Onboarding({ onComplete }) {
                     Monthly Expenses (ఖర్చులు - What goes out)
                   </label>
                   <div className="relative flex items-center">
-                    <span className="absolute left-3 text-stone-400 font-bold">₹</span>
+                    <span className="absolute left-3.5 text-stone-400 font-bold">₹</span>
                     <input
                       type="number"
                       required
                       min="0"
                       value={formData.monthly_expenses}
                       onChange={(e) => setFormData({ ...formData, monthly_expenses: e.target.value })}
-                      className="w-full pl-8 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
                     />
                   </div>
                 </div>
@@ -452,7 +470,7 @@ export default function Onboarding({ onComplete }) {
           {/* STEP 3: Savings, Debt & Goals */}
           {step === 3 && (
             <div className="space-y-3.5 animate-in fade-in">
-              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3.5 border border-amber-200/60 dark:border-[#3D332B]">
+              <div className="bg-white dark:bg-[#1e1b19] rounded-2xl p-4 shadow-xs flex flex-col gap-3.5 border border-amber-200/70 dark:border-[#3D332B]">
                 <h2 className="text-sm font-bold text-stone-900 dark:text-[#FFF5EB] flex items-center justify-between">
                   <span>Step 3: Savings, Loans & Dreams</span>
                   <span className="text-orange-600 dark:text-[#ffb690] text-[10px] uppercase font-bold">Step 3 of 3</span>
@@ -463,13 +481,13 @@ export default function Onboarding({ onComplete }) {
                     Existing Savings (బ్యాంకు / పోస్ట్ ఆఫీస్ పొదుపు)
                   </label>
                   <div className="relative flex items-center">
-                    <span className="absolute left-3 text-stone-400 font-bold">₹</span>
+                    <span className="absolute left-3.5 text-stone-400 font-bold">₹</span>
                     <input
                       type="number"
                       min="0"
                       value={formData.savings}
                       onChange={(e) => setFormData({ ...formData, savings: e.target.value })}
-                      className="w-full pl-8 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
                     />
                   </div>
                 </div>
@@ -479,13 +497,13 @@ export default function Onboarding({ onComplete }) {
                     Current Debt / Loans (తీర్చవలసిన అప్పులు)
                   </label>
                   <div className="relative flex items-center">
-                    <span className="absolute left-3 text-stone-400 font-bold">₹</span>
+                    <span className="absolute left-3.5 text-stone-400 font-bold">₹</span>
                     <input
                       type="number"
                       min="0"
                       value={formData.debt}
                       onChange={(e) => setFormData({ ...formData, debt: e.target.value })}
-                      className="w-full pl-8 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-rose-700 dark:text-[#ffb599] focus:ring-2 focus:ring-rose-500 focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-sm font-bold text-rose-700 dark:text-[#ffb599] focus:ring-2 focus:ring-rose-500 focus:outline-hidden"
                     />
                   </div>
                 </div>
@@ -499,7 +517,7 @@ export default function Onboarding({ onComplete }) {
                     placeholder="e.g. Daughter's Education, Tailoring Machine, House Repair"
                     value={formData.financial_goal}
                     onChange={(e) => setFormData({ ...formData, financial_goal: e.target.value })}
-                    className="w-full px-3 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200/70 dark:border-[#3D332B] rounded-xl text-xs font-bold text-stone-900 dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -533,7 +551,7 @@ export default function Onboarding({ onComplete }) {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 min-h-[48px] bg-orange-600 hover:bg-orange-700 active:scale-98 text-white font-bold rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="flex-1 min-h-[48px] bg-orange-600 hover:bg-orange-700 active:scale-98 text-white font-bold rounded-xl text-xs sm:text-sm transition shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               <span>{step === 3 ? (loading ? 'Creating Sakhi Profile...' : 'Start My Journey') : (step === 1 ? 'Next: Income & Cashflow' : 'Next: First Dream')}</span>
               <IconArrowRight size={16} />
