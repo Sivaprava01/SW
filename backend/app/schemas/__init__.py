@@ -31,6 +31,14 @@ from app.schemas.knowledge import (
     FinancialConceptResponse,
     GoldenRuleResponse,
 )
+from app.schemas.learning import (
+    QuizQuestion,
+    LessonResponse,
+    ModuleResponse,
+    LessonCompleteRequest,
+    UserLessonProgressResponse,
+    UserLearningSummaryResponse,
+)
 
 __all__ = [
     "HealthResponse",
@@ -70,4 +78,10 @@ __all__ = [
     "LocalizedText",
     "FinancialConceptResponse",
     "GoldenRuleResponse",
+    "QuizQuestion",
+    "LessonResponse",
+    "ModuleResponse",
+    "LessonCompleteRequest",
+    "UserLessonProgressResponse",
+    "UserLearningSummaryResponse",
 ]
