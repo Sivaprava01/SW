@@ -16,7 +16,7 @@ export const FloatingDock = ({
   className,
 }) => {
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative flex items-center justify-center", className)}>
       <FloatingDockDesktop items={items} className={desktopClassName} />
       <FloatingDockMobile items={items} className={mobileClassName} />
     </div>
@@ -26,7 +26,7 @@ export const FloatingDock = ({
 const FloatingDockMobile = ({ items, className }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className={cn("relative flex sm:hidden items-center justify-center", className)}>
+    <div className={cn("relative hidden", className)}>
       <AnimatePresence>
         {open && (
           <motion.div
@@ -59,7 +59,7 @@ const FloatingDockMobile = ({ items, className }) => {
                   }}
                   aria-label={item.title}
                   className={cn(
-                    "flex items-center gap-2.5 px-4 py-2.5 rounded-full shadow-lg border backdrop-blur-lg transition-all duration-200 cursor-pointer min-h-[44px]",
+                    "flex items-center gap-2.5 px-4 py-2.5 rounded-full shadow-lg border backdrop-blur-lg cursor-pointer min-h-[44px] transition-colors duration-200",
                     item.isActive
                       ? "bg-emerald-600 text-white border-emerald-400 font-bold shadow-emerald-600/40 ring-2 ring-emerald-400/30"
                       : "bg-white/95 dark:bg-slate-900/95 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -77,9 +77,9 @@ const FloatingDockMobile = ({ items, className }) => {
         onClick={() => setOpen(!open)}
         aria-label="Toggle navigation menu"
         className={cn(
-          "h-13 w-13 rounded-full flex items-center justify-center shadow-2xl border backdrop-blur-lg transition-all duration-300 cursor-pointer active:scale-95",
+          "h-12 w-12 rounded-full flex items-center justify-center shadow-2xl border backdrop-blur-lg cursor-pointer active:scale-95 transition-colors duration-200",
           open
-            ? "bg-emerald-600 text-white border-emerald-400 shadow-emerald-600/40 rotate-180"
+            ? "bg-emerald-600 text-white border-emerald-400 shadow-emerald-600/40"
             : "bg-white/95 dark:bg-slate-900/95 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800"
         )}
       >
@@ -95,8 +95,12 @@ const FloatingDockDesktop = ({ items, className }) => {
     <motion.div
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
+      onTouchMove={(e) => {
+        if (e.touches[0]) mouseX.set(e.touches[0].pageX);
+      }}
+      onTouchEnd={() => mouseX.set(Infinity)}
       className={cn(
-        "hidden sm:flex h-16 gap-3 items-end rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border border-slate-200/90 dark:border-slate-800/90 px-3.5 pb-3 shadow-2xl shadow-slate-900/10 dark:shadow-black/50",
+        "flex h-16 gap-2 sm:gap-3.5 items-end rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border border-slate-200/90 dark:border-slate-800/90 px-3 sm:px-4 pb-3 shadow-2xl shadow-slate-900/10 dark:shadow-black/60 will-change-transform",
         className
       )}
     >
@@ -115,31 +119,31 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
     return val - bounds.x - bounds.width / 2;
   });
 
-  let widthTransform = useTransform(distance, [-150, 0, 150], [42, 64, 42]);
-  let heightTransform = useTransform(distance, [-150, 0, 150], [42, 64, 42]);
+  let widthTransform = useTransform(distance, [-150, 0, 150], [40, 72, 40]);
+  let heightTransform = useTransform(distance, [-150, 0, 150], [40, 72, 40]);
 
-  let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 30, 20]);
-  let heightTransformIcon = useTransform(distance, [-150, 0, 150], [20, 30, 20]);
+  let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 36, 20]);
+  let heightTransformIcon = useTransform(distance, [-150, 0, 150], [20, 36, 20]);
 
   let width = useSpring(widthTransform, {
     mass: 0.1,
-    stiffness: 150,
+    stiffness: 170,
     damping: 12,
   });
   let height = useSpring(heightTransform, {
     mass: 0.1,
-    stiffness: 150,
+    stiffness: 170,
     damping: 12,
   });
 
   let widthIcon = useSpring(widthTransformIcon, {
     mass: 0.1,
-    stiffness: 150,
+    stiffness: 170,
     damping: 12,
   });
   let heightIcon = useSpring(heightTransformIcon, {
     mass: 0.1,
-    stiffness: 150,
+    stiffness: 170,
     damping: 12,
   });
 
@@ -149,7 +153,7 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
     <button
       onClick={onClick}
       aria-label={title}
-      className="cursor-pointer focus:outline-none relative group"
+      className="cursor-pointer focus:outline-none relative group flex items-end justify-center"
     >
       <motion.div
         ref={ref}
@@ -157,7 +161,7 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         className={cn(
-          "aspect-square rounded-full flex items-center justify-center relative transition-all duration-150 shadow-xs",
+          "aspect-square rounded-full flex items-center justify-center relative shadow-xs transition-colors duration-200",
           isActive
             ? "bg-emerald-600 dark:bg-emerald-500 text-white shadow-lg shadow-emerald-600/40 ring-2 ring-emerald-400/60"
             : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 hover:text-emerald-700 dark:hover:text-emerald-400"
@@ -169,6 +173,7 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
               initial={{ opacity: 0, y: 8, x: "-50%" }}
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: 2, x: "-50%" }}
+              transition={{ duration: 0.15 }}
               className="px-2.5 py-1 whitespace-pre rounded-lg bg-slate-900/95 dark:bg-slate-100/95 text-white dark:text-slate-900 absolute -top-9 left-1/2 -translate-x-1/2 w-fit text-[11px] font-bold shadow-xl pointer-events-none z-50 backdrop-blur-xs"
             >
               {title}
@@ -177,12 +182,12 @@ function IconContainer({ mouseX, title, icon, onClick, isActive }) {
         </AnimatePresence>
         <motion.div
           style={{ width: widthIcon, height: heightIcon }}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center pointer-events-none"
         >
           {icon}
         </motion.div>
         {isActive && (
-          <span className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400 shadow-xs" />
+          <span className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400 shadow-xs pointer-events-none" />
         )}
       </motion.div>
     </button>
