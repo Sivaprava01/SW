@@ -24,8 +24,8 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     LOG_LEVEL: str = "INFO"
     
-    # Database Configuration
-    DATABASE_URL: str = "sqlite:///./sakhi.db"
+    # Database Configuration (Mandatory: PostgreSQL in development & production)
+    DATABASE_URL: str = "postgresql://sakhi_user:sakhi_password@localhost:5432/sakhi_db"
     DB_ECHO: bool = False
     DB_POOL_SIZE: int = 10
     DB_MAX_OVERFLOW: int = 20
