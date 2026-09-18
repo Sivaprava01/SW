@@ -23,13 +23,6 @@ def create_transaction(tx_in: TransactionCreate, db: Session = Depends(get_db)):
         description=tx_in.description
     )
     db.add(tx)
-
-    # Automatically adjust user's total income or expense baseline if needed
-    if tx.type == "income":
-        user.monthly_income += tx.amount
-    else:
-        user.monthly_expenses += tx.amount
-
     db.commit()
     db.refresh(tx)
     return tx
@@ -44,13 +37,6 @@ def delete_transaction(transaction_id: str, db: Session = Depends(get_db)):
     tx = db.query(Transaction).filter(Transaction.id == transaction_id).first()
     if not tx:
         raise HTTPException(status_code=404, detail="Transaction not found")
-
-    user = db.query(User).filter(User.id == tx.user_id).first()
-    if user:
-        if tx.type == "income":
-            user.monthly_income = max(0.0, user.monthly_income - tx.amount)
-        else:
-            user.monthly_expenses = max(0.0, user.monthly_expenses - tx.amount)
 
     db.delete(tx)
     db.commit()

@@ -1,0 +1,932 @@
+# SH-105 — Sakhi
+
+## AI-Powered Financial Empowerment for Rural Women and People with Limited Financial Literacy
+
+---
+
+# 1. Problem Statement
+
+The core problem is not simply helping people manage money.
+
+The larger problem is helping people **understand their financial situation and make better-informed financial decisions** despite limited financial literacy, complicated financial terminology, and limited access to understandable financial guidance.
+
+For rural women and financially underserved users, financial information is often:
+
+* Difficult to understand
+* Filled with technical terminology
+* Scattered across different sources
+* Difficult to apply to their personal situation
+* Hard to access in a familiar language
+
+### Problem
+
+> How can we make financial guidance simple, personalized, accessible, and actionable for people with limited financial literacy?
+
+---
+
+# 2. Solution — Sakhi
+
+**Sakhi** is an AI-powered financial companion that helps users:
+
+1. Understand their financial situation
+2. Follow a personalized financial journey
+3. Ask financial questions in simple language
+4. Set and track savings goals
+5. Learn important financial concepts
+6. Discover relevant government schemes and benefits
+
+The system combines:
+
+**Financial calculations + personalized planning + AI explanations + government benefit discovery**
+
+The AI does not independently calculate financial values.
+
+Instead:
+
+> **Backend calculates → AI explains → User understands**
+
+---
+
+# 3. Core Product Pillars
+
+Everything in Sakhi revolves around three main pillars.
+
+## 🧠 UNDERSTAND
+
+Help users understand their money.
+
+Includes:
+
+* Income and expense tracking
+* Financial health
+* Financial education
+* Loan/financial terminology explanations
+* AI-powered financial questions
+
+---
+
+## 📈 PLAN
+
+Help users decide what to focus on next.
+
+Includes:
+
+* Financial Journey
+* Budgeting
+* Savings planning
+* Goal planning
+* Debt management
+* Emergency fund planning
+
+---
+
+## 🇮🇳 ACCESS
+
+Help users discover financial support available to them.
+
+Includes:
+
+* Government schemes
+* Women entrepreneurship programs
+* SHG/livelihood support
+* Subsidized loans
+* Insurance
+* Pension
+* Skill development
+* Agriculture
+* Education
+* Housing
+* State-specific programs
+
+---
+
+## 🤖 Sakhi AI
+
+AI connects all three pillars.
+
+It converts structured financial information into **simple, understandable, conversational guidance**.
+
+---
+
+# 4. Core Feature — Financial Journey
+
+## Purpose
+
+The Financial Journey answers:
+
+> **"What should I focus on next?"**
+
+It is inspired by the concept of financial milestones such as Ramsey's Baby Steps, but is adapted for the Indian and rural context.
+
+Instead of blindly recommending investments, Sakhi determines the user's current financial stage and next milestone.
+
+### Proposed Journey
+
+```text
+Track Income & Expenses
+          ↓
+Build Emergency Fund
+          ↓
+Manage / Clear Debt
+          ↓
+Build Savings
+          ↓
+Protect Family
+          ↓
+Long-Term Investing
+          ↓
+Financial Independence
+```
+
+The user can see:
+
+* Current stage
+* Completed stages
+* Next milestone
+* Progress toward the milestone
+* Recommended actions
+
+### Example
+
+```text
+Your Current Stage
+
+💰 Manage Your Money
+
+✓ Track monthly income
+✓ Track monthly expenses
+
+Next:
+
+🛡 Build an Emergency Fund
+
+Target: ₹30,000
+Current: ₹12,000
+Remaining: ₹18,000
+```
+
+The journey should provide **guidance rather than complex financial advice**.
+
+---
+
+# 5. Financial Health
+
+The Financial Health section provides a simple overview of the user's current financial condition.
+
+The backend calculates values such as:
+
+* Total income
+* Total expenses
+* Monthly surplus
+* Savings
+* Debt
+* EMI obligations
+* Emergency fund
+* Goal progress
+
+Example:
+
+```text
+Your Money Today
+
+Income       ₹12,000
+Expenses      ₹7,000
+Surplus       ₹5,000
+Savings      ₹10,000
+Debt         ₹20,000
+```
+
+The interface should avoid overwhelming users with charts and complicated financial metrics.
+
+Instead, it should answer:
+
+> **"How am I doing financially?"**
+
+---
+
+# 6. Ask Sakhi — AI Financial Companion
+
+Users can ask financial questions using simple language.
+
+### Example Questions
+
+> "How much should I save every month?"
+
+> "What is an SIP?"
+
+> "I have ₹20,000 debt. What should I do?"
+
+> "I want to start a tailoring business. What help is available?"
+
+The user may eventually be able to interact through:
+
+* Text
+* Voice
+
+Potential languages:
+
+* English
+* Telugu
+* Hindi
+* Possibly even more
+
+---
+
+# 7. AI Architecture
+
+The AI must **not be responsible for financial calculations**.
+
+### Architecture
+
+```text
+User
+  ↓
+React Frontend
+  ↓
+FastAPI Backend
+  ↓
+Financial Engine
+  ↓
+Structured Financial Data
+  ↓
+AI Service
+  ↓
+Simple Explanation
+  ↓
+User
+```
+
+### Example
+
+User data:
+
+```text
+Income = ₹12,000
+Expenses = ₹7,000
+```
+
+Backend:
+
+```text
+Surplus = ₹5,000
+```
+
+Goal:
+
+```text
+Target = ₹50,000
+Current = ₹0
+Time = 12 months
+
+Required monthly saving ≈ ₹4,167
+```
+
+The AI receives the calculated values and explains them:
+
+> "You have around ₹5,000 left after your monthly expenses. To reach your ₹50,000 goal in one year, you would need to save about ₹4,167 each month."
+
+This keeps important calculations deterministic and auditable.
+
+---
+
+# 8. Goal Planner
+
+Users can create financial goals.
+
+### Example
+
+```text
+Goal:
+Daughter's Education
+
+Target: ₹50,000
+Current: ₹10,000
+Duration: 12 months
+```
+
+Backend calculates:
+
+```text
+Remaining = ₹40,000
+
+Required monthly saving:
+₹40,000 / 12
+≈ ₹3,334/month
+```
+
+The system tracks progress toward the goal.
+
+### Initial Goal Categories
+
+* Education
+* Emergency Fund
+* Business
+* House
+* Healthcare
+* Other Personal Goal
+
+---
+
+# 9. Government Benefits / Scheme Finder
+
+Government benefits are one of Sakhi's major differentiators.
+
+Instead of only helping users save money, Sakhi helps users discover **government schemes and programs they may be eligible to explore**.
+
+The initial MVP should contain approximately:
+
+> **10–25 well-researched schemes**
+
+Rather than attempting to build a massive database.
+
+### Initial Categories
+
+* Women entrepreneurship
+* Business / subsidized loans
+* SHG and livelihood support
+* Skill development
+* Insurance
+* Pension
+* Agriculture
+* Education
+* Housing
+* State-specific benefits
+---
+
+# 10. "Could This Help You?" Scheme Matching
+
+Users answer simple questions.
+
+Example:
+
+```text
+Are you a woman?
+✓ Yes
+
+Age requirement?
+✓ Meets requirement
+
+Income requirement?
+✓ Meets requirement
+
+Business requirement?
+✓ Yes
+
+State?
+✓ Telangana
+```
+
+Sakhi then provides a preliminary result:
+
+> **You may be eligible to explore this program.**
+
+The application must clearly state:
+
+> Sakhi provides a preliminary eligibility match and does not provide official eligibility confirmation.
+
+---
+
+# 11. Scheme Information
+
+Each scheme should contain:
+
+* Scheme name
+* What it provides
+* Who it is for
+* Basic eligibility
+* Required documents
+* Application process
+* Official source
+* Relevant state
+* Category
+
+The official government source should always be shown so users can verify information and proceed with the actual application.
+
+---
+
+# 12. Financial Education — Learn with Sakhi
+
+Financial concepts should be explained using simple language rather than textbook-style definitions.
+
+### Initial Topics
+
+* Budgeting
+* Saving
+* Emergency funds
+* Loans
+* Interest
+* EMI
+* Insurance
+* SIPs / investing
+* Government benefits
+
+### Example
+
+Instead of:
+
+> "Compound interest is interest calculated on the initial principal and accumulated interest..."
+
+Sakhi could explain:
+
+> "If you regularly save ₹500 every month, your money can grow over time. Let's see how."
+
+Education should be:
+
+* Short
+* Visual
+* Conversational
+* Practical
+* Easy to understand
+
+Interactive quizzes can be added if time permits, but is not necessary.
+
+---
+
+# 13. Loan Decoder
+
+The Loan Decoder is a potential demo feature.
+
+The user enters or uploads loan information.
+
+### Example
+
+```text
+Loan Amount: ₹50,000
+Interest: 18%
+Tenure: 24 months
+Fees: ₹2,000
+```
+
+Sakhi converts this into simple explanations:
+
+* How much are you borrowing?
+* How much will you repay?
+* How much interest are you paying?
+* What fees are involved?
+* What does the interest rate mean?
+* What is the approximate EMI?
+
+The feature is secondary to the core MVP.
+
+If development time becomes limited, it should be postponed.
+
+---
+
+# 14. Voice + Local Language
+
+Potential future interaction:
+
+```text
+User speaks Telugu
+       ↓
+Speech → Text
+       ↓
+Sakhi understands
+       ↓
+Financial Engine
+       ↓
+AI Explanation
+       ↓
+Telugu Response
+```
+
+Potential languages:
+
+* Telugu
+* Hindi
+* English
+
+Voice is an accessibility enhancement rather than a core dependency.
+
+If integration consumes significant development time, it should be dropped from the MVP.
+
+---
+
+# 15. UX Philosophy
+
+Sakhi is **not** intended to look like a complicated financial dashboard.
+
+The target audience may have limited financial literacy.
+
+Therefore, the interface should prioritize:
+
+* Large buttons
+* Simple words
+* Minimal forms
+* Clear actions
+* Large readable numbers
+* Visual explanations
+* Familiar icons
+* Local language support
+* Voice where possible
+* Minimal financial jargon
+
+### Design Principle
+
+> **The user should understand what to do without needing to understand finance first.**
+
+---
+
+# 16. Proposed Home Screen
+
+```text
+Namaste, Lakshmi 👋
+
+Your Money Today
+
+₹12,000
+
+┌─────────────────────────┐
+│ 🎙 Ask Sakhi            │
+│ Talk about your money   │
+└─────────────────────────┘
+
+💰 My Money
+
+🧭 My Journey
+
+🎯 My Goals
+
+🇮🇳 Benefits
+
+📚 Learn
+```
+
+The home screen should immediately expose the five major actions without requiring users to navigate through a complex dashboard.
+
+---
+
+# 17. Tech Stack
+
+## Frontend
+
+**React + Vite**
+
+## Styling / UI
+
+**Tailwind CSS + shadcn/ui**
+
+## Backend
+
+**Python + FastAPI**
+
+## Database
+
+**PostgreSQL**
+
+## ORM
+
+**SQLAlchemy**
+
+## AI
+
+**Gemini API / OpenAI API**
+
+## Deployment
+
+```text
+React
+  ↓
+Netlify
+
+FastAPI
+  ↓
+Render
+
+PostgreSQL
+  ↓
+Hosted PostgreSQL
+```
+
+FastAPI is being used intentionally because it provides a good fit for the financial calculation/API architecture and builds on existing FastAPI/PostgreSQL experience.
+
+---
+
+# 18. Basic Backend Architecture
+
+```text
+app/
+│
+├── api/
+│   ├── users.py
+│   ├── transactions.py
+│   ├── goals.py
+│   ├── schemes.py
+│   └── ai.py
+│
+├── models/
+│
+├── schemas/
+│
+├── services/
+│   ├── financial_engine.py
+│   ├── scheme_matcher.py
+│   └── ai_service.py
+│
+└── main.py
+```
+
+The architecture should remain intentionally simple because the hackathon development window is only 20 hours.
+
+---
+
+# 19. 20-Hour MVP
+
+## MUST HAVE
+
+### 1. Mobile-first UI
+
+Beautiful, responsive interface optimized primarily for mobile.
+
+### 2. Onboarding
+
+Collect the minimum information required to personalize the experience.
+
+Potential data:
+
+* Name
+* Age
+* State
+* Monthly income
+* Monthly expenses
+* Existing savings
+* Debt
+* Financial goals
+
+Avoid unnecessary questions.
+
+---
+
+### 3. Income / Expense Tracking
+
+Users can:
+
+* Add income
+* Add expenses
+* View totals
+* See monthly surplus
+
+---
+
+### 4. Financial Health
+
+Show:
+
+* Income
+* Expenses
+* Surplus
+* Savings
+* Debt
+* Basic financial status
+
+---
+
+### 5. Financial Journey
+
+Show:
+
+* Current stage
+* Completed stages
+* Next stage
+* Progress
+* Recommended next action
+
+---
+
+### 6. Ask Sakhi
+
+Text-based AI interaction.
+
+The AI should use backend-generated financial data when answering personalized questions.
+
+---
+
+### 7. Goal Planner
+
+Users can:
+
+* Create goals
+* Set target amount
+* Set deadline
+* Enter current amount
+* See required monthly saving
+* Track progress
+
+---
+
+### 8. Government Benefits Finder
+
+Users can:
+
+* Browse schemes
+* Filter schemes
+* Answer eligibility questions
+* Receive preliminary matches
+* View scheme details
+* Open official sources
+
+---
+
+# 20. IF TIME REMAINS
+
+After the core MVP is stable:
+
+### Priority 2
+
+9. Telugu / Hindi support
+
+10. Voice interaction
+
+11. Loan Decoder
+
+12. Interactive education / quizzes
+
+---
+
+# 21. Explicitly Out of Scope
+
+The team should **not** spend hackathon time building:
+
+❌ Banking integrations
+
+❌ Bank account linking
+
+❌ Complex machine-learning models
+
+❌ Stock prediction
+
+❌ Advanced investment recommendations
+
+❌ Huge government-scheme database
+
+❌ 50+ screens
+
+❌ Complex financial dashboards
+
+❌ Over-engineered backend infrastructure
+
+---
+
+# 22. MVP Product Flow
+
+The primary user flow should be:
+
+```text
+                 ┌──────────────┐
+                 │   Onboarding │
+                 └──────┬───────┘
+                        ↓
+                 ┌──────────────┐
+                 │ Home / Money │
+                 │    Health    │
+                 └──────┬───────┘
+                        ↓
+        ┌───────────────┼────────────────┐
+        ↓               ↓                ↓
+   My Money        My Journey        My Goals
+        │               │                │
+        └───────────────┼────────────────┘
+                        ↓
+                  Ask Sakhi
+                        │
+                        ↓
+              Personalized Guidance
+
+                    HOME
+                      │
+                      ↓
+                 🇮🇳 Benefits
+                      │
+                      ↓
+              Scheme Matcher
+                      │
+                      ↓
+               Scheme Details
+                      │
+                      ↓
+              Official Source
+```
+
+---
+
+# 23. Core Data Flow
+
+```text
+User Input
+    ↓
+PostgreSQL
+    ↓
+FastAPI
+    ↓
+Financial Engine
+    ↓
+Calculated Financial Metrics
+    ↓
+Journey / Goal / Health Logic
+    ↓
+Structured Context
+    ↓
+AI Service
+    ↓
+Simple Natural-Language Explanation
+    ↓
+React UI
+```
+
+---
+
+# 24. Important Technical Principle
+
+Sakhi should follow a strict separation between **calculation** and **explanation**.
+
+### Financial Engine
+
+Responsible for:
+
+* Income calculations
+* Expense calculations
+* Surplus
+* Savings requirements
+* Goal calculations
+* Debt calculations
+* EMI calculations
+* Financial journey stage determination
+
+### AI Service
+
+Responsible for:
+
+* Explaining calculations
+* Simplifying financial concepts
+* Answering general financial questions
+* Converting structured results into conversational responses
+* Helping users understand available options
+
+### AI should NOT independently determine numerical financial results.
+
+---
+
+# 25. MVP Success Criteria
+
+At the end of the 20-hour development period, a user should be able to:
+
+```text
+1. Open Sakhi
+       ↓
+2. Complete onboarding
+       ↓
+3. Enter income/expenses
+       ↓
+4. See their financial health
+       ↓
+5. See their current financial journey
+       ↓
+6. Create a financial goal
+       ↓
+7. Ask Sakhi a personalized question
+       ↓
+8. Discover relevant government schemes
+       ↓
+9. Understand what they can do next
+```
+
+The entire experience should feel like:
+
+> **"Sakhi understands my situation and helps me figure out what to do next."**
+
+---
+
+# 26. One-Line Pitch
+
+> **Sakhi is an AI-powered financial companion that helps rural women and people with limited financial literacy understand their money, follow a personalized financial journey, and discover government benefits they may be eligible to explore — through simple, accessible conversations.**
+
+---
+
+# 27. Final Product Philosophy
+
+Sakhi is not trying to replace a bank, financial advisor, or government portal.
+
+Its role is to act as a **financial understanding and navigation layer** between the user and the complicated financial system.
+
+```text
+Complex Financial World
+          ↓
+        SAKHI
+          ↓
+Simple Understanding
+          ↓
+Better-Informed Action
+```
+
+The immediate next step is to lock down:
+
+1. **Exact MVP screens**
+2. **Complete user flow**
+3. **PostgreSQL database schema**
+4. **FastAPI endpoint list**
+5. **Financial-engine calculations**
+6. **Scheme data structure**
+7. **AI prompt/context architecture**
+8. **20-hour implementation order**
+
+Only after these are finalized should Antigravity begin implementation.

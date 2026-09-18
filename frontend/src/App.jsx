@@ -70,7 +70,11 @@ function MainApp() {
   };
 
   return (
-    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+    <Layout
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      onOpenAskSakhi={() => setShowAskSakhi(true)}
+    >
       {renderTab()}
 
       <AskSakhiModal

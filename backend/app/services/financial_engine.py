@@ -114,17 +114,16 @@ def calculate_emergency_fund_metrics(monthly_expenses: float, current_savings: f
 
 def calculate_user_totals(db: Session, user: User) -> Dict[str, float]:
     """
-    Calculates effective total income and expenses. If user logged transactions,
-    computes from transactions or uses baseline user fields.
+    Calculates effective total income and expenses. Combines declared baseline
+    profile income/expenses with logged transactions seamlessly.
     """
     txs = db.query(Transaction).filter(Transaction.user_id == user.id).all()
     
     tx_income = sum(t.amount for t in txs if t.type == "income")
     tx_expense = sum(t.amount for t in txs if t.type == "expense")
 
-    # If transactions are present, use the larger of logged transactions or baseline
-    total_income = max(user.monthly_income, tx_income) if user.monthly_income > 0 else tx_income
-    total_expense = max(user.monthly_expenses, tx_expense) if user.monthly_expenses > 0 else tx_expense
+    total_income = float(user.monthly_income or 0.0) + float(tx_income)
+    total_expense = float(user.monthly_expenses or 0.0) + float(tx_expense)
 
     surplus = calculate_monthly_surplus(total_income, total_expense)
 
@@ -132,8 +131,8 @@ def calculate_user_totals(db: Session, user: User) -> Dict[str, float]:
         "total_income": round(total_income, 2),
         "total_expense": round(total_expense, 2),
         "surplus": surplus,
-        "savings": round(user.savings, 2),
-        "debt": round(user.debt, 2)
+        "savings": round(float(user.savings or 0.0), 2),
+        "debt": round(float(user.debt or 0.0), 2)
     }
 
 def determine_journey_stage(db: Session, user: User) -> Dict[str, Any]:

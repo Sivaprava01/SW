@@ -1,7 +1,9 @@
 import React from 'react';
 
 export default function ProgressBar({ value = 0, max = 100, color = 'bg-emerald-600', height = 'h-3' }) {
-  const percent = Math.min(100, Math.max(0, Math.round((value / max) * 100)));
+  const safeMax = Number(max) || 0;
+  const safeVal = Number(value) || 0;
+  const percent = safeMax <= 0 ? 0 : Math.min(100, Math.max(0, Math.round((safeVal / safeMax) * 100)));
 
   return (
     <div className={`w-full bg-slate-100 rounded-full overflow-hidden ${height}`}>

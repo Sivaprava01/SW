@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { Home, Wallet, Compass, Target, Shield, BookOpen, Bot, User, Sparkles, RefreshCw } from 'lucide-react';
+import React from 'react';
+import { Home, Wallet, Compass, Target, Shield, BookOpen, Bot, Sparkles, RefreshCw } from 'lucide-react';
 import { useUser } from '../context/UserContext';
-import AskSakhiModal from './AskSakhiModal';
 
-export default function Layout({ activeTab, setActiveTab, children }) {
-  const { user, loadDemoUser, logoutUser } = useUser();
-  const [showAskSakhi, setShowAskSakhi] = useState(false);
+export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, children }) {
+  const { user, loadDemoUser } = useUser();
 
   const navItems = [
     { id: 'home', label: 'Home', icon: Home },
@@ -40,8 +38,8 @@ export default function Layout({ activeTab, setActiveTab, children }) {
         <div className="flex items-center gap-1.5">
           {user ? (
             <button
-              onClick={() => setShowAskSakhi(true)}
-              className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs"
+              onClick={onOpenAskSakhi}
+              className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs cursor-pointer"
             >
               <Bot size={15} className="text-amber-300" />
               <span>Ask Sakhi</span>
@@ -49,7 +47,7 @@ export default function Layout({ activeTab, setActiveTab, children }) {
           ) : (
             <button
               onClick={loadDemoUser}
-              className="px-2.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-black transition flex items-center gap-1 shadow-xs"
+              className="px-2.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-black transition flex items-center gap-1 shadow-xs cursor-pointer"
             >
               <Sparkles size={14} />
               <span>Demo (Lakshmi)</span>
@@ -60,7 +58,7 @@ export default function Layout({ activeTab, setActiveTab, children }) {
             <button
               onClick={loadDemoUser}
               title="Reset to Lakshmi Demo"
-              className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+              className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg cursor-pointer"
             >
               <RefreshCw size={15} />
             </button>
@@ -76,8 +74,8 @@ export default function Layout({ activeTab, setActiveTab, children }) {
       {/* Floating Ask Sakhi button on mobile */}
       {user && (
         <button
-          onClick={() => setShowAskSakhi(true)}
-          className="fixed bottom-20 right-4 sm:right-[max(1rem,calc(50%-220px))] z-40 px-3.5 py-2.5 bg-linear-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-2xl shadow-xl flex items-center gap-2 hover:scale-105 active:scale-95 transition-all border border-emerald-400/40"
+          onClick={onOpenAskSakhi}
+          className="fixed bottom-20 right-4 sm:right-[max(1rem,calc(50%-220px))] z-40 px-3.5 py-2.5 bg-linear-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-2xl shadow-xl flex items-center gap-2 hover:scale-105 active:scale-95 transition-all border border-emerald-400/40 cursor-pointer"
         >
           <Bot size={18} className="text-amber-300" />
           <span className="text-xs">Talk to Sakhi</span>
@@ -93,7 +91,7 @@ export default function Layout({ activeTab, setActiveTab, children }) {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`flex flex-col items-center py-1 px-2.5 rounded-xl transition ${
+              className={`flex flex-col items-center py-1 px-2.5 rounded-xl transition cursor-pointer ${
                 isActive
                   ? 'text-emerald-700 font-bold'
                   : 'text-slate-400 hover:text-slate-600 font-medium'
@@ -105,12 +103,6 @@ export default function Layout({ activeTab, setActiveTab, children }) {
           );
         })}
       </nav>
-
-      {/* Ask Sakhi Modal */}
-      <AskSakhiModal
-        isOpen={showAskSakhi}
-        onClose={() => setShowAskSakhi(false)}
-      />
     </div>
   );
 }

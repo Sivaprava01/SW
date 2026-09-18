@@ -5,23 +5,27 @@ from app.config import settings
 
 logger = logging.getLogger(__name__)
 
-database_url = settings.DATABASE_URL
+raw_url = settings.DATABASE_URL or "sqlite:///./sakhi.db"
 
-# Auto-fallback logic if PostgreSQL is not reachable or unauthenticated
-try:
-    if database_url.startswith("postgresql"):
-        # Test connection with a short timeout
-        engine = create_engine(database_url, pool_pre_ping=True, connect_args={"connect_timeout": 3})
-        with engine.connect() as conn:
-            logger.info("Successfully connected to PostgreSQL database.")
+# Normalize postgres:// to postgresql:// for SQLAlchemy 1.4/2.0 compatibility
+if raw_url.startswith("postgres://"):
+    raw_url = raw_url.replace("postgres://", "postgresql://", 1)
+
+def build_engine(url: str):
+    if url.startswith("postgresql"):
+        try:
+            # Test connection with a short timeout
+            eng = create_engine(url, pool_pre_ping=True, connect_args={"connect_timeout": 3})
+            with eng.connect():
+                logger.info("Connected to PostgreSQL database.")
+            return eng
+        except Exception as e:
+            logger.warning(f"PostgreSQL connection failed ({e}). Falling back to SQLite.")
+            return create_engine("sqlite:///./sakhi.db", connect_args={"check_same_thread": False})
     else:
-        engine = create_engine(database_url, connect_args={"check_same_thread": False})
-except Exception as e:
-    logger.warning(f"Could not connect to configured DATABASE_URL ({database_url}): {e}")
-    logger.warning("Falling back to local SQLite database: sqlite:///./sakhi.db")
-    database_url = "sqlite:///./sakhi.db"
-    engine = create_engine(database_url, connect_args={"check_same_thread": False})
+        return create_engine(url, connect_args={"check_same_thread": False})
 
+engine = build_engine(raw_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
