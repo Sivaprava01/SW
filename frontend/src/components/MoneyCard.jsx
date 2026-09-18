@@ -4,34 +4,34 @@ export default function MoneyCard({ title, amount, subtitle, icon: Icon, variant
   const getVariantStyles = () => {
     switch (variant) {
       case 'income':
-        return 'bg-emerald-50/80 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/60 text-emerald-950 dark:text-emerald-200';
+        return 'bg-emerald-50/80 dark:bg-[#1e1b19] border-emerald-200 dark:border-[#3D332B] text-emerald-950 dark:text-emerald-300';
       case 'expense':
-        return 'bg-amber-50/80 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800/60 text-amber-950 dark:text-amber-200';
+        return 'bg-amber-50/80 dark:bg-[#1e1b19] border-amber-200 dark:border-[#3D332B] text-amber-950 dark:text-[#ffb599]';
       case 'surplus':
-        return 'bg-orange-50/90 dark:bg-orange-950/50 border-orange-300 dark:border-orange-800/70 text-orange-950 dark:text-orange-200';
+        return 'bg-orange-50/90 dark:bg-[#28211C] border-orange-300 dark:border-[#3D332B] text-orange-950 dark:text-[#ffb690]';
       case 'debt':
-        return 'bg-rose-50/80 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800/60 text-rose-950 dark:text-rose-200';
+        return 'bg-rose-50/80 dark:bg-[#1e1b19] border-rose-200 dark:border-[#3D332B] text-rose-950 dark:text-rose-300';
       case 'savings':
-        return 'bg-teal-50/80 dark:bg-teal-950/40 border-teal-200 dark:border-teal-800/60 text-teal-950 dark:text-teal-200';
+        return 'bg-teal-50/80 dark:bg-[#1e1b19] border-teal-200 dark:border-[#3D332B] text-teal-950 dark:text-teal-300';
       default:
-        return 'bg-white dark:bg-slate-900 border-amber-100 dark:border-slate-800 text-stone-900 dark:text-stone-100';
+        return 'bg-white dark:bg-[#1e1b19] border-amber-100 dark:border-[#3D332B] text-[#221a0e] dark:text-[#FFF5EB]';
     }
   };
 
   const getIconColor = () => {
     switch (variant) {
       case 'income':
-        return 'text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/60';
+        return 'text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-[#28211C]';
       case 'expense':
-        return 'text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-900/60';
+        return 'text-amber-700 dark:text-[#ffb599] bg-amber-100 dark:bg-[#28211C]';
       case 'surplus':
-        return 'text-orange-700 dark:text-orange-300 bg-orange-100 dark:bg-orange-900/60';
+        return 'text-orange-700 dark:text-[#ffb690] bg-orange-100 dark:bg-[#14110F]';
       case 'debt':
-        return 'text-rose-700 dark:text-rose-300 bg-rose-100 dark:bg-rose-900/60';
+        return 'text-rose-700 dark:text-rose-400 bg-rose-100 dark:bg-[#28211C]';
       case 'savings':
-        return 'text-teal-700 dark:text-teal-300 bg-teal-100 dark:bg-teal-900/60';
+        return 'text-teal-700 dark:text-teal-400 bg-teal-100 dark:bg-[#28211C]';
       default:
-        return 'text-stone-600 dark:text-stone-300 bg-stone-100 dark:bg-slate-800';
+        return 'text-stone-600 dark:text-[#A8988A] bg-stone-100 dark:bg-[#28211C]';
     }
   };
 
@@ -52,7 +52,7 @@ export default function MoneyCard({ title, amount, subtitle, icon: Icon, variant
           </div>
         )}
       </div>
-      <div className="text-xl sm:text-2xl font-black tracking-tight">
+      <div className="font-headline text-xl sm:text-2xl font-black tracking-tight">
         ₹{Number(amount || 0).toLocaleString('en-IN')}
       </div>
       {subtitle && (

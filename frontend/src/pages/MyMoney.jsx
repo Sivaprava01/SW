@@ -70,10 +70,10 @@ export default function MyMoney() {
     <div className="space-y-4 pb-6">
       {/* Top Title */}
       <div>
-        <h2 className="text-xl font-black text-stone-900 dark:text-stone-100 tracking-tight">
+        <h2 className="font-headline text-xl font-black text-[#221a0e] dark:text-[#FFF5EB] tracking-tight">
           {t('nav_money') || 'My Money'} & Cashflow
         </h2>
-        <p className="text-xs text-stone-500 dark:text-stone-400">
+        <p className="text-xs text-stone-500 dark:text-[#A8988A]">
           Real-time calculations from your logged income & expenses
         </p>
       </div>
@@ -115,19 +115,19 @@ export default function MyMoney() {
 
       {/* Debt Card */}
       {debt > 0 && (
-        <div className="bg-rose-50/90 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 rounded-2xl p-4 flex items-center justify-between shadow-xs">
+        <div className="bg-rose-50/90 dark:bg-[#28211C] border border-rose-200 dark:border-[#3D332B] rounded-2xl p-4 flex items-center justify-between shadow-xs">
           <div className="flex items-start gap-3">
-            <div className="p-2.5 bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 rounded-xl mt-0.5 shrink-0">
+            <div className="p-2.5 bg-rose-100 dark:bg-[#1e1b19] text-rose-700 dark:text-rose-400 rounded-xl mt-0.5 shrink-0">
               <IconAlertTriangle size={20} />
             </div>
             <div>
-              <span className="text-[11px] font-bold text-rose-900 dark:text-rose-300 uppercase tracking-wider block">
+              <span className="text-[11px] font-bold text-rose-900 dark:text-rose-400 uppercase tracking-wider block">
                 Total Outstanding Debt
               </span>
-              <div className="text-xl font-black text-rose-950 dark:text-rose-100">
+              <div className="font-headline text-xl font-black text-rose-950 dark:text-[#FFF5EB]">
                 ₹{Number(debt).toLocaleString('en-IN')}
               </div>
-              <p className="text-xs text-rose-700 dark:text-rose-300/90 mt-0.5 font-medium">
+              <p className="text-xs text-rose-700 dark:text-[#D4C4B5] mt-0.5 font-medium">
                 Suggested payment: ~₹{Math.min(surplus, Math.max(1000, Math.round(surplus * 0.5))).toLocaleString('en-IN')}/mo from surplus
               </p>
             </div>
@@ -137,39 +137,30 @@ export default function MyMoney() {
 
       {/* Emergency Fund Progress */}
       {ef && (
-        <div className="bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 rounded-2xl p-4 shadow-xs">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
-              <span>🛡 Emergency Fund</span>
-            </span>
-            <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-300/40">
-              {ef.percent_complete}% complete
-            </span>
-          </div>
-
-          <div className="text-base font-black text-stone-900 dark:text-stone-100 mb-1.5">
-            ₹{Number(ef.current).toLocaleString('en-IN')}{' '}
-            <span className="text-xs font-normal text-stone-400">
-              / ₹{Number(ef.target).toLocaleString('en-IN')}
+        <div className="bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] rounded-2xl p-4 shadow-xs">
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <span className="text-[11px] font-bold text-teal-800 dark:text-teal-400 uppercase tracking-wider block">
+                3-Month Emergency Fund Shield
+              </span>
+              <div className="text-sm font-bold text-[#221a0e] dark:text-[#FFF5EB]">
+                ₹{Number(ef.current_amount || savings).toLocaleString('en-IN')} of ₹{Number(ef.target_amount || expenses * 3).toLocaleString('en-IN')}
+              </div>
+            </div>
+            <span className="text-xs font-bold px-2.5 py-1 bg-teal-100 dark:bg-[#28211C] text-teal-800 dark:text-teal-300 rounded-full font-mono">
+              {ef.percent_complete || Math.round(((savings) / Math.max(1, expenses * 3)) * 100)}%
             </span>
           </div>
-
-          <ProgressBar value={ef.current} max={ef.target} color="bg-emerald-600 dark:bg-emerald-500" />
-          
-          <p className="text-xs text-stone-500 dark:text-stone-400 mt-2 font-medium">
-            Build your safety net (3 months of household expenses)
-          </p>
+          <ProgressBar value={ef.current_amount || savings} max={ef.target_amount || Math.max(1, expenses * 3)} />
         </div>
       )}
 
-      {/* Transaction Log Feed */}
-      <div className="pt-1">
-        <TransactionList
-          transactions={transactions}
-          onAddTransaction={handleAddTransaction}
-          onDeleteTransaction={handleDeleteTransaction}
-        />
-      </div>
+      {/* Transaction Feed */}
+      <TransactionList
+        transactions={transactions}
+        onAddTransaction={handleAddTransaction}
+        onDeleteTransaction={handleDeleteTransaction}
+      />
     </div>
   );
 }
