@@ -11,6 +11,8 @@ from app.services.calculators import FinancialCalculators
 from app.services.knowledge_service import KnowledgeService
 from app.services.learning_service import LearningService
 from app.services.journey_engine import JourneyEngine
+from app.services.scheme_matcher import SchemeMatcher
+from app.services.scheme_service import SchemeService
 
 __all__ = [
     "UserService",
@@ -22,4 +24,7 @@ __all__ = [
     "KnowledgeService",
     "LearningService",
     "JourneyEngine",
+    "SchemeMatcher",
+    "SchemeService",
 ]
+

@@ -8,6 +8,7 @@ from app.models.transaction import Transaction
 from app.models.goal import Goal
 from app.models.debt import Debt
 from app.models.learning import UserLearningProgress
+from app.models.scheme import GovernmentScheme, UserSchemeBookmark
 
 __all__ = [
     "Base",
@@ -17,4 +18,7 @@ __all__ = [
     "Goal",
     "Debt",
     "UserLearningProgress",
+    "GovernmentScheme",
+    "UserSchemeBookmark",
 ]
+
