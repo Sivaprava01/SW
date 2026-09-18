@@ -60,14 +60,14 @@ export default function Benefits() {
       {/* Title & Header */}
       <div>
         <div className="flex items-center gap-1.5 mb-1">
-          <span className="text-[11px] font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-0.5 rounded-full border border-orange-200/60 dark:border-orange-800/40">
+          <span className="text-[11px] font-bold text-orange-800 dark:text-[#ffb690] bg-[#fff1e3] dark:bg-[#28211C] px-2.5 py-0.5 rounded-full border border-orange-200/60 dark:border-[#3D332B]">
             Verified Government Programs
           </span>
         </div>
-        <h2 className="text-xl font-black text-stone-900 dark:text-stone-100 tracking-tight">
+        <h2 className="font-headline text-xl font-black text-[#221a0e] dark:text-[#FFF5EB] tracking-tight">
           {t('nav_benefits') || 'Government Benefits'} & Schemes
         </h2>
-        <p className="text-xs text-stone-500 dark:text-stone-400">
+        <p className="text-xs text-stone-500 dark:text-[#A8988A]">
           Official central and state initiatives for women, SHGs, and micro businesses
         </p>
       </div>
@@ -80,7 +80,7 @@ export default function Benefits() {
               <IconSparkles size={16} />
               <span>Smart Preliminary Eligibility Match</span>
             </div>
-            <h3 className="text-base sm:text-lg font-black leading-tight text-stone-950 mb-1">
+            <h3 className="font-headline text-base sm:text-lg font-black leading-tight text-stone-950 mb-1">
               Find Schemes You May Be Eligible For
             </h3>
             <p className="text-xs text-stone-900/80 max-w-xs leading-relaxed font-medium">
@@ -105,7 +105,7 @@ export default function Benefits() {
           placeholder="Search scheme name, e.g. Mudra, Stree Nidhi..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 rounded-2xl text-xs text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-orange-500 focus:outline-hidden shadow-2xs"
+          className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] rounded-2xl text-xs text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden shadow-2xs placeholder:text-stone-400 dark:placeholder:text-[#A8988A]"
         />
       </div>
 
@@ -118,7 +118,7 @@ export default function Benefits() {
             className={`px-3 py-1.5 text-xs font-bold rounded-full whitespace-nowrap transition cursor-pointer min-h-[36px] ${
               selectedCategory === cat
                 ? 'bg-orange-600 dark:bg-orange-500 text-white shadow-xs'
-                : 'bg-white dark:bg-slate-900 text-stone-600 dark:text-stone-300 border border-amber-100 dark:border-slate-800 hover:bg-stone-50 dark:hover:bg-slate-800'
+                : 'bg-white dark:bg-[#1e1b19] text-stone-600 dark:text-[#D4C4B5] border border-amber-100 dark:border-[#3D332B] hover:bg-stone-50 dark:hover:bg-[#28211C]'
             }`}
           >
             {cat}
@@ -128,11 +128,11 @@ export default function Benefits() {
 
       {/* Scheme Cards Feed */}
       {loading ? (
-        <div className="p-8 text-center text-stone-500 dark:text-stone-400 text-xs font-medium">
+        <div className="p-8 text-center text-stone-500 dark:text-[#A8988A] text-xs font-medium">
           Loading authentic schemes...
         </div>
       ) : filteredSchemes.length === 0 ? (
-        <div className="bg-white dark:bg-slate-900 border border-dashed border-amber-200 dark:border-slate-800 rounded-2xl p-6 text-center text-stone-500 dark:text-stone-400 text-xs">
+        <div className="bg-white dark:bg-[#1e1b19] border border-dashed border-amber-200 dark:border-[#3D332B] rounded-2xl p-6 text-center text-stone-500 dark:text-[#A8988A] text-xs">
           No schemes found matching this filter.
         </div>
       ) : (
@@ -141,11 +141,17 @@ export default function Benefits() {
             <SchemeCard
               key={s.id}
               scheme={s}
-              onViewDetails={(scheme) => setSelectedScheme(scheme)}
+              onViewDetails={(sc) => setSelectedScheme(sc)}
             />
           ))}
         </div>
       )}
+
+      {/* Scheme Details Modal */}
+      <SchemeDetailsModal
+        scheme={selectedScheme}
+        onClose={() => setSelectedScheme(null)}
+      />
 
       {/* Full Window Guided Matcher */}
       <FullWindowSchemeMatcher
@@ -153,12 +159,6 @@ export default function Benefits() {
         onClose={() => setIsMatcherOpen(false)}
         initialCriteria={user}
         userId={user?.id}
-      />
-
-      {/* Details Modal */}
-      <SchemeDetailsModal
-        scheme={selectedScheme}
-        onClose={() => setSelectedScheme(null)}
       />
     </div>
   );

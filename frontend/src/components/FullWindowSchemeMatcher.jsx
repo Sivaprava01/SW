@@ -83,19 +83,19 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
       aria-labelledby="matcher-title"
       className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md flex flex-col justify-between overflow-y-auto animate-in fade-in"
     >
-      <div className="w-full max-w-lg mx-auto min-h-screen bg-[#fffaf5] dark:bg-slate-950 flex flex-col shadow-2xl relative">
+      <div className="w-full max-w-lg mx-auto min-h-screen bg-[#fff8f3] dark:bg-[#14110F] text-[#221a0e] dark:text-[#FFF5EB] flex flex-col shadow-2xl relative">
         
         {/* Top Header */}
-        <header className="sticky top-0 z-10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-amber-100 dark:border-slate-800 px-4 py-3.5 flex items-center justify-between">
+        <header className="sticky top-0 z-10 bg-[#fff8f3]/95 dark:bg-[#14110F]/95 backdrop-blur-md border-b border-amber-100 dark:border-[#3D332B] px-4 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-orange-100 dark:bg-slate-800 text-orange-700 dark:text-orange-400">
+            <div className="p-2 rounded-xl bg-orange-100 dark:bg-[#28211C] text-orange-700 dark:text-[#ffb690]">
               <IconSparkles size={18} />
             </div>
             <div>
-              <h2 id="matcher-title" className="text-sm font-black text-stone-900 dark:text-stone-100 tracking-tight">
+              <h2 id="matcher-title" className="font-headline text-sm font-black text-[#221a0e] dark:text-[#FFF5EB] tracking-tight">
                 Government Scheme Matcher
               </h2>
-              <p className="text-[11px] text-stone-500 dark:text-stone-400">
+              <p className="text-[11px] text-stone-500 dark:text-[#A8988A]">
                 Step-by-step preliminary eligibility check
               </p>
             </div>
@@ -111,14 +111,14 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
 
         {/* Progress Bar (Only during question steps) */}
         {!results && !loading && (
-          <div className="bg-white dark:bg-slate-900 px-4 py-2 border-b border-amber-100 dark:border-slate-800">
-            <div className="flex items-center justify-between text-xs font-bold text-stone-500 dark:text-stone-400 mb-1.5">
+          <div className="bg-[#fff1e3] dark:bg-[#1e1b19] px-4 py-2 border-b border-amber-100 dark:border-[#3D332B]">
+            <div className="flex items-center justify-between text-xs font-bold text-stone-500 dark:text-[#A8988A] mb-1.5 font-mono">
               <span>Question {currentStep} of {TOTAL_QUESTIONS}</span>
-              <span className="text-orange-600 dark:text-orange-400 font-black">{Math.round((currentStep / TOTAL_QUESTIONS) * 100)}%</span>
+              <span className="text-orange-600 dark:text-[#ffb690] font-black">{Math.round((currentStep / TOTAL_QUESTIONS) * 100)}%</span>
             </div>
-            <div className="w-full bg-stone-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+            <div className="w-full bg-stone-200 dark:bg-[#28211C] h-2 rounded-full overflow-hidden">
               <div
-                className="bg-orange-600 dark:bg-orange-500 h-full transition-all duration-300 rounded-full"
+                className="bg-orange-600 dark:bg-[#ffb690] h-full transition-all duration-300 rounded-full"
                 style={{ width: `${(currentStep / TOTAL_QUESTIONS) * 100}%` }}
               />
             </div>
@@ -131,376 +131,297 @@ export default function FullWindowSchemeMatcher({ isOpen, onClose, initialCriter
           {/* Loading Animation State */}
           {loading && (
             <div className="text-center py-12 space-y-4 animate-in fade-in">
-              <div className="w-16 h-16 rounded-3xl bg-orange-100 dark:bg-slate-800 text-orange-600 dark:text-orange-400 flex items-center justify-center mx-auto animate-pulse">
+              <div className="w-16 h-16 rounded-3xl bg-orange-100 dark:bg-[#28211C] text-orange-600 dark:text-[#ffb690] flex items-center justify-center mx-auto animate-pulse">
                 <IconSparkles size={32} />
               </div>
-              <h3 className="text-lg font-black text-stone-900 dark:text-stone-100">
+              <h3 className="font-headline text-lg font-black text-[#221a0e] dark:text-[#FFF5EB]">
                 Analyzing your answers...
               </h3>
-              <p className="text-xs text-stone-500 dark:text-stone-400 max-w-xs mx-auto leading-relaxed">
-                Comparing your profile against 15 verified central and state schemes for maximum financial support.
+              <p className="text-xs text-stone-500 dark:text-[#A8988A] max-w-xs mx-auto leading-relaxed">
+                Checking age, SHG rules, and region criteria against 15 authentic welfare schemes.
               </p>
             </div>
           )}
 
-          {/* Question Flow: 1 Question at a time */}
-          {!results && !loading && (
-            <div className="space-y-6 animate-in fade-in">
-              
-              {/* Question 1: Gender */}
-              {currentStep === 1 && (
-                <div className="space-y-4">
-                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
-                    Step 1 • Target Profile
-                  </span>
-                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
-                    Are you a woman?
-                  </h3>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
-                    Many specialized government schemes (like Lakhpati Didi, Stree Nidhi, Mahila Samman) offer exclusive grants and lower loan interest rates specifically for women.
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-3 pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setAnswers({ ...answers, is_woman: true })}
-                      className={`p-4 rounded-2xl border text-sm font-black transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
-                        answers.is_woman
-                          ? 'bg-orange-600 text-white border-orange-600 shadow-md scale-[1.02]'
-                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
-                      }`}
-                    >
-                      <span>Yes</span>
-                      {answers.is_woman && <IconCircleCheck size={18} />}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setAnswers({ ...answers, is_woman: false })}
-                      className={`p-4 rounded-2xl border text-sm font-black transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
-                        !answers.is_woman
-                          ? 'bg-orange-600 text-white border-orange-600 shadow-md scale-[1.02]'
-                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
-                      }`}
-                    >
-                      <span>No</span>
-                      {!answers.is_woman && <IconCircleCheck size={18} />}
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Question 2: Age */}
-              {currentStep === 2 && (
-                <div className="space-y-4">
-                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
-                    Step 2 • Eligibility
-                  </span>
-                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
-                    What is your age?
-                  </h3>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
-                    Schemes like Atal Pension Yojana, Sukanya Samriddhi, and PMSBY have specific age brackets.
-                  </p>
-
-                  <div className="space-y-3 pt-2">
-                    <input
-                      type="number"
-                      min="18"
-                      max="90"
-                      value={answers.age}
-                      onChange={(e) => setAnswers({ ...answers, age: e.target.value })}
-                      className="w-full text-2xl font-black px-4 py-3 border border-amber-200 dark:border-slate-700 rounded-2xl text-stone-900 dark:text-stone-100 focus:outline-hidden focus:ring-2 focus:ring-orange-500 bg-white dark:bg-slate-900"
-                      placeholder="e.g. 28"
-                    />
-                    <div className="flex gap-2">
-                      {[25, 28, 35, 45, 55].map((preset) => (
-                        <button
-                          key={preset}
-                          type="button"
-                          onClick={() => setAnswers({ ...answers, age: preset })}
-                          className={`flex-1 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer ${
-                            parseInt(answers.age, 10) === preset
-                              ? 'bg-orange-100 dark:bg-orange-950 text-orange-900 dark:text-orange-300 border-orange-300'
-                              : 'bg-white dark:bg-slate-900 text-stone-600 dark:text-stone-400 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
-                          }`}
-                        >
-                          {preset}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Question 3: State */}
-              {currentStep === 3 && (
-                <div className="space-y-4">
-                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
-                    Step 3 • Location
-                  </span>
-                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
-                    Which state do you live in?
-                  </h3>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
-                    This unlocks state-specific welfare benefits (such as Stree Nidhi or Kalyana Lakshmi in Telangana) alongside Central schemes.
-                  </p>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                    {['Telangana', 'Andhra Pradesh', 'Maharashtra', 'Other / All India'].map((st) => {
-                      const isSelected = (answers.state === st) || (st === 'Other / All India' && answers.state === 'Central');
-                      return (
-                        <button
-                          key={st}
-                          type="button"
-                          onClick={() => setAnswers({ ...answers, state: st === 'Other / All India' ? 'Central' : st })}
-                          className={`p-3.5 rounded-2xl border text-sm font-bold transition text-left cursor-pointer min-h-[50px] flex items-center justify-between ${
-                            isSelected
-                              ? 'bg-orange-600 text-white border-orange-600 shadow-sm'
-                              : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
-                          }`}
-                        >
-                          <span>{st}</span>
-                          {isSelected && <IconCircleCheck size={16} />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Question 4: SHG Member */}
-              {currentStep === 4 && (
-                <div className="space-y-4">
-                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
-                    Step 4 • Community Livelihood
-                  </span>
-                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
-                    Are you a member of a Self-Help Group (SHG / Bachat Gat)?
-                  </h3>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
-                    SHG members qualify for Lakhpati Didi grants, Stree Nidhi fast loans, and NABARD group credit linkages.
-                  </p>
-
-                  <div className="space-y-2.5 pt-1">
-                    <button
-                      type="button"
-                      onClick={() => setAnswers({ ...answers, is_shg_member: true })}
-                      className={`w-full p-4 rounded-2xl border text-sm font-bold transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
-                        answers.is_shg_member
-                          ? 'bg-orange-600 text-white border-orange-600 shadow-md'
-                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
-                      }`}
-                    >
-                      <div>
-                        <div>Yes, active in an SHG / Bachat Gat</div>
-                        <div className={`text-xs mt-0.5 ${answers.is_shg_member ? 'text-orange-100' : 'text-stone-400'}`}>
-                          Unlocks micro-credit and group grants
-                        </div>
-                      </div>
-                      {answers.is_shg_member && <IconCircleCheck size={20} />}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setAnswers({ ...answers, is_shg_member: false })}
-                      className={`w-full p-4 rounded-2xl border text-sm font-bold transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
-                        !answers.is_shg_member
-                          ? 'bg-orange-600 text-white border-orange-600 shadow-md'
-                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
-                      }`}
-                    >
-                      <div>
-                        <div>No, not a member</div>
-                        <div className={`text-xs mt-0.5 ${!answers.is_shg_member ? 'text-orange-100' : 'text-stone-400'}`}>
-                          Still eligible for direct individual schemes
-                        </div>
-                      </div>
-                      {!answers.is_shg_member && <IconCircleCheck size={20} />}
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Question 5: Business Interest */}
-              {currentStep === 5 && (
-                <div className="space-y-4">
-                  <span className="text-xs font-bold text-orange-800 dark:text-orange-300 bg-[#fff1e3] dark:bg-orange-950/80 px-2.5 py-1 rounded-full uppercase tracking-wider border border-orange-200/60 dark:border-orange-800/40">
-                    Step 5 • Business & Livelihood
-                  </span>
-                  <h3 className="text-xl font-black text-stone-900 dark:text-stone-100 leading-tight">
-                    Do you want to start or expand a small business, tailoring, or shop?
-                  </h3>
-                  <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
-                    Unlocks collateral-free loans like MUDRA Shishu (up to ₹50k), PM Vishwakarma toolkits, and Stand-Up India.
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-3 pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setAnswers({ ...answers, has_business_interest: true })}
-                      className={`p-4 rounded-2xl border text-sm font-black transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
-                        answers.has_business_interest
-                          ? 'bg-orange-600 text-white border-orange-600 shadow-md scale-[1.02]'
-                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
-                      }`}
-                    >
-                      <span>Yes</span>
-                      {answers.has_business_interest && <IconCircleCheck size={18} />}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setAnswers({ ...answers, has_business_interest: false })}
-                      className={`p-4 rounded-2xl border text-sm font-black transition text-left cursor-pointer min-h-[56px] flex items-center justify-between ${
-                        !answers.has_business_interest
-                          ? 'bg-orange-600 text-white border-orange-600 shadow-md scale-[1.02]'
-                          : 'bg-white dark:bg-slate-900 text-stone-700 dark:text-stone-300 border-amber-100 dark:border-slate-800 hover:bg-stone-50'
-                      }`}
-                    >
-                      <span>No</span>
-                      {!answers.has_business_interest && <IconCircleCheck size={18} />}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Results Screen */}
+          {/* Results View */}
           {results && !loading && (
             <div className="space-y-4 animate-in fade-in">
-              <div className="bg-emerald-100 dark:bg-emerald-950/80 text-emerald-950 dark:text-emerald-200 p-4 rounded-2xl border border-emerald-300 dark:border-emerald-800">
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="font-black text-base flex items-center gap-2">
-                    <IconCircleCheck size={20} className="text-emerald-700 dark:text-emerald-400" />
-                    You may want to explore {results.total_matched} Schemes
-                  </h3>
+              <div className="bg-emerald-50 dark:bg-[#1e1b19] border border-emerald-200 dark:border-[#3D332B] rounded-2xl p-4 text-center">
+                <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto mb-2">
+                  <IconCircleCheck size={20} />
                 </div>
-                <p className="text-xs text-emerald-900/80 dark:text-emerald-300/80 leading-relaxed">
-                  Based on your age ({answers.age}), location ({answers.state}), and profile.
+                <h3 className="font-headline text-lg font-black text-emerald-950 dark:text-emerald-300">
+                  {results.matched_schemes?.length || 0} Matches Found
+                </h3>
+                <p className="text-xs text-stone-600 dark:text-[#D4C4B5] mt-1">
+                  Based on your responses, you show strong potential eligibility for the following programs:
                 </p>
               </div>
 
-              {/* Disclaimer Notice */}
-              <div className="bg-[#fff1e3] dark:bg-orange-950/40 border border-orange-200 dark:border-orange-800/60 rounded-2xl p-3.5 flex gap-2.5 text-orange-950 dark:text-orange-200">
-                <IconAlertTriangle size={18} className="shrink-0 text-orange-600 dark:text-orange-400 mt-0.5" />
-                <p className="text-xs leading-relaxed font-medium">
-                  {results.disclaimer}
-                </p>
-              </div>
-
-              {/* Matched Schemes List */}
-              <div className="space-y-3 pt-1">
-                {results.matches.map((m) => (
+              <div className="space-y-3">
+                {results.matched_schemes?.map((m) => (
                   <div
                     key={m.scheme.id}
-                    className="bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 rounded-2xl p-4 shadow-xs hover:border-orange-300 dark:hover:border-slate-700 transition"
+                    className="bg-white dark:bg-[#1e1b19] border border-amber-100 dark:border-[#3D332B] rounded-2xl p-4 shadow-xs"
                   >
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#fff1e3] dark:bg-slate-800 text-orange-900 dark:text-orange-300 border border-orange-200/50 dark:border-slate-700">
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#fff1e3] dark:bg-[#28211C] text-orange-900 dark:text-[#ffb690]">
                         {m.scheme.category}
                       </span>
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300/40">
+                      <span className="text-xs font-black text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-[#28211C] px-2.5 py-0.5 rounded-full border border-emerald-300/40 font-mono">
                         {m.match_score}% Match
                       </span>
                     </div>
 
-                    <h4 className="text-base font-bold text-stone-900 dark:text-stone-100 mb-1">
+                    <h4 className="font-headline text-base font-bold text-[#221a0e] dark:text-[#FFF5EB] mb-1">
                       {m.scheme.name}
                     </h4>
-
-                    <p className="text-xs text-stone-600 dark:text-stone-400 mb-3 leading-relaxed">
-                      {m.scheme.what_it_provides}
+                    <p className="text-xs text-stone-600 dark:text-[#D4C4B5] mb-3">
+                      {m.scheme.description}
                     </p>
 
-                    {/* Why you match */}
-                    {m.reasons && m.reasons.length > 0 && (
-                      <div className="bg-stone-50 dark:bg-slate-800/80 p-2.5 rounded-xl mb-3 border border-amber-50 dark:border-slate-700/60">
-                        <span className="text-[11px] font-bold text-orange-700 dark:text-orange-400 block mb-1">
-                          Why it may be relevant:
-                        </span>
-                        <ul className="text-xs text-stone-600 dark:text-stone-400 space-y-0.5 pl-3 list-disc">
-                          {m.reasons.slice(0, 2).map((r, idx) => (
-                            <li key={idx}>{r}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    <div className="pt-2 border-t border-amber-100 dark:border-slate-800 flex items-center justify-between gap-2">
-                      <button
-                        onClick={() => setSelectedScheme(m.scheme)}
-                        className="px-3 py-1.5 bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 text-stone-700 dark:text-stone-300 font-bold rounded-xl text-xs transition cursor-pointer min-h-[38px]"
-                      >
-                        View Full Summary
-                      </button>
-
-                      <a
-                        href={m.scheme.official_source}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-xs cursor-pointer min-h-[38px]"
-                      >
-                        <span>View official source →</span>
-                        <IconExternalLink size={13} />
-                      </a>
+                    <div className="bg-[#fffaf5] dark:bg-[#14110F] p-2.5 rounded-xl border border-stone-100 dark:border-[#3D332B] mb-3">
+                      <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block mb-1">
+                        Matching Criteria:
+                      </span>
+                      <ul className="text-xs text-stone-700 dark:text-[#D4C4B5] space-y-0.5 pl-3 list-disc">
+                        {m.match_reasons.map((r, idx) => (
+                          <li key={idx}>{r}</li>
+                        ))}
+                      </ul>
                     </div>
+
+                    <button
+                      onClick={() => setSelectedScheme(m.scheme)}
+                      className="w-full py-2 bg-orange-50 dark:bg-[#28211C] hover:bg-orange-100 dark:hover:bg-stone-800 text-orange-800 dark:text-[#ffb690] text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 border border-orange-200/60 dark:border-[#3D332B] cursor-pointer"
+                    >
+                      <span>View Full Scheme Details</span>
+                      <IconChevronRight size={14} />
+                    </button>
                   </div>
                 ))}
+              </div>
+
+              <div className="pt-4 flex gap-2">
+                <button
+                  onClick={handleReset}
+                  className="flex-1 py-3 bg-[#fff1e3] dark:bg-[#28211C] hover:bg-amber-100 dark:hover:bg-stone-800 text-stone-700 dark:text-[#D4C4B5] font-bold rounded-xl text-xs transition flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  <IconRefresh size={15} />
+                  <span>Start Over</span>
+                </button>
+                <button
+                  onClick={onClose}
+                  className="flex-1 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl text-xs transition shadow-xs cursor-pointer"
+                >
+                  <span>Done</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* QUESTION 1 */}
+          {!results && !loading && currentStep === 1 && (
+            <div className="space-y-4 animate-in fade-in">
+              <span className="text-xs font-bold text-orange-600 dark:text-[#ffb690] uppercase tracking-wider">
+                Question 1 of 5
+              </span>
+              <h3 className="font-headline text-lg font-black text-[#221a0e] dark:text-[#FFF5EB]">
+                What is your age in completed years?
+              </h3>
+              <p className="text-xs text-stone-500 dark:text-[#A8988A]">
+                Many state schemes have specific minimum age guidelines (e.g. 18+ for livelihood loans, 60+ for pensions).
+              </p>
+              <div>
+                <input
+                  type="number"
+                  min="18"
+                  max="100"
+                  value={answers.age}
+                  onChange={(e) => setAnswers({ ...answers, age: e.target.value })}
+                  className="w-full text-2xl font-headline font-black px-4 py-3 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200 dark:border-[#3D332B] rounded-2xl text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* QUESTION 2 */}
+          {!results && !loading && currentStep === 2 && (
+            <div className="space-y-4 animate-in fade-in">
+              <span className="text-xs font-bold text-orange-600 dark:text-[#ffb690] uppercase tracking-wider">
+                Question 2 of 5
+              </span>
+              <h3 className="font-headline text-lg font-black text-[#221a0e] dark:text-[#FFF5EB]">
+                Are you a member of a Self-Help Group (SHG)?
+              </h3>
+              <p className="text-xs text-stone-500 dark:text-[#A8988A]">
+                SHG members qualify for special community loans, revolving funds, and government interest subventions.
+              </p>
+              <div className="grid grid-cols-1 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setAnswers({ ...answers, is_shg_member: true })}
+                  className={`p-4 rounded-2xl border text-left font-bold text-xs sm:text-sm transition cursor-pointer flex items-center justify-between ${
+                    answers.is_shg_member
+                      ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 text-orange-950 dark:text-[#FFF5EB] shadow-xs'
+                      : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
+                  }`}
+                >
+                  <span>Yes, active SHG member (Velugu / Mahila Mandal)</span>
+                  {answers.is_shg_member && <IconCircleCheck size={18} className="text-orange-600 dark:text-[#ffb690]" />}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAnswers({ ...answers, is_shg_member: false })}
+                  className={`p-4 rounded-2xl border text-left font-bold text-xs sm:text-sm transition cursor-pointer flex items-center justify-between ${
+                    !answers.is_shg_member
+                      ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 text-orange-950 dark:text-[#FFF5EB] shadow-xs'
+                      : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
+                  }`}
+                >
+                  <span>No, independent individual / micro-saver</span>
+                  {!answers.is_shg_member && <IconCircleCheck size={18} className="text-orange-600 dark:text-[#ffb690]" />}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* QUESTION 3 */}
+          {!results && !loading && currentStep === 3 && (
+            <div className="space-y-4 animate-in fade-in">
+              <span className="text-xs font-bold text-orange-600 dark:text-[#ffb690] uppercase tracking-wider">
+                Question 3 of 5
+              </span>
+              <h3 className="font-headline text-lg font-black text-[#221a0e] dark:text-[#FFF5EB]">
+                Which state is your primary residence?
+              </h3>
+              <p className="text-xs text-stone-500 dark:text-[#A8988A]">
+                State-specific welfare schemes vary between Telangana, Andhra Pradesh, and Central programs.
+              </p>
+              <select
+                value={answers.state}
+                onChange={(e) => setAnswers({ ...answers, state: e.target.value })}
+                className="w-full text-sm font-bold px-4 py-3 bg-[#fffaf5] dark:bg-[#100e0c] border border-amber-200 dark:border-[#3D332B] rounded-2xl text-[#221a0e] dark:text-[#FFF5EB] focus:ring-2 focus:ring-orange-500 focus:outline-hidden"
+              >
+                <option value="Telangana">Telangana (తెలంగాణ)</option>
+                <option value="Andhra Pradesh">Andhra Pradesh (ఆంధ్రప్రదేశ్)</option>
+                <option value="Karnataka">Karnataka (ಕರ್ನಾಟಕ)</option>
+                <option value="Maharashtra">Maharashtra (महाराष्ट्र)</option>
+                <option value="Odisha">Odisha (ଓଡ଼ିଶା)</option>
+                <option value="Other">Other State</option>
+              </select>
+            </div>
+          )}
+
+          {/* QUESTION 4 */}
+          {!results && !loading && currentStep === 4 && (
+            <div className="space-y-4 animate-in fade-in">
+              <span className="text-xs font-bold text-orange-600 dark:text-[#ffb690] uppercase tracking-wider">
+                Question 4 of 5
+              </span>
+              <h3 className="font-headline text-lg font-black text-[#221a0e] dark:text-[#FFF5EB]">
+                Do you plan to run or grow a small enterprise?
+              </h3>
+              <p className="text-xs text-stone-500 dark:text-[#A8988A]">
+                E.g. Tailoring, dairy farming, vegetable vending, flour mill, or home handicraft.
+              </p>
+              <div className="grid grid-cols-1 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setAnswers({ ...answers, has_business_interest: true })}
+                  className={`p-4 rounded-2xl border text-left font-bold text-xs sm:text-sm transition cursor-pointer flex items-center justify-between ${
+                    answers.has_business_interest
+                      ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 text-orange-950 dark:text-[#FFF5EB] shadow-xs'
+                      : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
+                  }`}
+                >
+                  <span>Yes, I want to start or expand a micro-business</span>
+                  {answers.has_business_interest && <IconCircleCheck size={18} className="text-orange-600 dark:text-[#ffb690]" />}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAnswers({ ...answers, has_business_interest: false })}
+                  className={`p-4 rounded-2xl border text-left font-bold text-xs sm:text-sm transition cursor-pointer flex items-center justify-between ${
+                    !answers.has_business_interest
+                      ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 text-orange-950 dark:text-[#FFF5EB] shadow-xs'
+                      : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
+                  }`}
+                >
+                  <span>No, primary focus is safety and insurance</span>
+                  {!answers.has_business_interest && <IconCircleCheck size={18} className="text-orange-600 dark:text-[#ffb690]" />}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* QUESTION 5 */}
+          {!results && !loading && currentStep === 5 && (
+            <div className="space-y-4 animate-in fade-in">
+              <span className="text-xs font-bold text-orange-600 dark:text-[#ffb690] uppercase tracking-wider">
+                Question 5 of 5
+              </span>
+              <h3 className="font-headline text-lg font-black text-[#221a0e] dark:text-[#FFF5EB]">
+                Where is your family home located?
+              </h3>
+              <p className="text-xs text-stone-500 dark:text-[#A8988A]">
+                Rural and urban welfare divisions operate through different panchayat and municipal bodies.
+              </p>
+              <div className="grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setAnswers({ ...answers, is_rural: true })}
+                  className={`p-4 rounded-2xl border text-center font-bold text-xs sm:text-sm transition cursor-pointer ${
+                    answers.is_rural
+                      ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 text-orange-950 dark:text-[#FFF5EB] shadow-xs'
+                      : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
+                  }`}
+                >
+                  Rural Village (గ్రామం)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAnswers({ ...answers, is_rural: false })}
+                  className={`p-4 rounded-2xl border text-center font-bold text-xs sm:text-sm transition cursor-pointer ${
+                    !answers.is_rural
+                      ? 'bg-[#fff1e3] dark:bg-[#28211C] border-orange-500 text-orange-950 dark:text-[#FFF5EB] shadow-xs'
+                      : 'bg-white dark:bg-[#1e1b19] border-stone-200 dark:border-[#3D332B] text-stone-700 dark:text-[#D4C4B5]'
+                  }`}
+                >
+                  Urban Town (పట్టణం)
+                </button>
               </div>
             </div>
           )}
         </div>
 
-        {/* Footer Navigation Controls */}
-        <footer className="sticky bottom-0 z-10 bg-white dark:bg-slate-900 border-t border-amber-100 dark:border-slate-800 p-4 flex gap-2">
-          {!results && !loading && (
-            <>
-              {currentStep > 1 && (
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="px-4 py-3 bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 text-stone-700 dark:text-stone-300 font-bold rounded-xl text-xs transition cursor-pointer min-h-[44px] flex items-center gap-1.5"
-                >
-                  <IconArrowLeft size={16} />
-                  <span>Back</span>
-                </button>
-              )}
-
+        {/* Bottom Nav Actions (during questions) */}
+        {!results && !loading && (
+          <footer className="sticky bottom-0 bg-[#fff8f3]/95 dark:bg-[#14110F]/95 backdrop-blur-md border-t border-amber-100 dark:border-[#3D332B] p-4 flex items-center justify-between gap-3">
+            {currentStep > 1 ? (
               <button
                 type="button"
-                onClick={handleNext}
-                className="flex-1 py-3 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-xl text-xs transition shadow-sm cursor-pointer min-h-[44px] flex items-center justify-center gap-1.5 active:scale-95"
+                onClick={handleBack}
+                className="px-4 py-3 bg-stone-200 dark:bg-[#28211C] hover:bg-stone-300 text-stone-800 dark:text-[#D4C4B5] font-bold rounded-xl text-xs transition cursor-pointer flex items-center gap-1 min-h-[44px]"
               >
-                <span>{currentStep === TOTAL_QUESTIONS ? 'Calculate My Matches' : 'Next Question'}</span>
-                <IconArrowRight size={16} />
+                <IconArrowLeft size={16} />
+                <span>Back</span>
               </button>
-            </>
-          )}
+            ) : (
+              <div />
+            )}
 
-          {results && !loading && (
-            <div className="flex gap-2 w-full">
-              <button
-                type="button"
-                onClick={handleReset}
-                className="flex-1 py-3 bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 text-stone-700 dark:text-stone-300 font-bold rounded-xl text-xs transition cursor-pointer min-h-[44px] flex items-center justify-center gap-1.5"
-              >
-                <IconRefresh size={14} />
-                <span>Retake Matcher</span>
-              </button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex-1 py-3 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-xl text-xs transition shadow-sm cursor-pointer min-h-[44px] active:scale-95"
-              >
-                Done
-              </button>
-            </div>
-          )}
-        </footer>
+            <button
+              type="button"
+              onClick={handleNext}
+              className="flex-1 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer min-h-[44px] active:scale-95"
+            >
+              <span>{currentStep === TOTAL_QUESTIONS ? 'Calculate My Matches' : 'Next Question'}</span>
+              <IconArrowRight size={16} />
+            </button>
+          </footer>
+        )}
 
-        {/* Scheme Details Modal */}
+        {/* Scheme Details Sub-modal inside Matcher */}
         <SchemeDetailsModal
           scheme={selectedScheme}
           onClose={() => setSelectedScheme(null)}
