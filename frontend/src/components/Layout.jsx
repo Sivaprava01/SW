@@ -8,6 +8,7 @@ import {
   IconBook,
   IconSparkles,
   IconMenu2,
+  IconMapPin,
 } from '@tabler/icons-react';
 import { useUser } from '../context/UserContext';
 import { FloatingDock } from '@/components/ui/floating-dock';
@@ -21,7 +22,7 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
 
   // Avatar state
   const avatarUrl = typeof window !== 'undefined' ? localStorage.getItem('sakhi_avatar') : null;
-  const avatarColor = (typeof window !== 'undefined' ? localStorage.getItem('sakhi_avatar_color') : null) || 'from-emerald-600 to-teal-500';
+  const avatarColor = (typeof window !== 'undefined' ? localStorage.getItem('sakhi_avatar_color') : null) || 'from-orange-500 to-amber-500';
 
   const dockItems = [
     {
@@ -62,16 +63,16 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
     },
     {
       title: t('nav_ask') || 'Ask Sakhi',
-      icon: <IconSparkles className="h-full w-full stroke-[2.2] text-amber-500" />,
+      icon: <IconSparkles className="h-full w-full stroke-[2.2] text-orange-500" />,
       onClick: onOpenAskSakhi,
       isActive: false,
     },
   ];
 
   return (
-    <div className="app-container">
+    <div className="app-container bg-[#fffaf5] dark:bg-[#14110F] text-[#221a0e] dark:text-[#FFF5EB]">
       {/* Top Header */}
-      <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-[#fff8f3]/95 dark:bg-[#14110F]/95 backdrop-blur-md border-b border-amber-200/70 dark:border-[#28211C] px-4 py-3 flex items-center justify-between">
         {/* User clickable profile target (VIEW-ONLY PROFILE) */}
         <button
           onClick={() => (user ? setShowProfile(true) : null)}
@@ -82,20 +83,21 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
             <img
               src={avatarUrl}
               alt={user?.name || 'User'}
-              className="w-9 h-9 rounded-2xl object-cover border border-emerald-400 shadow-xs group-hover:scale-105 transition"
+              className="w-9 h-9 rounded-2xl object-cover border border-orange-400 shadow-xs group-hover:scale-105 transition"
             />
           ) : (
-            <div className={`w-9 h-9 rounded-2xl bg-linear-to-tr ${avatarColor} flex items-center justify-center text-white font-black text-lg shadow-xs group-hover:scale-105 transition`}>
+            <div className={`w-9 h-9 rounded-2xl bg-gradient-to-tr ${avatarColor} flex items-center justify-center text-white font-black text-lg shadow-xs group-hover:scale-105 transition border border-white/30 dark:border-stone-800`}>
               {user?.name ? user.name[0] : 'स'}
             </div>
           )}
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-black text-base tracking-tight text-slate-900 dark:text-slate-100 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition">
-                {user ? `${t('greeting_namaste')}, ${user.name} 👋` : 'Sakhi (सखी)'}
+              <span className="font-bold text-base tracking-tight text-[#221a0e] dark:text-[#FFF5EB] group-hover:text-orange-600 dark:group-hover:text-[#ffb690] transition">
+                {user ? `${t('greeting_namaste')}, ${user.name} 👋` : 'Sakhi (సఖీ)'}
               </span>
             </div>
-            <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1">
+            <p className="text-[11px] font-semibold text-stone-500 dark:text-[#A8988A] flex items-center gap-1">
+              <IconMapPin size={11} className="text-orange-600 dark:text-[#ffb690]" />
               <span>{user?.state || t('tagline')}</span>
             </p>
           </div>
@@ -106,7 +108,7 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
           {!user && (
             <button
               onClick={loadDemoUser}
-              className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-black transition flex items-center gap-1 shadow-xs cursor-pointer min-h-[38px]"
+              className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs cursor-pointer min-h-[38px]"
             >
               <IconSparkles size={16} />
               <span>Demo (Lakshmi)</span>
@@ -118,7 +120,7 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
               onClick={() => setShowSettings(true)}
               title={t('settings')}
               aria-label="Open Settings and Edit Information"
-              className="p-2 text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center border border-slate-200 dark:border-slate-700 shadow-2xs"
+              className="p-2 text-stone-700 dark:text-stone-300 hover:text-orange-600 dark:hover:text-[#ffb690] bg-[#fff1e3] dark:bg-[#1e1b19] hover:bg-amber-100 dark:hover:bg-[#28211C] rounded-xl transition cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center border border-amber-200/70 dark:border-[#3D332B] shadow-xs"
             >
               <IconMenu2 size={20} />
             </button>
@@ -136,7 +138,7 @@ export default function Layout({ activeTab, setActiveTab, onOpenAskSakhi, childr
         <div className="pointer-events-auto">
           <FloatingDock
             items={dockItems}
-            desktopClassName="shadow-2xl border-slate-200/90 dark:border-slate-800/90"
+            desktopClassName="shadow-2xl border-amber-200/80 dark:border-[#3D332B] bg-[#fff8f3]/90 dark:bg-[#14110F]/90"
             mobileClassName="shadow-2xl"
           />
         </div>
