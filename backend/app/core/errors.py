@@ -61,6 +61,39 @@ class BadRequestException(SakhiException):
         )
 
 
+class AuthenticationException(SakhiException):
+    """Raised when authentication credentials or token are missing or invalid."""
+    def __init__(self, message: str = "Authentication required", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="UNAUTHORIZED",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            details=details,
+        )
+
+
+class AuthorizationException(SakhiException):
+    """Raised when an authenticated user attempts to access forbidden resources."""
+    def __init__(self, message: str = "Access forbidden", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="FORBIDDEN",
+            status_code=status.HTTP_403_FORBIDDEN,
+            details=details,
+        )
+
+
+class DuplicateResourceException(SakhiException):
+    """Raised when creating a resource that violates a uniqueness constraint."""
+    def __init__(self, message: str = "Resource already exists", details: Optional[Any] = None):
+        super().__init__(
+            message=message,
+            code="CONFLICT",
+            status_code=status.HTTP_409_CONFLICT,
+            details=details,
+        )
+
+
 def register_error_handlers(app: FastAPI) -> None:
     """Register custom exception handlers with the FastAPI application."""
 

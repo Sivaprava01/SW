@@ -1,0 +1,197 @@
+<!DOCTYPE html><html class="h-full" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><title>Sakhi - Financial Companion</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&amp;family=Karla:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100%;margin:0;padding:0;min-height:100%;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'surface-container-high': '#f6e6d2', 'error': '#ba1a1a', 'on-primary': '#ffffff', 'primary-container': '#f97316', 'on-primary-fixed-variant': '#783200', 'background': '#fff8f3', 'on-tertiary': '#ffffff', 'surface-tint': '#9d4300', 'surface-container-lowest': '#ffffff', 'on-surface-variant': '#584237', 'on-secondary-container': '#610000', 'on-error-container': '#93000a', 'surface': '#fff8f3', 'tertiary-fixed': '#ffdad4', 'tertiary-fixed-dim': '#ffb4a8', 'secondary-container': '#fd5e49', 'on-tertiary-fixed-variant': '#7e2a20', 'inverse-primary': '#ffb690', 'on-secondary-fixed-variant': '#900c05', 'tertiary-container': '#e87b6b', 'on-primary-container': '#582200', 'inverse-surface': '#382f22', 'on-error': '#ffffff', 'secondary': '#b3291b', 'error-container': '#ffdad6', 'secondary-fixed': '#ffdad4', 'inverse-on-surface': '#ffeedb', 'on-primary-fixed': '#341100', 'on-secondary-fixed': '#410000', 'primary-fixed-dim': '#ffb690', 'surface-container': '#fcebd7', 'on-surface': '#221a0e', 'on-secondary': '#ffffff', 'surface-container-highest': '#f1e0cc', 'surface-dim': '#e8d8c4', 'on-tertiary-fixed': '#410000', 'outline-variant': '#e0c0b1', 'on-background': '#221a0e', 'outline': '#8c7164', 'primary-fixed': '#ffdbca', 'surface-container-low': '#fff1e3', 'tertiary': '#9d4135', 'on-tertiary-container': '#62160e', 'primary': '#9d4300', 'secondary-fixed-dim': '#ffb4a8', 'surface-bright': '#fff8f3', 'surface-variant': '#f1e0cc' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'gutter-mobile': '0.75rem', 'gutter': '1rem', 'gutter-desktop': '1.5rem', 'space-xs': '0.25rem', 'space-sm': '0.5rem', 'space-lg': '1.5rem', 'margin-mobile': '1rem', 'space-md': '1rem', 'margin': '1rem', 'margin-desktop': '2rem', 'space-xl': '2.5rem' }, fontFamily: { 'body-md': ['Inconsolata'], 'headline-lg-mobile': ['Karla'], 'display': ['Karla'], 'display-mobile': ['Karla'], 'label-lg': ['Inconsolata'], 'label-md': ['Inconsolata'], 'headline-md': ['Karla'], 'body-lg': ['Inconsolata'], 'body-sm': ['Inconsolata'], 'headline-sm': ['Karla'], 'headline-lg': ['Karla'], 'label-sm': ['Inconsolata'] }, fontSize: { 'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0em', fontWeight: '400' }], 'headline-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.02em', fontWeight: '700' }], 'display': ['56px', { lineHeight: '64px', letterSpacing: '-0.035em', fontWeight: '700' }], 'display-mobile': ['38px', { lineHeight: '44px', letterSpacing: '-0.025em', fontWeight: '700' }], 'label-lg': ['15px', { lineHeight: '20px', letterSpacing: '0.04em', fontWeight: '600' }], 'label-md': ['13px', { lineHeight: '18px', letterSpacing: '0.05em', fontWeight: '600' }], 'headline-md': ['28px', { lineHeight: '36px', letterSpacing: '-0.02em', fontWeight: '600' }], 'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0em', fontWeight: '400' }], 'body-sm': ['14px', { lineHeight: '22px', letterSpacing: '0.01em', fontWeight: '400' }], 'headline-sm': ['22px', { lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: '600' }], 'headline-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.03em', fontWeight: '700' }], 'label-sm': ['11px', { lineHeight: '16px', letterSpacing: '0.06em', fontWeight: '600' }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-full"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 px-gutter flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="Brand logo. - Primary color: #f97316
+- Font: karla
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VHmpITbe783gkT9AbwXgdyMxBVLp3RIzhk_M7zFrR6iyl9s88bIl2yFVO_ysDZNcZrLGCDz6ixa555dRcpDJX53qqaP2ovUngGsMNKOclNRRTL21vNxY6_ZWG6DvkJ7-7IbrPo32uxLh7h9MQvioY-fTeNGsu2qNh210F-LkhK-JwuYnwOFtWejUvivCJPArnD1jTBHU14tiK_Rlnf3mdmffj038rd4ljm6vvogqc9HQ86XIxd2u9vbqrA"><div class="w-11 h-11 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 font-bold shadow-sm">L</div><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface truncate">Namaste, Lakshmi 👋</span></div><div class="flex items-center gap-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-0.5 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px] text-primary">location_on</span>Telangana • Dashboard</span></div></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><button aria-label="Open Settings Menu" class="w-12 h-12 flex items-center justify-center text-on-surface active:scale-95 transition-transform rounded-full hover:bg-surface-container-high"><span class="material-symbols-outlined text-[28px]">menu</span></button></div></div></header><main class="flex-1 flex flex-col relative w-full pt-20 pb-36 px-gutter bg-surface"><div class="flex flex-col w-full space-y-space-md">
+<!-- Financial Health Summary Hero Banner -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container p-space-md shadow-sm">
+<div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-primary-container/10 pointer-events-none blur-xl"></div>
+
+<!-- Income & Surplus Metrics Split -->
+<div class="grid grid-cols-1 gap-space-sm">
+<div class="flex items-center justify-between py-1">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+</div>
+<span class="font-headline-sm text-label-lg text-on-surface-variant">Your Monthly Income</span>
+</div>
+<span class="font-body-lg text-body-lg font-bold text-on-surface">₹18,500</span>
+</div>
+<!-- Surplus Card Highlight Container -->
+<div class="rounded-lg bg-surface-container-lowest p-space-sm shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Calculated Monthly Surplus</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center gap-1 font-bold">
+<span class="material-symbols-outlined text-[13px]">verified</span> Safe to Save
+          </span>
+</div>
+<div class="flex items-baseline justify-between mt-1">
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">₹4,200</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">ready to allocate</span>
+</div>
+<a class="font-label-md text-label-md text-primary font-bold inline-flex items-center gap-0.5 active:scale-95 transition-transform" data-path="my-money" href="#">
+<span class="">Breakdown</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Interactive Card: 'Talk to Sakhi' -->
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-primary-container to-secondary-container p-space-md text-on-primary shadow-md active:scale-[0.99] transition-all cursor-pointer group">
+<div class="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-white/10 pointer-events-none"></div>
+<div class="flex items-center gap-space-md relative z-10">
+<!-- Companion Avatar -->
+<div class="relative flex-shrink-0">
+<div class="w-14 h-14 rounded-full bg-on-primary text-primary flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-[32px]">support_agent</span>
+</div>
+<span class="absolute -bottom-1 -right-1 bg-surface-container-lowest text-primary text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-sm">AI</span>
+</div>
+<!-- Content -->
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-space-xs mb-0.5">
+<span class="font-label-sm text-label-sm bg-white/20 text-on-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Voice &amp; Text</span>
+<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+<span class="font-label-sm text-label-sm text-white/90">Telugu &amp; Hindi</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-primary leading-tight">Talk to Sakhi</h2>
+
+</div>
+<!-- Action Button Indicator -->
+<div class="w-10 h-10 rounded-full bg-on-primary/20 flex items-center justify-center text-on-primary flex-shrink-0 group-hover:bg-on-primary group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">mic</span>
+</div>
+</div>
+</div>
+<!-- 2x2 Feature Navigation Grid -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Card 1: My Money -->
+<a class="flex flex-col justify-between p-space-md rounded-xl bg-surface-container-low shadow-sm active:scale-95 transition-transform" data-path="my-money" href="#">
+<div class="flex items-center justify-between w-full mb-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-highest text-primary font-bold px-1.5 py-0.5 rounded">₹4,200</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-label-lg font-bold text-on-surface">My Money</h3>
+
+</div>
+</a>
+<!-- Card 2: My Journey -->
+<a class="flex flex-col justify-between p-space-md rounded-xl bg-surface-container-low shadow-sm active:scale-95 transition-transform" data-path="journey" href="#">
+<div class="flex items-center justify-between w-full mb-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">explore</span>
+</div>
+<span class="font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed font-bold px-1.5 py-0.5 rounded">Stage 2</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-label-lg font-bold text-on-surface">My Journey</h3>
+
+</div>
+</a>
+<!-- Card 3: My Goals -->
+<a class="flex flex-col justify-between p-space-md rounded-xl bg-surface-container-low shadow-sm active:scale-95 transition-transform" data-path="goals" href="#">
+<div class="flex items-center justify-between w-full mb-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">ads_click</span>
+</div>
+<span class="font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed font-bold px-1.5 py-0.5 rounded">35%</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-label-lg font-bold text-on-surface">My Goals</h3>
+
+</div>
+</a>
+<!-- Card 4: Benefits -->
+<a class="flex flex-col justify-between p-space-md rounded-xl bg-surface-container-low shadow-sm active:scale-95 transition-transform" data-path="benefits" href="#">
+<div class="flex items-center justify-between w-full mb-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-highest text-on-surface-variant font-bold px-1.5 py-0.5 rounded">15 Schemes</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-label-lg font-bold text-on-surface">Benefits</h3>
+
+</div>
+</a>
+</div>
+<!-- Active Dream Progress Preview Card -->
+<div class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label-sm text-label-sm uppercase font-bold text-primary tracking-wider">Active Dream</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full font-bold">₹1,500/mo required</span>
+</div>
+<div>
+<div class="flex justify-between items-baseline mb-1">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Daughter's College Admission</h3>
+<span class="font-label-md text-label-md font-bold text-primary">35%</span>
+</div>
+
+</div>
+<!-- Progress Track & Bar -->
+<div class="w-full bg-surface-container-highest h-3 rounded-full overflow-hidden p-0.5">
+<div class="bg-primary-container h-full rounded-full transition-all duration-500" style="width: 35%"></div>
+</div>
+<!-- Metrics Row -->
+<div class="flex items-center justify-between pt-1 text-on-surface">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Saved so far</span>
+<span class="font-body-md text-body-md font-bold text-on-surface">₹18,000</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Timeline</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">12 mos left</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Goal Target</span>
+<span class="font-body-md text-body-md font-bold text-on-surface">₹50,000</span>
+</div>
+</div>
+</div>
+<!-- Learn Guides Shortcut Banner -->
+<a class="rounded-xl bg-surface-container p-space-md shadow-sm flex items-center justify-between gap-space-sm active:scale-95 transition-transform" data-path="learn" href="#">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">menu_book</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-label-lg font-bold text-on-surface">Learn: Financial Guides</span>
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Emergency Fund • Managing Loans • Micro-Insurance</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant flex-shrink-0">chevron_right</span>
+</a>
+</div>
+<script>
+  // Micro-interaction for quick touch feedback on dynamic navigation
+  document.querySelectorAll('[data-path]').forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetPath = card.getAttribute('data-path');
+      const targetNav = document.querySelector(`nav a[data-path="${targetPath}"]`);
+      if (targetNav) {
+        targetNav.click();
+      }
+    });
+  });
+</script></main><aside class="fixed bottom-24 right-4 z-40 pb-safe pointer-events-auto"><button class="h-12 px-space-md rounded-full bg-primary-container text-on-primary shadow-[0_8px_24px_-4px_rgba(66,0,0,0.2)] flex items-center gap-space-xs active:scale-95 transition-transform"><span class="material-symbols-outlined text-[22px]">record_voice_over</span><span class="font-headline-sm text-label-lg font-bold">Ask Sakhi</span></button></aside><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_12px_rgba(66,0,0,0.06)]" data-active-classes="text-primary-container font-bold"><div class="flex items-center justify-between h-16 px-gutter-mobile"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 transition-colors text-primary-container font-bold" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[22px]">home</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="my-money" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm">Money</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="journey" href="#"><span class="material-symbols-outlined text-[22px]">explore</span><span class="font-label-sm text-label-sm">Journey</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="goals" href="#"><span class="material-symbols-outlined text-[22px]">ads_click</span><span class="font-label-sm text-label-sm">Goals</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="benefits" href="#"><span class="material-symbols-outlined text-[22px]">verified_user</span><span class="font-label-sm text-label-sm">Benefits</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="learn" href="#"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm">Learn</span></a></div></nav>
+
+</body></html>

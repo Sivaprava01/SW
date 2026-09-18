@@ -4,10 +4,12 @@ Sakhi Goal API Endpoints.
 Handles goal creation, progress tracking, deposits, updates, and deletion.
 """
 
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
+from app.api.deps import get_optional_user, verify_user_access
+from app.models.user import User
 from app.core.errors import ResourceNotFoundException
 from app.schemas.goal import GoalCreate, GoalUpdate, GoalDepositRequest, GoalResponse
 from app.services.user_service import UserService
@@ -26,9 +28,11 @@ router = APIRouter(tags=["Goals & Savings Planning"])
 def create_goal(
     user_id: int,
     goal_in: GoalCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> GoalResponse:
     """Create a savings goal for a user."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -43,9 +47,11 @@ def create_goal(
 )
 def list_goals(
     user_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> List[GoalResponse]:
     """List goals for a user."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -61,9 +67,11 @@ def list_goals(
 def get_goal(
     user_id: int,
     goal_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> GoalResponse:
     """Get goal by ID."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -83,9 +91,11 @@ def deposit_to_goal(
     user_id: int,
     goal_id: int,
     deposit_in: GoalDepositRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> GoalResponse:
     """Add a savings contribution to a goal."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -106,9 +116,11 @@ def update_goal(
     user_id: int,
     goal_id: int,
     goal_in: GoalUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> GoalResponse:
     """Update an existing goal."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -128,9 +140,11 @@ def update_goal(
 def delete_goal(
     user_id: int,
     goal_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> None:
     """Delete a goal by ID."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")

@@ -9,6 +9,8 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
+from app.api.deps import get_optional_user, verify_user_access
+from app.models.user import User
 from app.core.errors import ResourceNotFoundException
 from app.schemas.scheme import (
     SchemeResponse,
@@ -71,8 +73,10 @@ def get_scheme(
 def get_matched_schemes(
     user_id: int,
     db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> List[SchemeMatchResponse]:
     """Get deterministically matched schemes for a user."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -91,8 +95,10 @@ def bookmark_scheme(
     scheme_id: int,
     bookmark_in: BookmarkRequest,
     db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> BookmarkResponse:
     """Bookmark or update application status for a scheme."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -118,8 +124,10 @@ def bookmark_scheme(
 def get_user_bookmarks(
     user_id: int,
     db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> List[BookmarkResponse]:
     """Get all bookmarked schemes for a user."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")

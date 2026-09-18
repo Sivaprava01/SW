@@ -18,6 +18,7 @@ class User(Base, TimestampMixin):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     phone_number: Mapped[Optional[str]] = mapped_column(String(20), index=True, nullable=True)
+    hashed_password: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     age: Mapped[int] = mapped_column(Integer, nullable=False, default=25)
     gender: Mapped[str] = mapped_column(String(20), nullable=False, default="female")
     

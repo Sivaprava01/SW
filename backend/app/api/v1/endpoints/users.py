@@ -4,10 +4,12 @@ Sakhi User API Endpoints.
 Handles user registration, profile retrieval, updates, and demo Lakshmi access.
 """
 
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
+from app.api.deps import get_optional_user, verify_user_access
+from app.models.user import User
 from app.core.errors import ResourceNotFoundException
 from app.schemas.user import UserCreate, UserUpdate, UserResponse
 from app.services.user_service import UserService
@@ -51,9 +53,11 @@ def get_demo_user(
 )
 def get_user(
     user_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> UserResponse:
     """Retrieve user profile by ID."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -69,9 +73,11 @@ def get_user(
 def update_user(
     user_id: int,
     user_in: UserUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> UserResponse:
     """Update user profile by ID."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -86,9 +92,11 @@ def update_user(
 )
 def delete_user(
     user_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> None:
     """Delete a user by ID."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")

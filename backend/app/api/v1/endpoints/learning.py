@@ -5,10 +5,12 @@ Provides access to educational modules, micro-lessons with audio scripts,
 and records user learning progression and quiz attempts.
 """
 
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
+from app.api.deps import get_optional_user, verify_user_access
+from app.models.user import User
 from app.core.errors import ResourceNotFoundException
 from app.schemas.learning import (
     ModuleResponse,
@@ -73,8 +75,10 @@ def complete_lesson(
     lesson_id: str,
     complete_in: LessonCompleteRequest,
     db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> UserLessonProgressResponse:
     """Mark a lesson complete for a user."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -96,8 +100,10 @@ def complete_lesson(
 def get_user_learning_progress(
     user_id: int,
     db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> UserLearningSummaryResponse:
     """Get learning summary for user."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")

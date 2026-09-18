@@ -1,0 +1,323 @@
+<!DOCTYPE html><html class="h-full" lang="en" style="width: 390px; height: 1799px; overflow: hidden; position: relative;"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><title>Sakhi - Financial Companion</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700&amp;family=Karla:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100%;margin:0;padding:0;min-height:100%;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'surface-container-high': '#f6e6d2', 'error': '#ba1a1a', 'on-primary': '#ffffff', 'primary-container': '#f97316', 'on-primary-fixed-variant': '#783200', 'background': '#fff8f3', 'on-tertiary': '#ffffff', 'surface-tint': '#9d4300', 'surface-container-lowest': '#ffffff', 'on-surface-variant': '#584237', 'on-secondary-container': '#610000', 'on-error-container': '#93000a', 'surface': '#fff8f3', 'tertiary-fixed': '#ffdad4', 'tertiary-fixed-dim': '#ffb4a8', 'secondary-container': '#fd5e49', 'on-tertiary-fixed-variant': '#7e2a20', 'inverse-primary': '#ffb690', 'on-secondary-fixed-variant': '#900c05', 'tertiary-container': '#e87b6b', 'on-primary-container': '#582200', 'inverse-surface': '#382f22', 'on-error': '#ffffff', 'secondary': '#b3291b', 'error-container': '#ffdad6', 'secondary-fixed': '#ffdad4', 'inverse-on-surface': '#ffeedb', 'on-primary-fixed': '#341100', 'on-secondary-fixed': '#410000', 'primary-fixed-dim': '#ffb690', 'surface-container': '#fcebd7', 'on-surface': '#221a0e', 'on-secondary': '#ffffff', 'surface-container-highest': '#f1e0cc', 'surface-dim': '#e8d8c4', 'on-tertiary-fixed': '#410000', 'outline-variant': '#e0c0b1', 'on-background': '#221a0e', 'outline': '#8c7164', 'primary-fixed': '#ffdbca', 'surface-container-low': '#fff1e3', 'tertiary': '#9d4135', 'on-tertiary-container': '#62160e', 'primary': '#9d4300', 'secondary-fixed-dim': '#ffb4a8', 'surface-bright': '#fff8f3', 'surface-variant': '#f1e0cc' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'gutter-mobile': '0.75rem', 'gutter': '1rem', 'gutter-desktop': '1.5rem', 'space-xs': '0.25rem', 'space-sm': '0.5rem', 'space-lg': '1.5rem', 'margin-mobile': '1rem', 'space-md': '1rem', 'margin': '1rem', 'margin-desktop': '2rem', 'space-xl': '2.5rem' }, fontFamily: { 'body-md': ['Inconsolata'], 'headline-lg-mobile': ['Karla'], 'display': ['Karla'], 'display-mobile': ['Karla'], 'label-lg': ['Inconsolata'], 'label-md': ['Inconsolata'], 'headline-md': ['Karla'], 'body-lg': ['Inconsolata'], 'body-sm': ['Inconsolata'], 'headline-sm': ['Karla'], 'headline-lg': ['Karla'], 'label-sm': ['Inconsolata'] }, fontSize: { 'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0em', fontWeight: '400' }], 'headline-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.02em', fontWeight: '700' }], 'display': ['56px', { lineHeight: '64px', letterSpacing: '-0.035em', fontWeight: '700' }], 'display-mobile': ['38px', { lineHeight: '44px', letterSpacing: '-0.025em', fontWeight: '700' }], 'label-lg': ['15px', { lineHeight: '20px', letterSpacing: '0.04em', fontWeight: '600' }], 'label-md': ['13px', { lineHeight: '18px', letterSpacing: '0.05em', fontWeight: '600' }], 'headline-md': ['28px', { lineHeight: '36px', letterSpacing: '-0.02em', fontWeight: '600' }], 'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0em', fontWeight: '400' }], 'body-sm': ['14px', { lineHeight: '22px', letterSpacing: '0.01em', fontWeight: '400' }], 'headline-sm': ['22px', { lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: '600' }], 'headline-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.03em', fontWeight: '700' }], 'label-sm': ['11px', { lineHeight: '16px', letterSpacing: '0.06em', fontWeight: '600' }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-full"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 px-gutter flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="Brand logo. - Primary color: #f97316
+- Font: karla
+- Mode: light
+- Roundness: rounded-md
+" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VHmpITbe783gkT9AbwXgdyMxBVLp3RIzhk_M7zFrR6iyl9s88bIl2yFVO_ysDZNcZrLGCDz6ixa555dRcpDJX53qqaP2ovUngGsMNKOclNRRTL21vNxY6_ZWG6DvkJ7-7IbrPo32uxLh7h9MQvioY-fTeNGsu2qNh210F-LkhK-JwuYnwOFtWejUvivCJPArnD1jTBHU14tiK_Rlnf3mdmffj038rd4ljm6vvogqc9HQ86XIxd2u9vbqrA"><div class="w-11 h-11 rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 font-bold shadow-sm">L</div><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface truncate">Namaste, Lakshmi 👋</span></div><div class="flex items-center gap-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-0.5 uppercase tracking-wider"><span class="material-symbols-outlined text-[14px] text-primary">location_on</span>Telangana • Benefits</span></div></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><button aria-label="Open Settings Menu" class="w-12 h-12 flex items-center justify-center text-on-surface active:scale-95 transition-transform rounded-full hover:bg-surface-container-high"><span class="material-symbols-outlined text-[28px]">menu</span></button></div></div></header><main class="flex-1 flex flex-col relative w-full pt-20 pb-36 px-gutter bg-surface"><div class="flex flex-col w-full gap-space-md">
+<section class="flex flex-col gap-space-xs">
+<div class="inline-flex items-center gap-1.5 self-start px-space-sm py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[15px] text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="">Verified Government Programs</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Government Benefits &amp; Schemes</h2>
+
+</section>
+<section class="relative overflow-hidden rounded-xl bg-surface-container p-space-md shadow-sm">
+<div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-primary-fixed opacity-40 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Find Schemes You May Be Eligible For</span>
+
+</div>
+</div>
+
+<button class="w-full min-h-[48px] px-space-md py-space-sm rounded-lg bg-primary-container text-on-primary font-headline-sm text-label-lg font-bold flex items-center justify-center gap-space-xs shadow-sm active:scale-[0.98] transition-transform" id="start-matcher-btn">
+<span class="">Start Guided Matcher</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</section>
+<section class="flex flex-col gap-space-sm">
+<div class="relative w-full flex items-center">
+<span class="material-symbols-outlined absolute left-space-md text-outline text-[20px]">search</span>
+<input class="w-full min-h-[48px] pl-11 pr-10 py-space-sm rounded-lg bg-surface-container-lowest text-on-surface font-headline-sm text-body-md placeholder:text-outline focus:outline-none focus:bg-surface-container-low shadow-sm" id="scheme-search-input" placeholder="Search schemes, subsidies, loans..." type="text">
+<button class="hidden absolute right-space-sm w-8 h-8 rounded-full text-on-surface-variant items-center justify-center active:scale-95" id="clear-search-btn">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="flex items-center gap-space-xs overflow-x-auto pb-1 -mx-gutter px-gutter no-scrollbar" id="filter-chip-group">
+<button class="filter-chip active flex-shrink-0 min-h-[36px] px-space-md rounded-full bg-primary-container text-on-primary font-label-md text-label-md font-semibold shadow-sm transition-all" data-cat="all">
+        All (15)
+      </button>
+<button class="filter-chip flex-shrink-0 min-h-[36px] px-space-md rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold transition-all" data-cat="enterprise">
+        Women Enterprise (5)
+      </button>
+<button class="filter-chip flex-shrink-0 min-h-[36px] px-space-md rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold transition-all" data-cat="credit">
+        SHG Credit (4)
+      </button>
+<button class="filter-chip flex-shrink-0 min-h-[36px] px-space-md rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold transition-all" data-cat="insurance">
+        Insurance (2)
+      </button>
+<button class="filter-chip flex-shrink-0 min-h-[36px] px-space-md rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold transition-all" data-cat="pension">
+        Pension (2)
+      </button>
+<button class="filter-chip flex-shrink-0 min-h-[36px] px-space-md rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold transition-all" data-cat="telangana">
+        Telangana State (3)
+      </button>
+</div>
+</section>
+<section class="flex flex-col gap-space-md" id="schemes-feed">
+<article class="scheme-card rounded-xl bg-surface-container-lowest p-space-md shadow-sm flex flex-col gap-space-sm relative overflow-hidden transition-transform" data-category="enterprise central shg">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex flex-col min-w-0">
+<div class="flex flex-wrap items-center gap-1.5 mb-1">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">SHG Livelihood</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Central Govt</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Lakhpati Didi Initiative</h3>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold flex-shrink-0">
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="">100% Match</span>
+</div>
+</div>
+<div class="relative w-full h-36 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A smiling rural Indian woman tailor working on a vintage sewing machine in a sunlit Telangana village home workshop surrounded by vibrant fabrics, terracotta walls, and warm ambient sunlight highlighting her proud craftsmanship in high detail documentary realism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7aVF0HNilA6NX9vTgq2XlGg0By9qhOxzWYm8LXPQ_Gkif3sABeUbqzyFBfZ_bKSstBN-AoIAQmrLqp5S3TStAOzWQsBLsH6euXmQVBDfLGTQnmmDvBrUmd56wGM_1OjYaPWtiQ-HymXI6LyXCuaOwHSxFd3kbMwxbvMofYS1pbnbRcF7_Z-aLBTWroqAVSijYC8W4eHKAFlvtez4GvVQUQ-USwPh_kBt1_TUNc5k0bsHNIxmalcYF3Q">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-on-primary font-label-sm text-label-sm">
+<span class="flex items-center gap-1 bg-black/40 backdrop-blur-md px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] text-primary-container">currency_rupee</span>
+            ₹1L - ₹5L Credit Assistance
+          </span>
+<span class="bg-black/40 backdrop-blur-md px-2 py-0.5 rounded">Tailoring &amp; Food Processing</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-start gap-2">
+
+
+</div>
+</div>
+
+<div class="flex items-center justify-between pt-1">
+<button class="voice-read-btn flex items-center gap-1.5 text-primary font-label-md text-label-md active:scale-95 transition-transform" data-scheme="Lakhpati Didi">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+<span class="">Listen in Telugu</span>
+</button>
+<button class="min-h-[48px] px-space-md py-space-sm rounded-lg bg-surface-container-high hover:bg-primary-container hover:text-on-primary text-on-surface font-headline-sm text-label-lg font-bold flex items-center gap-1.5 active:scale-95 transition-all">
+<span class="">Details &amp; Source</span>
+<span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+</article>
+<article class="scheme-card rounded-xl bg-surface-container-lowest p-space-md shadow-sm flex flex-col gap-space-sm relative overflow-hidden transition-transform" data-category="credit telangana shg">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex flex-col min-w-0">
+<div class="flex flex-wrap items-center gap-1.5 mb-1">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Telangana State</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">SHG Credit</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Stree Nidhi Credit Cooperative</h3>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold flex-shrink-0">
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="">95% Match</span>
+</div>
+</div>
+<div class="relative w-full h-36 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Warm and authentic Indian rural bank branch meeting room in Telangana, women community members holding blue passbooks and engaging peacefully with an official financial facilitator, bathed in soft afternoon light, rich orange and warm earth tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ9cN4hOX6yZpoge2eDbth9QcYq8t3b4a060FCa8h_hSR9lkZ4dqljPaDa6A96fvbvi7ywDd-D8mOHWaRctYsysoAyYs95kUqo3GfhYA5Z_uBauR-eRiFYLODJbP8YBN1iFO2952kv5sYSZ9OApj4cKAU5ZPtS3_KfVzYlzpv1bZHyXLDt61-We67uw3je3essRMQeG94x5j3VAtrsb6dCSPNQwKA3s4JD32IdXoNcwf8UxYKj4npWrA">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-on-primary font-label-sm text-label-sm">
+<span class="flex items-center gap-1 bg-black/40 backdrop-blur-md px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] text-primary-container">bolt</span>
+            Disbursal within 48 Hours
+          </span>
+<span class="bg-black/40 backdrop-blur-md px-2 py-0.5 rounded">Affordable Rates</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+
+</div>
+
+<div class="flex items-center justify-between pt-1">
+<button class="voice-read-btn flex items-center gap-1.5 text-primary font-label-md text-label-md active:scale-95 transition-transform" data-scheme="Stree Nidhi">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+<span class="">Listen in Telugu</span>
+</button>
+<button class="min-h-[48px] px-space-md py-space-sm rounded-lg bg-surface-container-high hover:bg-primary-container hover:text-on-primary text-on-surface font-headline-sm text-label-lg font-bold flex items-center gap-1.5 active:scale-95 transition-all">
+<span class="">Details &amp; Source</span>
+<span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+</article>
+<article class="scheme-card rounded-xl bg-surface-container-lowest p-space-md shadow-sm flex flex-col gap-space-sm relative overflow-hidden transition-transform" data-category="insurance central">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex flex-col min-w-0">
+<div class="flex flex-wrap items-center gap-1.5 mb-1">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Insurance</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Accident Cover</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">PM Suraksha Bima (PMSBY)</h3>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold flex-shrink-0">
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="">100% Match</span>
+</div>
+</div>
+<div class="relative w-full h-36 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="An Indian rural family safely gathering outside their comfortable home at dusk with warm lanterns, symbolizing life security and insurance protection, warm golden hour palette, earth tones, photographic style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0cUbnlVV8Die65CTznNU74jvTguU976TPuC8nIgQorMFzwzEHHz5_xJgTmwvrMUjJuDUtT_g7qgQhfPGa5mx3zN0jz-yX4IrVBahuJfo3lJ2STeR6BGynv6mZqRcdSeCbzXsRqaoAxrtHkhR_Rl6QBdO57hw7XNDNOmGNZTZG_nnO7HC8FO4jXKVmzhkt7BKoa5XvS3pVOsr5Vt6o3o3i0ceD25AqKtjxzU6KTjrm_60V4_HCPh-GgA">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-on-primary font-label-sm text-label-sm">
+<span class="flex items-center gap-1 bg-black/40 backdrop-blur-md px-2 py-0.5 rounded font-label-sm">
+<span class="material-symbols-outlined text-[14px] text-primary-container">shield</span>
+            ₹2,00,000 Coverage
+          </span>
+<span class="bg-black/40 backdrop-blur-md px-2 py-0.5 rounded font-body-sm font-bold text-primary-fixed">₹20 / Year</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5 text-on-surface-variant font-body-sm text-body-sm">
+
+</div>
+
+<div class="flex items-center justify-between pt-1">
+<button class="voice-read-btn flex items-center gap-1.5 text-primary font-label-md text-label-md active:scale-95 transition-transform" data-scheme="PMSBY">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+<span class="">Listen in Telugu</span>
+</button>
+<button class="min-h-[48px] px-space-md py-space-sm rounded-lg bg-surface-container-high hover:bg-primary-container hover:text-on-primary text-on-surface font-headline-sm text-label-lg font-bold flex items-center gap-1.5 active:scale-95 transition-all">
+<span class="">Details &amp; Source</span>
+<span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+</article>
+</section>
+<section class="rounded-xl bg-surface-container p-space-md flex flex-col gap-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">live_help</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Need Help Applying?</h4>
+</div>
+
+</div>
+
+<div class="grid grid-cols-2 gap-space-sm pt-1">
+<button class="min-h-[48px] px-space-sm py-space-xs rounded-lg bg-surface-container-lowest text-on-surface font-headline-sm text-label-md font-bold flex items-center justify-center gap-1 shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px] text-primary">support_agent</span>
+<span class="">Call Helpline</span>
+</button>
+<button class="min-h-[48px] px-space-sm py-space-xs rounded-lg bg-surface-container-lowest text-on-surface font-headline-sm text-label-md font-bold flex items-center justify-center gap-1 shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px] text-secondary">pin_drop</span>
+<span class="">Find Center</span>
+</button>
+</div>
+</section>
+<div class="fixed bottom-28 left-4 right-4 z-50 transform translate-y-32 opacity-0 transition-all duration-300 pointer-events-none" id="voice-toast">
+<div class="rounded-xl bg-on-surface text-surface p-space-md shadow-2xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[24px] animate-pulse">volume_up</span>
+<div class="flex flex-col flex-1 min-w-0">
+<span class="font-headline-sm text-label-md font-bold text-surface-bright" id="voice-toast-title">Reading Lakhpati Didi in Telugu</span>
+<span class="font-body-sm text-label-sm text-surface-variant truncate">"లఖ్‌పతి దీదీ పథకం ద్వారా మీరు వ్యాపార రుణం పొందవచ్చు..."</span>
+</div>
+<button class="pointer-events-auto p-1 rounded-full text-surface-variant hover:text-surface" id="voice-toast-close">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const searchInput = document.getElementById('scheme-search-input');
+    const clearBtn = document.getElementById('clear-search-btn');
+    const filterChips = document.querySelectorAll('.filter-chip');
+    const cards = document.querySelectorAll('.scheme-card');
+    const voiceToast = document.getElementById('voice-toast');
+    const voiceToastTitle = document.getElementById('voice-toast-title');
+    const voiceCloseBtn = document.getElementById('voice-toast-close');
+    const voiceBtns = document.querySelectorAll('.voice-read-btn');
+    const matcherBtn = document.getElementById('start-matcher-btn');
+
+    let currentCategory = 'all';
+    let currentSearch = '';
+
+    function filterCards() {
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const cat = card.getAttribute('data-category') || '';
+        
+        const matchesCat = (currentCategory === 'all') || cat.includes(currentCategory);
+        const matchesSearch = !currentSearch || text.includes(currentSearch);
+
+        if (matchesCat && matchesSearch) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      currentSearch = e.target.value.toLowerCase().trim();
+      if (currentSearch.length > 0) {
+        clearBtn.classList.remove('hidden');
+        clearBtn.classList.add('flex');
+      } else {
+        clearBtn.classList.add('hidden');
+        clearBtn.classList.remove('flex');
+      }
+      filterCards();
+    });
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      currentSearch = '';
+      clearBtn.classList.add('hidden');
+      clearBtn.classList.remove('flex');
+      filterCards();
+    });
+
+    filterChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        filterChips.forEach(c => {
+          c.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm');
+          c.classList.add('bg-surface-container-lowest', 'text-on-surface');
+        });
+        chip.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm');
+        chip.classList.remove('bg-surface-container-lowest', 'text-on-surface');
+        currentCategory = chip.getAttribute('data-cat');
+        filterCards();
+      });
+    });
+
+    voiceBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const scheme = btn.getAttribute('data-scheme');
+        voiceToastTitle.textContent = 'Speaking: ' + scheme + ' in Telugu';
+        voiceToast.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+        voiceToast.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+
+        setTimeout(() => {
+          closeToast();
+        }, 4500);
+      });
+    });
+
+    function closeToast() {
+      voiceToast.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+      voiceToast.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+    }
+
+    voiceCloseBtn.addEventListener('click', closeToast);
+
+    matcherBtn.addEventListener('click', () => {
+      matcherBtn.classList.add('opacity-80');
+      matcherBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Checking Eligibility Database...</span>';
+      setTimeout(() => {
+        matcherBtn.classList.remove('opacity-80');
+        matcherBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified</span><span>3 Schemes Auto-Matched for Lakshmi!</span>';
+      }, 1200);
+    });
+  })();
+</script></main><aside class="fixed bottom-24 right-4 z-40 pb-safe pointer-events-auto"><button class="h-12 px-space-md rounded-full bg-primary-container text-on-primary shadow-[0_8px_24px_-4px_rgba(66,0,0,0.2)] flex items-center gap-space-xs active:scale-95 transition-transform"><span class="material-symbols-outlined text-[22px]">record_voice_over</span><span class="font-headline-sm text-label-lg font-bold">Ask Sakhi</span></button></aside><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_12px_rgba(66,0,0,0.06)]" data-active-classes="text-primary-container font-bold"><div class="flex items-center justify-between h-16 px-gutter-mobile"><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[22px]">home</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="my-money" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm">Money</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="journey" href="#"><span class="material-symbols-outlined text-[22px]">explore</span><span class="font-label-sm text-label-sm">Journey</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="goals" href="#"><span class="material-symbols-outlined text-[22px]">ads_click</span><span class="font-label-sm text-label-sm">Goals</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 transition-colors text-primary-container font-bold" data-path="benefits" href="#"><span class="material-symbols-outlined text-[22px]">verified_user</span><span class="font-label-sm text-label-sm">Benefits</span></a><a class="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] px-0.5 text-on-surface-variant transition-colors" data-path="learn" href="#"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm">Learn</span></a></div></nav>
+
+
+
+</body></html>

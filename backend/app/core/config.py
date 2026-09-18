@@ -66,6 +66,12 @@ class Settings(BaseSettings):
     RATE_LIMIT_PER_MINUTE: int = 120
     LOG_FORMAT: str = "standard"
 
+    # JWT & Authentication Configuration
+    JWT_SECRET_KEY: str = "sakhi-jwt-secret-key-production-change-me-securely"
+    JWT_ALGORITHM: str = "HS256"
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
+    JWT_REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 30  # 30 days
+
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod

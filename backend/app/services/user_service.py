@@ -74,10 +74,13 @@ class UserService:
         stmt = select(User).where(User.name == "Lakshmi", User.phone_number == "9876543210")
         demo_user = db.execute(stmt).scalar_one_or_none()
         
+        from app.core.security import hash_password
+        
         if not demo_user:
             demo_user = User(
                 name="Lakshmi",
                 phone_number="9876543210",
+                hashed_password=hash_password("lakshmi123"),
                 age=28,
                 gender="female",
                 state="Telangana",
@@ -96,5 +99,9 @@ class UserService:
             db.commit()
             db.refresh(demo_user)
             logger.info(f"Seeded official demo user: Lakshmi (id={demo_user.id})")
+        elif not demo_user.hashed_password:
+            demo_user.hashed_password = hash_password("lakshmi123")
+            db.commit()
+            db.refresh(demo_user)
             
         return demo_user

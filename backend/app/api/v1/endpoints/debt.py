@@ -5,10 +5,12 @@ Handles recording liabilities, updating balances, listing debts,
 and generating deterministic debt snowball & SHG refinancing analyses.
 """
 
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
+from app.api.deps import get_optional_user, verify_user_access
+from app.models.user import User
 from app.core.errors import ResourceNotFoundException
 from app.schemas.debt import DebtCreate, DebtUpdate, DebtResponse, DebtSnowballAnalysisResponse
 from app.services.user_service import UserService
@@ -27,9 +29,11 @@ router = APIRouter(tags=["Debt Management & Snowball Refinancing"])
 def create_debt(
     user_id: int,
     debt_in: DebtCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> DebtResponse:
     """Record a new debt."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -44,9 +48,11 @@ def create_debt(
 )
 def list_debts(
     user_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> List[DebtResponse]:
     """List debts for a user."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -62,9 +68,11 @@ def list_debts(
 def get_debt(
     user_id: int,
     debt_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> DebtResponse:
     """Get debt by ID."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -84,9 +92,11 @@ def update_debt(
     user_id: int,
     debt_id: int,
     debt_in: DebtUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> DebtResponse:
     """Update an existing debt record."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -106,9 +116,11 @@ def update_debt(
 def delete_debt(
     user_id: int,
     debt_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> None:
     """Delete a debt by ID."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
@@ -126,9 +138,11 @@ def delete_debt(
 )
 def get_snowball_analysis(
     user_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> DebtSnowballAnalysisResponse:
     """Calculate deterministic debt payoff and refinancing analysis."""
+    verify_user_access(user_id, current_user)
     user = UserService.get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")

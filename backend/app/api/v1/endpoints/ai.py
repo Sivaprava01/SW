@@ -5,9 +5,12 @@ Provides interactive chat with Ask Sakhi AI, live financial grounding diagnostic
 and universal concept explanations.
 """
 
+from typing import Optional
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
+from app.api.deps import get_optional_user, verify_user_access
+from app.models.user import User
 from app.core.errors import ResourceNotFoundException
 from app.schemas.ai import (
     AIChatRequest,
@@ -31,8 +34,11 @@ router = APIRouter(prefix="/ai", tags=["Ask Sakhi AI Companion"])
 def chat_with_sakhi(
     chat_in: AIChatRequest,
     db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> AIChatResponse:
     """Conversational endpoint for Ask Sakhi."""
+    if chat_in.user_id:
+        verify_user_access(chat_in.user_id, current_user)
     return AIService.chat(
         user_id=chat_in.user_id,
         message=chat_in.message,
@@ -50,8 +56,10 @@ def chat_with_sakhi(
 def get_user_grounding_context(
     user_id: int,
     db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_optional_user),
 ) -> GroundingMetrics:
     """Retrieve financial grounding metrics for a user."""
+    verify_user_access(user_id, current_user)
     context = AIContextBuilder.build_grounding_context(db=db, user_id=user_id)
     if not context:
         raise ResourceNotFoundException(message=f"User with ID {user_id} not found")
