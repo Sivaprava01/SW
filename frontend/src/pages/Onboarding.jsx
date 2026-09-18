@@ -18,7 +18,7 @@ import { useSpeech } from '../hooks/useSpeech';
 import { useSTT } from '../hooks/useSTT';
 
 export default function Onboarding({ onComplete }) {
-  const { setUser, setFinancialHealth, language, setLanguage, t } = useUser();
+  const { setUser, loginUser, setFinancialHealth, language, setLanguage, t } = useUser();
   const { speak, isSpeaking, stop } = useSpeech();
   const { isListening, listeningField, startListening, stopListening, errorNotice } = useSTT();
   const [step, setStep] = useState(1);
@@ -77,9 +77,14 @@ export default function Onboarding({ onComplete }) {
       };
 
       const newUser = await api.createUser(payload);
-      setUser(newUser);
+      
+      if (loginUser) {
+        loginUser(newUser);
+      } else if (setUser) {
+        setUser(newUser);
+      }
 
-      if (newUser.id) {
+      if (newUser.id && setFinancialHealth) {
         try {
           const healthData = await api.getFinancialHealth(newUser.id);
           setFinancialHealth(healthData);

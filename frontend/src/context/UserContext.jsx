@@ -134,7 +134,9 @@ export function UserProvider({ children }) {
     <UserContext.Provider
       value={{
         user,
+        setUser,
         financialHealth,
+        setFinancialHealth,
         loading,
         error,
         language,
