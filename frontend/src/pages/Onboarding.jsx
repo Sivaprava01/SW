@@ -133,9 +133,6 @@ export default function Onboarding({ onComplete }) {
                   Welcome to Sakhi <span className="text-orange-600 dark:text-[#ffb690] font-black">(సఖీ)</span>
                 </h1>
               </div>
-              <p className="font-mono text-xs text-stone-500 dark:text-[#A8988A] truncate">
-                Let's set up your profile in 3 simple steps
-              </p>
             </div>
           </div>
 
