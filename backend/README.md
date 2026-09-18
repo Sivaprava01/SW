@@ -92,6 +92,14 @@ uv run alembic upgrade head
 | `DELETE` | `/api/v1/users/{id}` | Delete a user profile |
 | `GET` | `/api/v1/users` | List users with pagination |
 
+### 💰 Personal Finance, Cashflow & Health Calculations (B3)
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/v1/users/{user_id}/transactions` | Log an income or expense transaction |
+| `GET` | `/api/v1/users/{user_id}/transactions` | List user transactions with optional `?type=` filter |
+| `DELETE` | `/api/v1/users/{user_id}/transactions/{tx_id}` | Delete a logged transaction |
+| `GET` | `/api/v1/users/{user_id}/financial-health` | Deterministic surplus, savings ratio, emergency target, and health status |
+
 ---
 
 ## 🛡️ Standardized Error Envelope
