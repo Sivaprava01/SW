@@ -17,6 +17,7 @@ from app.api.v1.endpoints import (
     learning,
     journey,
     schemes,
+    ai,
 )
 
 api_v1_router = APIRouter()
@@ -33,4 +34,6 @@ api_v1_router.include_router(knowledge.router)
 api_v1_router.include_router(learning.router)
 api_v1_router.include_router(journey.router)
 api_v1_router.include_router(schemes.router)
+api_v1_router.include_router(ai.router)
+
 
