@@ -1,15 +1,35 @@
-from fastapi import APIRouter, Depends, HTTPException
+import logging
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
+from app.config import settings
 from app.database import get_db
 from app.models.user import User
 from app.schemas.ai import AIChatRequest, AIChatResponse, FinancialContextPayload
 from app.services.financial_engine import get_financial_health_summary
-from app.services.ai_service import explain_finances_with_ai
+from app.services.gemini_service import gemini_service
+from app.core.rate_limiter import RateLimit
+
+logger = logging.getLogger("sakhi.ai")
 
 router = APIRouter(prefix="/api/ai", tags=["Ask Sakhi AI"])
 
-@router.post("/chat", response_model=AIChatResponse)
-async def chat_with_sakhi(req: AIChatRequest, db: Session = Depends(get_db)):
+@router.post(
+    "/chat",
+    response_model=AIChatResponse,
+    dependencies=[Depends(RateLimit(settings.AI_RATE_LIMIT, settings.AI_RATE_WINDOW_SECONDS, "ai"))]
+)
+async def chat_with_sakhi(
+    req: AIChatRequest,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    AI Financial Assistant endpoint:
+    1. Deterministic financial engine calculates 100% accurate metrics.
+    2. Constructs structured context.
+    3. Dedicated Gemini Service generates a warm, grounded multilingual explanation.
+    Protected by configurable rate limiting.
+    """
     user = db.query(User).filter(User.id == req.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -29,7 +49,7 @@ async def chat_with_sakhi(req: AIChatRequest, db: Session = Depends(get_db)):
             "monthly_saving_required": g["monthly_saving_required"]
         }
 
-    user_lang = req.language or user.preferred_language or "en"
+    user_lang = req.language or user.preferred_language or "en" if hasattr(user, "preferred_language") else (req.language or "en")
     context = FinancialContextPayload(
         name=user.name,
         income=summary["monthly_income"],
@@ -46,8 +66,8 @@ async def chat_with_sakhi(req: AIChatRequest, db: Session = Depends(get_db)):
         language=user_lang
     )
 
-    # Step 3: AI Service generates friendly, simple, grounded explanation
-    response = await explain_finances_with_ai(
+    # Step 3: Dedicated Gemini Service generates grounded explanation
+    response = await gemini_service.generate_explanation(
         user_message=req.message,
         context=context,
         language=user_lang

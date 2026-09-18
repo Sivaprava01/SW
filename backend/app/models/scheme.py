@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, Text, Integer, Float, Boolean
+from sqlalchemy import Column, String, Text, Integer, Numeric, Boolean
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -22,7 +22,7 @@ class GovernmentScheme(Base):
     min_age = Column(Integer, nullable=True)
     max_age = Column(Integer, nullable=True)
     gender_target = Column(String(20), default="all")  # "women", "all"
-    max_income = Column(Float, nullable=True)
+    max_income = Column(Numeric(12, 2, asdecimal=False), nullable=True)
     is_rural_relevant = Column(Boolean, default=True)
     is_shg_related = Column(Boolean, default=False)
     is_business_related = Column(Boolean, default=False)

@@ -75,9 +75,18 @@ def load_demo_lakshmi(db: Session = Depends(get_db)):
     Savings: ₹10,000, Debt: ₹20,000, Goal: Daughter's Education ₹50,000.
     """
     user = db.query(User).filter(User.name == "Lakshmi", User.state == "Telangana").first()
+    from app.core.security import hash_password
+    from app.config import settings
+    demo_pw_hash = hash_password(settings.DEMO_PASSWORD)
+
     if not user:
         user = User(
             name="Lakshmi",
+            email="lakshmi@sakhi.org",
+            phone="+919876543210",
+            password_hash=demo_pw_hash,
+            role="USER",
+            is_active=True,
             age=28,
             state="Telangana",
             gender="women",
@@ -113,6 +122,14 @@ def load_demo_lakshmi(db: Session = Depends(get_db)):
         user.has_business_interest = True
         user.is_rural = True
         user.occupation = "Tailoring & Small Trade"
+        if not user.email:
+            user.email = "lakshmi@sakhi.org"
+        if not user.phone:
+            user.phone = "+919876543210"
+        if not user.password_hash:
+            user.password_hash = demo_pw_hash
+        user.role = "USER"
+        user.is_active = True
         db.commit()
         db.refresh(user)
         

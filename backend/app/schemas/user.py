@@ -16,6 +16,8 @@ class UserBase(BaseModel):
     savings: float = Field(default=0.0, ge=0.0)
     debt: float = Field(default=0.0, ge=0.0)
     financial_goal: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
 
 class UserCreate(UserBase):
     pass
@@ -34,9 +36,13 @@ class UserUpdate(BaseModel):
     savings: Optional[float] = None
     debt: Optional[float] = None
     financial_goal: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
 
 class UserResponse(UserBase):
     id: str
+    role: str = "USER"
+    is_active: bool = True
     created_at: datetime
     updated_at: datetime
 
