@@ -66,8 +66,10 @@ export function SchemeCard({
   const descriptionText =
     scheme.what_it_provides || scheme.description || 'Comprehensive financial support and welfare benefits.';
 
-  const audioLabel = isPlayingAudio
-    ? 'వింటున్నారు...'
+  const audioLabel = isLoadingAudio
+    ? (language === 'te' ? 'లోడ్ అవుతోంది...' : language === 'hi' ? 'लोड हो रहा है...' : 'Loading...')
+    : isPlayingAudio
+    ? (language === 'te' ? 'వింటున్నారు...' : language === 'hi' ? 'सुन रहे हैं...' : 'Playing...')
     : language === 'te'
     ? 'తెలుగులో వినండి'
     : language === 'hi'

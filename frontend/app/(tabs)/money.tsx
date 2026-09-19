@@ -31,6 +31,12 @@ export default function MoneyScreen() {
     deleteTransaction,
     refreshDebts,
     refreshDebtSnowball,
+    language,
+    totalMonthlyExpenses,
+    totalMonthlyIncome,
+    totalMonthlySurplus,
+    totalSavings,
+    totalDebt,
   } = useApp();
 
   const [filter, setFilter] = useState<'all' | 'income' | 'expense'>('all');
@@ -114,12 +120,12 @@ export default function MoneyScreen() {
     }
   };
 
-  const income = financialSummary?.monthly_income ?? 18500;
-  const expense = financialSummary?.monthly_expenses ?? 14300;
-  const savings = financialSummary?.total_savings ?? 18000;
-  const debt = financialSummary?.total_debt ?? (debtSnowball?.total_debt_balance ?? 12000);
-  const emergencyTarget = financialSummary?.emergency_target ?? 42900;
-  const emergencyProgress = financialSummary?.emergency_progress_percentage ?? Math.min(100, Math.round((savings / (emergencyTarget || 1)) * 100));
+  const income = totalMonthlyIncome;
+  const expense = totalMonthlyExpenses;
+  const savings = totalSavings;
+  const debt = totalDebt;
+  const emergencyTarget = expense * 3;
+  const emergencyProgress = Math.min(100, Math.round((savings / (emergencyTarget || 1)) * 100));
 
   return (
     <SafeAreaView className="flex-1 bg-surface" edges={['top']}>

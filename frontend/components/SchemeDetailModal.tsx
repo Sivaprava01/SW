@@ -354,8 +354,10 @@ export function SchemeDetailModal({ visible, onClose, scheme }: SchemeDetailModa
               className={`text-xs font-bold ml-1.5 ${
                 isPlayingAudio ? 'text-secondary' : 'text-on-surface'
               }`}>
-              {isPlayingAudio
-                ? 'వింటున్నారు...'
+              {isLoadingAudio
+                ? (language === 'te' ? 'లోడ్ అవుతోంది...' : language === 'hi' ? 'लोड हो रहा है...' : 'Loading...')
+                : isPlayingAudio
+                ? (language === 'te' ? 'వింటున్నారు...' : language === 'hi' ? 'सुन रहे हैं...' : 'Playing...')
                 : language === 'te'
                 ? 'తెలుగులో వినండి'
                 : language === 'hi'

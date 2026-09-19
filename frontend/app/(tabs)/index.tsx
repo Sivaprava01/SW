@@ -25,7 +25,7 @@ import { JourneyRoadmapResponse } from '@/types/journey';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { userId, currentUser, isLoading } = useApp();
+  const { userId, currentUser, isLoading, totalMonthlyIncome, totalMonthlySurplus } = useApp();
   const { triggerFirstTimePrompt } = useTutorial();
   const [askSakhiVisible, setAskSakhiVisible] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
@@ -58,19 +58,11 @@ export default function HomeScreen() {
         journeyService.getJourney(userId),
       ]);
 
-      if (finData.status === 'fulfilled') {
-        setFinancialSummary(finData.value);
-      }
-      if (goalsData.status === 'fulfilled') {
-        setGoals(goalsData.value);
-      }
-      if (journeyData.status === 'fulfilled') {
-        setJourney(journeyData.value);
-      }
-    } catch (err) {
-      if (__DEV__) {
-        console.warn('Failed to load dashboard data:', err);
-      }
+      if (finData.status === 'fulfilled') setFinancialSummary(finData.value);
+      if (goalsData.status === 'fulfilled') setGoals(goalsData.value);
+      if (journeyData.status === 'fulfilled') setJourney(journeyData.value);
+    } catch (err: any) {
+      if (__DEV__) console.warn('[HomeScreen] Failed loading dashboard data:', err);
     }
   }, [userId]);
 
@@ -84,8 +76,8 @@ export default function HomeScreen() {
     setIsRefreshing(false);
   };
 
-  const monthlyIncome = financialSummary?.monthly_income ?? (currentUser?.monthly_income || 18500);
-  const monthlySurplus = financialSummary?.monthly_surplus ?? 4200;
+  const monthlyIncome = totalMonthlyIncome;
+  const monthlySurplus = totalMonthlySurplus;
   const activeGoal = goals.length > 0 ? goals[0] : null;
   const currentStage = journey?.current_active_stage || 2;
 
@@ -279,10 +271,10 @@ export default function HomeScreen() {
 
             <View className="flex-row justify-between items-baseline mb-1">
               <Text className="text-sm font-bold text-on-surface">
-                {activeGoal ? activeGoal.name : "Daughter's College Admission"}
+                {activeGoal ? activeGoal.name : "Create your first Dream Pot"}
               </Text>
               <Text className="text-xs font-bold text-primary">
-                {activeGoal ? `${Math.round(activeGoal.progress_percentage)}%` : '35%'}
+                {activeGoal ? `${Math.round(activeGoal.progress_percentage)}%` : '0%'}
               </Text>
             </View>
 
@@ -290,7 +282,7 @@ export default function HomeScreen() {
             <View className="w-full bg-surface-container-highest h-2.5 rounded-full overflow-hidden mb-2.5">
               <View
                 className="bg-primary-container h-full rounded-full"
-                style={{ width: `${Math.min(100, Math.round(activeGoal ? activeGoal.progress_percentage : 35))}%` }}
+                style={{ width: `${Math.min(100, Math.round(activeGoal ? activeGoal.progress_percentage : 0))}%` }}
               />
             </View>
 
@@ -299,19 +291,19 @@ export default function HomeScreen() {
               <View className="flex-col">
                 <Text className="text-[10px] text-on-surface-variant">Saved so far</Text>
                 <Text className="text-xs font-bold text-on-surface">
-                  ₹{(activeGoal ? activeGoal.current_amount : 18000).toLocaleString('en-IN')}
+                  ₹{(activeGoal ? activeGoal.current_amount : 0).toLocaleString('en-IN')}
                 </Text>
               </View>
               <View className="flex-col items-center">
                 <Text className="text-[10px] text-on-surface-variant">Timeline</Text>
                 <Text className="text-xs font-bold text-on-surface">
-                  {activeGoal ? `${activeGoal.target_months} mos left` : '12 mos left'}
+                  {activeGoal ? `${activeGoal.target_months} mos left` : '-'}
                 </Text>
               </View>
               <View className="flex-col items-end">
                 <Text className="text-[10px] text-on-surface-variant">Goal Target</Text>
                 <Text className="text-xs font-bold text-on-surface">
-                  ₹{(activeGoal ? activeGoal.target_amount : 50000).toLocaleString('en-IN')}
+                  ₹{(activeGoal ? activeGoal.target_amount : 0).toLocaleString('en-IN')}
                 </Text>
               </View>
             </View>

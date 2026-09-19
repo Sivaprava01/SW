@@ -35,7 +35,7 @@ export default function SettingsScreen() {
   const [showStatePicker, setShowStatePicker] = useState(false);
   const [fullName, setFullName] = useState(currentUser?.name || 'Member');
   const [monthlyIncome, setMonthlyIncome] = useState(
-    currentUser?.monthly_income ? currentUser.monthly_income.toString() : '18500'
+    currentUser?.monthly_income != null ? currentUser.monthly_income.toString() : '0'
   );
   const [age, setAge] = useState(currentUser?.age ? currentUser.age.toString() : '28');
   const [shgActive, setShgActive] = useState(currentUser?.is_shg_member ?? true);
@@ -74,7 +74,7 @@ export default function SettingsScreen() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const parsedIncome = parseFloat(monthlyIncome.replace(/,/g, '')) || 18500;
+      const parsedIncome = parseFloat(monthlyIncome.replace(/,/g, '')) || 0;
       const parsedAge = parseInt(age, 10) || 28;
       await updateUserPreferences({
         name: fullName.trim() || 'Member',

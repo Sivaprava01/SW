@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import { UserResponse, UserUpdate } from '@/types/api';
 import { FinancialSummaryResponse } from '@/types/finance';
 import { TransactionResponse, TransactionCreate } from '@/types/transaction';
@@ -54,6 +54,11 @@ type AppContextType = {
   // Financial Health State
   financialSummary: FinancialSummaryResponse | null;
   refreshFinancialSummary: () => Promise<void>;
+  totalMonthlyExpenses: number;
+  totalMonthlyIncome: number;
+  totalMonthlySurplus: number;
+  totalSavings: number;
+  totalDebt: number;
 
   // Transactions State
   transactions: TransactionResponse[];
@@ -116,6 +121,34 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [learningProgress, setLearningProgress] = useState<UserLearningSummaryResponse | null>(null);
 
   const userId = currentUser?.id ?? null;
+
+  const totalMonthlyExpenses = useMemo(() => {
+    const baseline = currentUser?.monthly_expenses ?? 0;
+    const logged = transactions
+      .filter((t) => t.type === 'expense')
+      .reduce((sum, t) => sum + (t.amount || 0), 0);
+    return baseline + logged;
+  }, [currentUser?.monthly_expenses, transactions]);
+
+  const totalMonthlyIncome = useMemo(() => {
+    const baseline = currentUser?.monthly_income ?? 0;
+    const logged = transactions
+      .filter((t) => t.type === 'income')
+      .reduce((sum, t) => sum + (t.amount || 0), 0);
+    return baseline + logged;
+  }, [currentUser?.monthly_income, transactions]);
+
+  const totalMonthlySurplus = useMemo(() => {
+    return Math.max(0, totalMonthlyIncome - totalMonthlyExpenses);
+  }, [totalMonthlyIncome, totalMonthlyExpenses]);
+
+  const totalSavings = useMemo(() => {
+    return financialSummary?.total_savings ?? currentUser?.initial_savings ?? 0;
+  }, [financialSummary?.total_savings, currentUser?.initial_savings]);
+
+  const totalDebt = useMemo(() => {
+    return debtSnowball?.total_debt_balance ?? financialSummary?.total_debt ?? currentUser?.initial_debt ?? 0;
+  }, [debtSnowball?.total_debt_balance, financialSummary?.total_debt, currentUser?.initial_debt]);
 
   const setLanguage = useCallback((lang: 'te' | 'hi' | 'en') => {
     setLanguageState(lang);
@@ -489,6 +522,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
         financialSummary,
         refreshFinancialSummary,
+        totalMonthlyExpenses,
+        totalMonthlyIncome,
+        totalMonthlySurplus,
+        totalSavings,
+        totalDebt,
 
         transactions,
         refreshTransactions,

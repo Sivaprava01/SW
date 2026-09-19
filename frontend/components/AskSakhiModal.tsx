@@ -17,6 +17,7 @@ import { TutorialTarget } from '@/components/tutorial/TutorialTarget';
 import { aiService } from '@/services/aiService';
 import { voiceService } from '@/services/voiceService';
 import { audioPlayer } from '@/services/audioPlayer';
+import { speechRecorder } from '@/utils/speechRecorder';
 import { GroundingMetrics } from '@/types/ai';
 
 type AskSakhiModalProps = {
@@ -42,6 +43,9 @@ export function AskSakhiModal({ visible, onClose }: AskSakhiModalProps) {
     userId,
     currentUser,
     financialSummary,
+    totalMonthlySurplus,
+    totalSavings,
+    totalDebt,
     debts,
     journeyRoadmap,
     language,
@@ -262,130 +266,48 @@ export function AskSakhiModal({ visible, onClose }: AskSakhiModalProps) {
     }
   };
 
-  // Voice recording & STT flow
-  const startRecording = async () => {
+  // Voice recording & STT flow via speechRecorder
+  const toggleRecording = async () => {
     setErrorMessage(null);
-
-    if (Platform.OS === 'web' && typeof navigator !== 'undefined' && navigator.mediaDevices) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const mimeType =
-          typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/webm')
-            ? 'audio/webm'
-            : typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/mp4')
-            ? 'audio/mp4'
-            : 'audio/ogg';
-
-        const recorder = new MediaRecorder(stream, { mimeType });
-        audioChunksRef.current = [];
-
-        recorder.ondataavailable = (e) => {
-          if (e.data && e.data.size > 0) {
-            audioChunksRef.current.push(e.data);
-          }
-        };
-
-        recorder.onstop = async () => {
-          setIsRecording(false);
-          setIsTranscribing(true);
-
-          try {
-            const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
-            stream.getTracks().forEach((track) => track.stop());
-
-            const reader = new FileReader();
-            reader.onloadend = async () => {
-              const base64data = (reader.result as string) || '';
-              const format = mimeType.includes('webm')
-                ? 'webm'
-                : mimeType.includes('mp4')
-                ? 'mp4'
-                : 'ogg';
-
-              try {
-                const transRes = await voiceService.transcribeSpeech({
-                  audio_base64: base64data,
-                  language: selectedLanguage,
-                  audio_format: format,
-                });
-
-                if (transRes.transcript && transRes.transcript.trim()) {
-                  handleSend(transRes.transcript.trim());
-                } else {
-                  setErrorMessage('No speech recognized. Please speak clearly or type your query.');
-                }
-              } catch (err: any) {
-                if (__DEV__) console.warn('[AskSakhi] Transcription error:', err);
-                setErrorMessage(err.message || 'Transcription failed. Please try typing.');
-              } finally {
-                setIsTranscribing(false);
-              }
-            };
-            reader.readAsDataURL(audioBlob);
-          } catch (err: any) {
-            setIsTranscribing(false);
-            setErrorMessage('Audio processing error: ' + err.message);
-          }
-        };
-
-        recorder.start();
-        mediaRecorderRef.current = recorder;
-        setIsRecording(true);
-      } catch (err: any) {
-        if (__DEV__) console.warn('[AskSakhi] Microphone access error:', err);
-        setErrorMessage('Microphone access denied or unavailable in this browser.');
-        setIsRecording(false);
-      }
-    } else {
-      // Non-web platform / fallback
-      setIsRecording(true);
-      setTimeout(() => {
-        setIsRecording(false);
-        setIsTranscribing(true);
-        setTimeout(() => {
-          setIsTranscribing(false);
-          handleSend(
-            selectedLanguage === 'te'
-              ? 'నా మిగులు బడ్జెట్ ఎంత మరియు అప్పు ఎలా తీర్చాలి?'
-              : selectedLanguage === 'hi'
-              ? 'मेरी मासिक बचत कितनी है और कर्ज कैसे चुकाएं?'
-              : 'What is my surplus and how to pay off debt?'
-          );
-        }, 800);
-      }, 2000);
-    }
-  };
-
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
-      mediaRecorderRef.current.stop();
-    } else {
-      setIsRecording(false);
-    }
-  };
-
-  const toggleRecording = () => {
     if (isRecording) {
-      stopRecording();
+      await speechRecorder.stop(selectedLanguage, {
+        onStop: () => setIsRecording(false),
+        onTranscribing: () => setIsTranscribing(true),
+        onTranscript: (transcript) => {
+          setIsTranscribing(false);
+          if (transcript && transcript.trim()) {
+            handleSend(transcript.trim());
+          }
+        },
+        onError: (err) => {
+          setIsTranscribing(false);
+          setErrorMessage(err);
+        },
+      });
     } else {
-      startRecording();
+      await speechRecorder.start(selectedLanguage, {
+        onStart: () => setIsRecording(true),
+        onStop: () => setIsRecording(false),
+        onTranscribing: () => setIsTranscribing(true),
+        onTranscript: (transcript) => {
+          setIsTranscribing(false);
+          if (transcript && transcript.trim()) {
+            handleSend(transcript.trim());
+          }
+        },
+        onError: (err) => {
+          setIsRecording(false);
+          setIsTranscribing(false);
+          setErrorMessage(err);
+        },
+      });
     }
   };
 
   // Calculate live member data metrics
-  const displaySurplus = financialSummary?.monthly_surplus != null
-    ? Math.round(financialSummary.monthly_surplus).toLocaleString('en-IN')
-    : '4,200';
-
-  const totalDebtAmount = financialSummary?.total_debt != null
-    ? Math.round(financialSummary.total_debt).toLocaleString('en-IN')
-    : debts.length > 0
-    ? Math.round(debts.reduce((acc, d) => acc + (d.principal_amount || 0), 0)).toLocaleString('en-IN')
-    : '12,000';
-
-  const displaySavings = financialSummary?.total_savings != null
-    ? Math.round(financialSummary.total_savings).toLocaleString('en-IN')
-    : '18,000';
+  const displaySurplus = Math.round(totalMonthlySurplus).toLocaleString('en-IN');
+  const totalDebtAmount = Math.round(totalDebt).toLocaleString('en-IN');
+  const displaySavings = Math.round(totalSavings).toLocaleString('en-IN');
 
   const displayStage = journeyRoadmap?.current_active_stage != null
     ? `${journeyRoadmap.current_active_stage} (${journeyRoadmap.stages?.find(s => s.stage_number === journeyRoadmap.current_active_stage)?.title?.en || 'Shield'})`
@@ -564,7 +486,7 @@ export function AskSakhiModal({ visible, onClose }: AskSakhiModalProps) {
                             <Text className="text-xs text-secondary">Debt Repayment Plan</Text>
                           </View>
                           <Text className="text-xs font-bold text-secondary">
-                            -₹{financialSummary?.monthly_surplus ? Math.round(financialSummary.monthly_surplus * 0.35).toLocaleString('en-IN') : '1,500'}
+                            -₹{Math.round(totalMonthlySurplus * 0.35).toLocaleString('en-IN')}
                           </Text>
                         </View>
                         <View className="flex-row items-center justify-between py-1">
@@ -573,7 +495,7 @@ export function AskSakhiModal({ visible, onClose }: AskSakhiModalProps) {
                             <Text className="text-xs text-on-surface">Target Goal Savings</Text>
                           </View>
                           <Text className="text-xs font-bold text-on-surface">
-                            -₹{financialSummary?.monthly_surplus ? Math.round(financialSummary.monthly_surplus * 0.35).toLocaleString('en-IN') : '1,500'}
+                            -₹{Math.round(totalMonthlySurplus * 0.35).toLocaleString('en-IN')}
                           </Text>
                         </View>
                         <View className="w-full h-px bg-surface-container-high my-1.5" />
@@ -583,7 +505,7 @@ export function AskSakhiModal({ visible, onClose }: AskSakhiModalProps) {
                             <Text className="text-xs font-bold text-on-surface ml-1">Leftover Safety Buffer</Text>
                           </View>
                           <Text className="text-sm font-bold text-primary">
-                            ₹{financialSummary?.monthly_surplus != null ? Math.round(financialSummary.monthly_surplus * 0.3).toLocaleString('en-IN') : '1,200'}
+                            ₹{Math.round(totalMonthlySurplus * 0.3).toLocaleString('en-IN')}
                           </Text>
                         </View>
                       </View>

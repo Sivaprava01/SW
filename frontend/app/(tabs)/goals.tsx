@@ -27,6 +27,7 @@ export default function GoalsScreen() {
     userId,
     goals,
     financialSummary,
+    totalMonthlySurplus,
     refreshGoals,
     deleteGoal,
     depositToGoal,
@@ -127,7 +128,7 @@ export default function GoalsScreen() {
   };
 
   const totalRequiredMonthly = goals.reduce((acc, g) => acc + (g.is_completed ? 0 : g.required_monthly_savings), 0);
-  const monthlySurplus = financialSummary?.monthly_surplus ?? 4200;
+  const monthlySurplus = totalMonthlySurplus;
   const allocatedPercent = Math.min(100, Math.round((totalRequiredMonthly / (monthlySurplus || 1)) * 100));
   const safeSurplus = Math.max(0, monthlySurplus - totalRequiredMonthly);
 
