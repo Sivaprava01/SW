@@ -1,4 +1,4 @@
-﻿import { Platform } from 'react-native';
+import { Platform, Alert, Linking } from 'react-native';
 import { voiceService } from '@/services/voiceService';
 
 export interface SpeechRecorderCallbacks {
@@ -28,7 +28,20 @@ class SpeechRecorderService {
 
     try {
       if (Platform.OS === 'web' && typeof navigator !== 'undefined' && navigator.mediaDevices) {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        let stream: any;
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        } catch (webPermErr: any) {
+          Alert.alert(
+            language === 'te' ? 'మైక్రోఫోన్ అనుమతి' : language === 'hi' ? 'माइक्रोफ़ोन अनुमति' : 'Microphone Access',
+            language === 'te'
+              ? 'దయచేసి మీ బ్రౌజర్ అడ్రస్ బార్‌లో లాక్ (Lock) ఐకాన్ లేదా కెమెరా/మైక్ ఐకాన్ నొక్కి మైక్రోఫోన్ అనుమతించండి.'
+              : language === 'hi'
+              ? 'कृपया अपने ब्राउज़र एड्रेस बार में लॉक (Lock) आइकन पर टैप करके माइक्रोफ़ोन की अनुमति दें।'
+              : 'Please allow microphone access in your browser address bar (lock/mic icon) to speak.'
+          );
+          throw webPermErr;
+        }
         this.currentStream = stream;
 
         const mimeType =
@@ -103,9 +116,29 @@ class SpeechRecorderService {
         callbacks?.onStart?.();
       } else {
         // Native (Android/iOS) using expo-audio SDK 57
-        const { AudioRecorder, setAudioModeAsync, requestRecordingPermissionsAsync, RecordingPresets } = await import('expo-audio');
-        const perm = await requestRecordingPermissionsAsync();
+        const { AudioRecorder, setAudioModeAsync, requestRecordingPermissionsAsync, getRecordingPermissionsAsync, RecordingPresets } = await import('expo-audio');
+        let perm = await getRecordingPermissionsAsync();
         if (!perm.granted) {
+          perm = await requestRecordingPermissionsAsync();
+        }
+
+        if (!perm.granted) {
+          Alert.alert(
+            language === 'te' ? 'మైక్రోఫోన్ అనుమతి అవసరం' : language === 'hi' ? 'माइक्रोफ़ोन अनुमति आवश्यक' : 'Microphone Permission Required',
+            language === 'te'
+              ? 'వాయిస్ ద్వారా మాట్లాడటానికి మీ ఫోన్ సెట్టింగ్స్‌లో మైక్రోఫోన్ అనుమతించండి.'
+              : language === 'hi'
+              ? 'वॉयस इनपुट के लिए कृपया अपने फोन सेटिंग्स में माइक्रोफ़ोन अनुमति दें।'
+              : 'Please enable microphone access in your device settings to speak to Sakhi.',
+            [
+              { text: language === 'te' ? 'రద్దు' : language === 'hi' ? 'रद्द करें' : 'Cancel', style: 'cancel' },
+              {
+                text: language === 'te' ? 'సెట్టింగ్స్ తెరవండి' : language === 'hi' ? 'सेटिंग्स खोलें' : 'Open Settings',
+                onPress: () => Linking.openSettings().catch(() => {}),
+              },
+            ]
+          );
+
           callbacks?.onError?.(
             language === 'te'
               ? 'మైక్రోఫోన్ అనుమతి తిరస్కరించబడింది.'

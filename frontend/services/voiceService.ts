@@ -32,7 +32,11 @@ export const voiceService = {
    * POST /api/v1/voice/synthesize
    */
   async synthesizeSpeech(payload: VoiceSynthesisRequest): Promise<VoiceSynthesisResponse> {
-    return apiClient.post<VoiceSynthesisResponse>('/voice/synthesize', payload, {
+    const finalPayload = {
+      ...payload,
+      speed: payload.speed ?? 1.25,
+    };
+    return apiClient.post<VoiceSynthesisResponse>('/voice/synthesize', finalPayload, {
       timeoutMs: API_CONFIG.AI_VOICE_TIMEOUT_MS,
     });
   },
@@ -44,7 +48,7 @@ export const voiceService = {
   getStreamUrl(
     text: string,
     language: string = 'te',
-    speed: number = 1.0,
+    speed: number = 1.25,
     format: string = 'mp3'
   ): string {
     const baseUrl = apiClient.getBaseUrl();

@@ -252,7 +252,7 @@ export function AskSakhiModal({ visible, onClose }: AskSakhiModalProps) {
         const synthRes = await voiceService.synthesizeSpeech({
           text: item.text,
           language: selectedLanguage,
-          speed: 1.0,
+          speed: 1.25,
           audio_format: 'mp3',
         });
 

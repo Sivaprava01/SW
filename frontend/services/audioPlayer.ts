@@ -197,6 +197,7 @@ class AudioPlayerService {
       const audio = new window.Audio(uri);
       this.htmlAudioElement = audio;
       audio.volume = 1.0;
+      audio.playbackRate = 1.25;
       audio.muted = false;
 
       audio.onplay = () => {
@@ -231,6 +232,11 @@ class AudioPlayerService {
       const player = createAudioPlayer(sourceObj);
       this.currentPlayer = player;
       player.volume = 1.0;
+      try {
+        player.playbackRate = 1.25;
+      } catch (rateErr) {
+        if (__DEV__) console.warn('[AudioPlayer] Could not set native playbackRate:', rateErr);
+      }
       player.muted = false;
       if (__DEV__) console.log('[LandingVoice] player created');
 
