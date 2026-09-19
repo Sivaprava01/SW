@@ -107,6 +107,7 @@ class TokenStorage {
 
   /**
    * Clear all persisted and in-memory tokens on logout.
+   * Note: This does NOT delete account-specific UX persistence flags (e.g. tour completion).
    */
   public async clearAllTokens(): Promise<void> {
     this.inMemoryAccessToken = null;
@@ -124,6 +125,106 @@ class TokenStorage {
       }
     } catch (err) {
       if (__DEV__) console.warn('[TokenStorage] Error clearing tokens:', err);
+    }
+  }
+
+  /**
+   * Check if the account has completed/seen the interactive tour.
+   */
+  public async getTourCompleted(userId: number): Promise<boolean> {
+    const key = `sakhi_tour_completed_${userId}`;
+    try {
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          return window.localStorage.getItem(key) === 'true';
+        }
+        return false;
+      } else {
+        const val = await SecureStore.getItemAsync(key);
+        return val === 'true';
+      }
+    } catch (err) {
+      if (__DEV__) console.warn('[TokenStorage] Error reading tour completion:', err);
+      return false;
+    }
+  }
+
+  /**
+   * Persist tour completion for a specific account.
+   */
+  public async setTourCompleted(userId: number, completed: boolean = true): Promise<void> {
+    const key = `sakhi_tour_completed_${userId}`;
+    try {
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.setItem(key, completed ? 'true' : 'false');
+        }
+      } else {
+        await SecureStore.setItemAsync(key, completed ? 'true' : 'false');
+      }
+    } catch (err) {
+      if (__DEV__) console.warn('[TokenStorage] Error saving tour completion:', err);
+    }
+  }
+
+  /**
+   * Reset tour completion for a specific account (e.g. for intentional manual replay).
+   */
+  public async resetTourCompleted(userId: number): Promise<void> {
+    const key = `sakhi_tour_completed_${userId}`;
+    try {
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.removeItem(key);
+        }
+      } else {
+        await SecureStore.deleteItemAsync(key);
+      }
+    } catch (err) {
+      if (__DEV__) console.warn('[TokenStorage] Error resetting tour completion:', err);
+    }
+  }
+
+  /**
+   * Retrieve completed financial journey level numbers for a specific account.
+   */
+  public async getCompletedLevels(userId: number): Promise<number[]> {
+    const key = `sakhi_completed_levels_${userId}`;
+    try {
+      let raw: string | null = null;
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          raw = window.localStorage.getItem(key);
+        }
+      } else {
+        raw = await SecureStore.getItemAsync(key);
+      }
+      if (raw) {
+        return JSON.parse(raw);
+      }
+      return [];
+    } catch (err) {
+      if (__DEV__) console.warn('[TokenStorage] Error reading completed levels:', err);
+      return [];
+    }
+  }
+
+  /**
+   * Persist completed financial journey level numbers for a specific account.
+   */
+  public async setCompletedLevels(userId: number, levels: number[]): Promise<void> {
+    const key = `sakhi_completed_levels_${userId}`;
+    try {
+      const serialized = JSON.stringify(levels);
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.setItem(key, serialized);
+        }
+      } else {
+        await SecureStore.setItemAsync(key, serialized);
+      }
+    } catch (err) {
+      if (__DEV__) console.warn('[TokenStorage] Error saving completed levels:', err);
     }
   }
 }

@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTutorial } from '@/context/TutorialContext';
@@ -33,8 +34,12 @@ export function TutorialPromptModal() {
       <View style={styles.backdrop}>
         <View style={styles.card}>
           {/* Mascot icon */}
-          <View style={styles.mascot}>
-            <Text className="text-2xl font-bold text-on-primary">स</Text>
+          <View style={[styles.mascot, { backgroundColor: '#ffffff', overflow: 'hidden' }]}>
+            <Image
+              source={require('@/assets/images/app-logo-emblem.png')}
+              style={{ width: 44, height: 44 }}
+              resizeMode="contain"
+            />
           </View>
 
           {/* Headline */}

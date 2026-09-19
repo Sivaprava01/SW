@@ -1,5 +1,6 @@
-import { API_CONFIG } from '@/constants/api';
+import { API_CONFIG, getApiBaseUrl } from '@/constants/api';
 import { ApiErrorDetail } from '@/types/api';
+import { Platform } from 'react-native';
 
 export class ApiError extends Error {
   status: number;
@@ -19,19 +20,24 @@ export interface RequestOptions extends RequestInit {
 }
 
 class ApiClient {
-  private baseUrl: string;
+  private customBaseUrl: string | null = null;
   private authToken: string | null = null;
 
-  constructor(baseUrl: string = API_CONFIG.BASE_URL) {
-    this.baseUrl = baseUrl;
+  constructor(baseUrl?: string) {
+    if (baseUrl) {
+      this.customBaseUrl = baseUrl;
+    }
   }
 
   public setBaseUrl(newUrl: string) {
-    this.baseUrl = newUrl;
+    this.customBaseUrl = newUrl;
   }
 
   public getBaseUrl(): string {
-    return this.baseUrl;
+    if (this.customBaseUrl) {
+      return this.customBaseUrl;
+    }
+    return API_CONFIG.BASE_URL;
   }
 
   public setAuthToken(token: string | null) {
@@ -43,11 +49,12 @@ class ApiClient {
   }
 
   private buildUrl(path: string, params?: Record<string, string | number | boolean | undefined | null>): string {
+    const base = this.getBaseUrl();
     let cleanPath = path.startsWith('/') ? path : `/${path}`;
-    if (this.baseUrl.endsWith('/api/v1') && cleanPath.startsWith('/api/v1/')) {
+    if (base.endsWith('/api/v1') && cleanPath.startsWith('/api/v1/')) {
       cleanPath = cleanPath.substring('/api/v1'.length);
     }
-    let url = `${this.baseUrl}${cleanPath}`;
+    let url = `${base}${cleanPath}`;
 
     if (params) {
       const searchParams = new URLSearchParams();
@@ -78,13 +85,21 @@ class ApiClient {
       ...((fetchOptions.headers as Record<string, string>) || {}),
     };
 
-    // Automatically inject JWT Bearer Authorization header if token is set
-    if (this.authToken && !headers['Authorization']) {
+    // Do not attach Bearer token to unauthenticated auth routes or health check
+    const isPublicAuthRoute =
+      path.includes('/auth/login') ||
+      path.includes('/auth/register') ||
+      path.includes('/auth/refresh') ||
+      path.includes('/health');
+
+    // Automatically inject JWT Bearer Authorization header if token is set and not a public route
+    if (this.authToken && !headers['Authorization'] && !isPublicAuthRoute) {
       headers['Authorization'] = `Bearer ${this.authToken}`;
     }
 
     if (__DEV__) {
-      console.log(`[API Request] ${fetchOptions.method || 'GET'} ${url}`);
+      const hasAuth = !!headers['Authorization'] || (!!this.authToken && !isPublicAuthRoute);
+      console.log(`[API Request] ${fetchOptions.method || 'GET'} ${url} [auth_header_present=${hasAuth}]`);
     }
 
     try {
@@ -120,11 +135,25 @@ class ApiClient {
       if (!response.ok) {
         let errorMessage = `HTTP Error ${response.status}`;
         if (data && typeof data === 'object') {
-          if (typeof data.detail === 'string') {
+          if (data.error && typeof data.error === 'object') {
+            if (typeof data.error.message === 'string') {
+              errorMessage = data.error.message;
+            }
+            if (Array.isArray(data.error.details) && data.error.details.length > 0) {
+              const fieldErrors = data.error.details
+                .map((d: any) => (d.loc ? `${d.loc[d.loc.length - 1]}: ${d.msg}` : d.msg || JSON.stringify(d)))
+                .join(', ');
+              if (fieldErrors) {
+                errorMessage = `${errorMessage} (${fieldErrors})`;
+              }
+            }
+          } else if (typeof data.detail === 'string') {
             errorMessage = data.detail;
           } else if (Array.isArray(data.detail)) {
-            errorMessage = data.detail.map((d: any) => d.msg || JSON.stringify(d)).join(', ');
-          } else if (data.message) {
+            errorMessage = data.detail
+              .map((d: any) => (d.loc ? `${d.loc[d.loc.length - 1]}: ${d.msg}` : d.msg || JSON.stringify(d)))
+              .join(', ');
+          } else if (typeof data.message === 'string') {
             errorMessage = data.message;
           }
         }
@@ -135,19 +164,25 @@ class ApiClient {
     } catch (error: any) {
       clearTimeout(timer);
 
-      if (error.name === 'AbortError') {
-        const timeoutError = new ApiError(
-          `Request timed out after ${timeoutMs / 1000}s`,
-          408
-        );
-        if (__DEV__) {
-          console.warn(`[API Timeout] ${url}`, timeoutError);
-        }
-        throw timeoutError;
-      }
-
       if (error instanceof ApiError) {
         throw error;
+      }
+
+      const isCancellation =
+        error.name === 'AbortError' ||
+        (typeof error.message === 'string' &&
+          (error.message.toLowerCase().includes('cancel') || error.message.toLowerCase().includes('aborted')));
+
+      if (isCancellation) {
+        const cancelError = new ApiError(
+          error.message || 'Request was cancelled',
+          499,
+          error
+        );
+        if (__DEV__) {
+          console.log(`[API Cancelled] ${url}: ${error.message || 'cancelled'}`);
+        }
+        throw cancelError;
       }
 
       const networkError = new ApiError(

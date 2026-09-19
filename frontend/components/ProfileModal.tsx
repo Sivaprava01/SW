@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -46,8 +47,8 @@ export function ProfileModal({ visible, onClose }: ProfileModalProps) {
     );
   };
 
-  const name = currentUser?.name || 'Lakshmi Devi';
-  const initial = name ? name.trim().charAt(0).toUpperCase() : 'L';
+  const name = currentUser?.name || 'Member';
+  const initial = name ? name.trim().charAt(0).toUpperCase() : 'M';
   const occupation = currentUser?.occupation || 'Tailoring & Micro-Retail';
   const state = currentUser?.state || operatingState;
   const district = currentUser?.district ? `, ${currentUser.district}` : '';
@@ -81,8 +82,12 @@ export function ProfileModal({ visible, onClose }: ProfileModalProps) {
           {/* Centered Profile Header */}
           <View className="items-center py-2 mb-3">
             <View className="relative mb-2">
-              <View className="w-20 h-20 rounded-full bg-primary items-center justify-center shadow-md">
-                <Text className="text-3xl font-bold text-on-primary">{initial}</Text>
+              <View className="w-20 h-20 rounded-full bg-surface-container-high items-center justify-center shadow-md overflow-hidden border-2 border-surface-container-highest/80">
+                <Image
+                  source={require('@/assets/images/app-logo-emblem.png')}
+                  style={{ width: 72, height: 72 }}
+                  resizeMode="contain"
+                />
               </View>
               <View className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-secondary items-center justify-center shadow-sm">
                 <MaterialIcons name="verified" size={16} color="#ffffff" />

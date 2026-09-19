@@ -8,6 +8,7 @@ import {
   Switch,
   Linking,
   Alert,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -19,20 +20,27 @@ import { TUTORIAL_DEFINITIONS } from '@/constants/tutorialSteps';
 
 export default function SettingsScreen() {
   const router = useRouter();
-  const { currentUser, operatingState, setOperatingState, updateUserPreferences, logoutUser } = useApp();
-  const { startTutorial } = useTutorial();
+  const {
+    currentUser,
+    operatingState,
+    setOperatingState,
+    updateUserPreferences,
+    logoutUser,
+    language: appLanguage,
+    setLanguage: setAppLanguage,
+  } = useApp();
+  const { openCardTour, startTutorial } = useTutorial();
 
-  // State initialized from currentUser
+  // State initialized from currentUser or appLanguage
   const [showStatePicker, setShowStatePicker] = useState(false);
-  const [tintTheme, setTintTheme] = useState<'primary' | 'secondary' | 'tertiary' | 'primary-container'>('primary');
-  const [fullName, setFullName] = useState(currentUser?.name || 'Lakshmi Devi');
+  const [fullName, setFullName] = useState(currentUser?.name || 'Member');
   const [monthlyIncome, setMonthlyIncome] = useState(
     currentUser?.monthly_income ? currentUser.monthly_income.toString() : '18500'
   );
   const [age, setAge] = useState(currentUser?.age ? currentUser.age.toString() : '28');
   const [shgActive, setShgActive] = useState(currentUser?.is_shg_member ?? true);
   const [language, setLanguage] = useState<'en' | 'hi' | 'te'>(
-    (currentUser?.primary_language as 'en' | 'hi' | 'te') || 'te'
+    (currentUser?.primary_language as 'en' | 'hi' | 'te') || appLanguage || 'te'
   );
   const [appearance, setAppearance] = useState<'light' | 'dark'>('light');
   const [isSaving, setIsSaving] = useState(false);
@@ -45,27 +53,23 @@ export default function SettingsScreen() {
       setMonthlyIncome(currentUser.monthly_income.toString());
       setAge(currentUser.age.toString());
       setShgActive(currentUser.is_shg_member);
-      if (currentUser.primary_language) {
-        setLanguage(currentUser.primary_language as 'en' | 'hi' | 'te');
+      if (currentUser.primary_language && ['en', 'hi', 'te'].includes(currentUser.primary_language)) {
+        const lang = currentUser.primary_language as 'en' | 'hi' | 'te';
+        setLanguage(lang);
+        setAppLanguage(lang);
       }
       if (currentUser.state) {
         setOperatingState(currentUser.state);
       }
     }
-  }, [currentUser, setOperatingState]);
+  }, [currentUser, setOperatingState, setAppLanguage]);
 
-  const getTintBgClass = () => {
-    switch (tintTheme) {
-      case 'secondary':
-        return 'bg-secondary';
-      case 'tertiary':
-        return 'bg-tertiary';
-      case 'primary-container':
-        return 'bg-primary-container';
-      default:
-        return 'bg-primary';
-    }
+  const handleSelectLanguage = (selectedLang: 'en' | 'hi' | 'te') => {
+    setLanguage(selectedLang);
+    setAppLanguage(selectedLang);
   };
+
+
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -73,7 +77,7 @@ export default function SettingsScreen() {
       const parsedIncome = parseFloat(monthlyIncome.replace(/,/g, '')) || 18500;
       const parsedAge = parseInt(age, 10) || 28;
       await updateUserPreferences({
-        name: fullName.trim() || 'Lakshmi Devi',
+        name: fullName.trim() || 'Member',
         monthly_income: parsedIncome,
         age: parsedAge,
         is_shg_member: shgActive,
@@ -132,8 +136,12 @@ export default function SettingsScreen() {
         <View className="bg-surface-container-low rounded-xl p-4 shadow-sm mb-4 gap-4">
           <View className="flex-row items-center gap-3">
             <View className="relative">
-              <View className={`w-16 h-16 rounded-full ${getTintBgClass()} items-center justify-center shadow-sm`}>
-                <Text className="text-on-primary font-headline-md text-[24px] font-bold">L</Text>
+              <View className="w-16 h-16 rounded-full bg-surface-container-high items-center justify-center shadow-sm overflow-hidden border border-surface-container-highest/60">
+                <Image
+                  source={require('@/assets/images/app-logo-emblem.png')}
+                  style={{ width: 56, height: 56 }}
+                  resizeMode="contain"
+                />
               </View>
               <TouchableOpacity className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-secondary items-center justify-center shadow-sm">
                 <MaterialIcons name="photo-camera" size={16} color="#ffffff" />
@@ -148,36 +156,7 @@ export default function SettingsScreen() {
             </View>
           </View>
 
-          {/* Profile Tint Theme */}
-          <View className="gap-1">
-            <Text className="font-label-sm text-[11px] text-on-surface-variant tracking-wider uppercase font-semibold">Profile Tint Theme</Text>
-            <View className="flex-row items-center gap-3 mt-1">
-              <TouchableOpacity
-                onPress={() => setTintTheme('primary')}
-                className="w-9 h-9 rounded-full bg-primary items-center justify-center shadow-sm"
-              >
-                {tintTheme === 'primary' && <MaterialIcons name="check" size={18} color="#ffffff" />}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setTintTheme('secondary')}
-                className="w-9 h-9 rounded-full bg-secondary items-center justify-center shadow-sm"
-              >
-                {tintTheme === 'secondary' && <MaterialIcons name="check" size={18} color="#ffffff" />}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setTintTheme('tertiary')}
-                className="w-9 h-9 rounded-full bg-tertiary items-center justify-center shadow-sm"
-              >
-                {tintTheme === 'tertiary' && <MaterialIcons name="check" size={18} color="#ffffff" />}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setTintTheme('primary-container')}
-                className="w-9 h-9 rounded-full bg-primary-container items-center justify-center shadow-sm"
-              >
-                {tintTheme === 'primary-container' && <MaterialIcons name="check" size={18} color="#ffffff" />}
-              </TouchableOpacity>
-            </View>
-          </View>
+
 
           {/* Form Inputs */}
           <View className="gap-3 pt-1">
@@ -321,7 +300,7 @@ export default function SettingsScreen() {
           <View className="flex-row gap-2">
             {/* English */}
             <TouchableOpacity
-              onPress={() => setLanguage('en')}
+              onPress={() => handleSelectLanguage('en')}
               className={`flex-1 items-center justify-center p-2.5 rounded-xl ${
                 language === 'en' ? 'bg-primary shadow-sm' : 'bg-surface-container-lowest shadow-sm'
               } h-20 active:scale-95`}
@@ -341,7 +320,7 @@ export default function SettingsScreen() {
 
             {/* Hindi */}
             <TouchableOpacity
-              onPress={() => setLanguage('hi')}
+              onPress={() => handleSelectLanguage('hi')}
               className={`flex-1 items-center justify-center p-2.5 rounded-xl ${
                 language === 'hi' ? 'bg-primary shadow-sm' : 'bg-surface-container-lowest shadow-sm'
               } h-20 active:scale-95`}
@@ -361,7 +340,7 @@ export default function SettingsScreen() {
 
             {/* Telugu (Selected) */}
             <TouchableOpacity
-              onPress={() => setLanguage('te')}
+              onPress={() => handleSelectLanguage('te')}
               className={`flex-1 items-center justify-center p-2.5 rounded-xl ${
                 language === 'te' ? 'bg-primary shadow-sm' : 'bg-surface-container-lowest shadow-sm'
               } h-20 active:scale-95`}
@@ -430,7 +409,7 @@ export default function SettingsScreen() {
             onPress={() => {
               router.push('/(tabs)' as any);
               setTimeout(() => {
-                startTutorial('basics');
+                openCardTour();
               }, 250);
             }}
             className="w-full flex-row items-center justify-between p-3 bg-primary-container rounded-lg shadow-sm active:scale-98"

@@ -35,11 +35,6 @@ def run_seed():
         scheme_count = SchemeService.seed_schemes_if_empty(db=db)
         logger.info(f"Successfully seeded/verified {scheme_count} government schemes.")
 
-        # 3. Seed Reference Demo Profile (Lakshmi)
-        logger.info("Seeding standardized demo reference persona (Lakshmi)...")
-        demo_user = UserService.get_or_create_demo_user(db=db)
-        logger.info(f"Demo profile active: {demo_user.name} (ID: {demo_user.id}, SHG: {demo_user.shg_name})")
-
         logger.info("Database bootstrap completed successfully! All services ready for production traffic.")
     except Exception as exc:
         logger.error(f"Error during production seeding: {exc}", exc_info=True)

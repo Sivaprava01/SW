@@ -4,6 +4,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,11 +16,18 @@ import { TUTORIAL_DEFINITIONS } from '@/constants/tutorialSteps';
 export default function TourScreen() {
   const router = useRouter();
   const { language } = useApp();
-  const { startTutorial, hasSeenTutorial } = useTutorial();
+  const { openCardTour, startTutorial, hasSeenTutorial } = useTutorial();
 
   const currentLang = language || 'te';
 
   const handleLaunchTutorial = (tutorialId: string) => {
+    if (tutorialId === 'basics') {
+      router.replace('/(tabs)' as any);
+      setTimeout(() => {
+        openCardTour();
+      }, 200);
+      return;
+    }
     // Navigate to tabs first, then launch tutorial
     router.replace('/(tabs)' as any);
     setTimeout(() => {
@@ -93,8 +101,12 @@ export default function TourScreen() {
           </View>
 
           <View className="flex-row items-center gap-3">
-            <View className="w-12 h-12 rounded-xl bg-on-primary items-center justify-center shadow-xs">
-              <Text className="text-2xl font-bold text-primary">स</Text>
+            <View className="w-12 h-12 rounded-xl bg-surface-container-lowest items-center justify-center shadow-xs overflow-hidden p-0.5 border border-surface-container-highest/60">
+              <Image
+                source={require('@/assets/images/app-logo-emblem.png')}
+                style={{ width: 40, height: 40 }}
+                resizeMode="contain"
+              />
             </View>
             <View className="flex-1 min-w-0">
               <Text className="text-base font-bold text-white">

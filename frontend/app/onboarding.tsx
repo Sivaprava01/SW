@@ -7,6 +7,7 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -33,6 +34,7 @@ export default function OnboardingScreen() {
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [loading, setLoading] = useState(false);
+  const [regError, setRegError] = useState<string | null>(null);
 
   // Step 1: Personal & Credentials
   const [fullName, setFullName] = useState('');
@@ -55,6 +57,7 @@ export default function OnboardingScreen() {
   const [initialDebt, setInitialDebt] = useState('12000');
 
   const handleBack = () => {
+    setRegError(null);
     if (step === 1) {
       router.replace('/splash' as any);
     } else if (step === 2) {
@@ -65,17 +68,41 @@ export default function OnboardingScreen() {
   };
 
   const handleNext = async () => {
+    setRegError(null);
+    let cleanPhone = phoneNumber.replace(/[^0-9]/g, '');
+    if (cleanPhone.startsWith('91') && cleanPhone.length === 12) {
+      cleanPhone = cleanPhone.substring(2);
+    }
+
     if (step === 1) {
-      if (!fullName.trim()) {
-        Alert.alert('Required Field', 'Please enter your full name to proceed.');
+      if (!fullName.trim() || fullName.trim().length < 2) {
+        setRegError(
+          language === 'te'
+            ? 'దయచేసి మీ పూర్తి పేరును నమోదు చేయండి (కనీసం 2 అక్షరాలు).'
+            : language === 'hi'
+            ? 'कृपया अपना पूरा नाम दर्ज करें (कम से कम 2 अक्षर)।'
+            : 'Please enter your full name (minimum 2 characters).'
+        );
         return;
       }
-      if (!phoneNumber.trim() || phoneNumber.trim().length < 10) {
-        Alert.alert('Required Field', 'Please enter a valid 10-digit mobile number for account login.');
+      if (!cleanPhone || cleanPhone.length < 10) {
+        setRegError(
+          language === 'te'
+            ? 'దయచేసి సరైన 10-అంకెల మొబైల్ నంబర్‌ను నమోదు చేయండి.'
+            : language === 'hi'
+            ? 'कृपया एक वैध 10 अंकों का मोबाइल नंबर दर्ज करें।'
+            : 'Please enter a valid 10-digit mobile number.'
+        );
         return;
       }
       if (!password.trim() || password.trim().length < 6) {
-        Alert.alert('Password Requirement', 'Please create a secure password (minimum 6 characters).');
+        setRegError(
+          language === 'te'
+            ? 'పాస్‌వర్డ్ కనీసం 6 అక్షరాలు ఉండాలి.'
+            : language === 'hi'
+            ? 'पासवर्ड कम से कम 6 अक्षरों का होना चाहिए।'
+            : 'Password must be at least 6 characters.'
+        );
         return;
       }
       setStep(2);
@@ -90,7 +117,7 @@ export default function OnboardingScreen() {
     // Step 3: Submit Registration with JWT Auth
     setLoading(true);
     try {
-      const parsedAge = parseInt(age, 10) || 28;
+      const parsedAge = Math.max(18, Math.min(100, parseInt(age, 10) || 28));
       const parsedIncome = parseFloat(monthlyIncome) || 0;
       const parsedExpenses = parseFloat(monthlyExpenses) || 0;
       const parsedSavings = parseFloat(initialSavings) || 0;
@@ -98,7 +125,7 @@ export default function OnboardingScreen() {
 
       const response = await authService.register({
         name: fullName.trim(),
-        mobile: phoneNumber.trim(),
+        mobile: cleanPhone,
         password: password.trim(),
         age: parsedAge,
         gender: 'female',
@@ -107,7 +134,7 @@ export default function OnboardingScreen() {
         primary_language: language || 'te',
         is_shg_member: isSHG,
         shg_name: isSHG ? shgName.trim() || undefined : undefined,
-        occupation: occupation.trim() || 'Self-Employed',
+        occupation: occupation.trim() || 'Tailoring',
         monthly_income: parsedIncome,
         monthly_expenses: parsedExpenses,
         initial_savings: parsedSavings,
@@ -122,10 +149,19 @@ export default function OnboardingScreen() {
       }
     } catch (err: any) {
       if (__DEV__) console.warn('User creation failed:', err);
-      Alert.alert(
-        'Registration Error',
-        err.message || 'Could not complete registration on server. Please check your connection and try again.'
-      );
+      const is409 = err?.status === 409 || (typeof err?.message === 'string' && err.message.toLowerCase().includes('already exists'));
+      const duplicateMsg =
+        language === 'te'
+          ? 'ఈ మొబైల్ నంబర్‌తో ఇప్పటికే ఖాతా ఉంది. దయచేసి లాగిన్ అవ్వండి.'
+          : language === 'hi'
+          ? 'इस मोबाइल नंबर के साथ पहले से खाता मौजूद है। कृपया साइन इन करें।'
+          : 'An account with this mobile number already exists. Please sign in.';
+
+      const errorMsg = is409 ? duplicateMsg : err?.message || 'Could not complete registration on server.';
+      setRegError(errorMsg);
+      if (is409) {
+        setStep(1);
+      }
     } finally {
       setLoading(false);
     }
@@ -181,8 +217,12 @@ export default function OnboardingScreen() {
         {/* Mascot & Greeting Card */}
         <View className="bg-surface-container-lowest rounded-xl p-4 shadow-xs border border-surface-container-highest/60 mb-3.5 flex-col gap-3">
           <View className="flex-row items-center gap-3">
-            <View className="w-12 h-12 rounded-full bg-primary-container items-center justify-center shadow-sm">
-              <Text className="text-2xl font-bold text-on-primary">स</Text>
+            <View className="w-12 h-12 rounded-full bg-surface-container-high items-center justify-center shadow-xs border border-surface-container-highest/60 overflow-hidden">
+              <Image
+                source={require('@/assets/images/app-logo-emblem.png')}
+                style={{ width: 42, height: 42 }}
+                resizeMode="contain"
+              />
             </View>
             <View className="flex-col flex-1 min-w-0">
               <Text className="text-base font-bold text-on-surface">
@@ -503,6 +543,14 @@ export default function OnboardingScreen() {
                 />
               </View>
             </View>
+          </View>
+        )}
+
+        {/* Error Banner */}
+        {regError && (
+          <View className="mb-3.5 bg-error-container/20 border border-error/30 p-3 rounded-xl flex-row items-start">
+            <MaterialIcons name="error-outline" size={16} color="#ba1a1a" className="mr-2 mt-0.5" />
+            <Text className="text-xs text-error font-medium flex-1 leading-snug">{regError}</Text>
           </View>
         )}
 

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -24,7 +25,10 @@ export default function SignInScreen() {
   const [authError, setAuthError] = useState<string | null>(null);
 
   const handleSignIn = async () => {
-    const cleanMobile = mobileNumber.trim();
+    let cleanMobile = mobileNumber.replace(/[^0-9]/g, '');
+    if (cleanMobile.startsWith('91') && cleanMobile.length === 12) {
+      cleanMobile = cleanMobile.substring(2);
+    }
     const cleanPassword = password.trim();
 
     if (!cleanMobile) {
@@ -76,13 +80,15 @@ export default function SignInScreen() {
         throw new Error('Authentication succeeded but user profile was not returned.');
       }
     } catch (err: any) {
-      const genericError =
+      const is401 = err?.status === 401 || (typeof err?.message === 'string' && err.message.toLowerCase().includes('invalid mobile'));
+      const invalidCredentialsMsg =
         language === 'te'
           ? 'చెల్లని మొబైల్ నంబర్ లేదా పాస్‌వర్డ్. దయచేసి మళ్లీ ప్రయత్నించండి.'
           : language === 'hi'
           ? 'अमान्य मोबाइल नंबर या पासवर्ड। कृपया पुनः प्रयास करें।'
           : 'Invalid mobile number or password. Please try again.';
-      setAuthError(err?.message && !err.message.includes('401') ? err.message : genericError);
+
+      setAuthError(is401 ? invalidCredentialsMsg : err?.message || invalidCredentialsMsg);
     } finally {
       setIsSubmitting(false);
     }
@@ -134,8 +140,12 @@ export default function SignInScreen() {
       <ScrollView className="flex-1 px-4 py-4" contentContainerStyle={{ paddingBottom: 40 }} keyboardShouldPersistTaps="handled">
         {/* Mascot & Greeting */}
         <View className="bg-surface-container-lowest rounded-2xl p-4 shadow-xs border border-surface-container-highest/60 mb-5 flex-row items-center gap-3.5">
-          <View className="w-14 h-14 rounded-2xl bg-primary-container items-center justify-center shadow-sm">
-            <Text className="text-2xl font-bold text-on-primary">स</Text>
+          <View className="w-14 h-14 rounded-full bg-surface-container-high items-center justify-center shadow-xs border border-surface-container-highest/60 overflow-hidden">
+            <Image
+              source={require('@/assets/images/app-logo-emblem.png')}
+              style={{ width: 48, height: 48 }}
+              resizeMode="contain"
+            />
           </View>
           <View className="flex-1 min-w-0">
             <Text className="text-lg font-bold text-on-surface">

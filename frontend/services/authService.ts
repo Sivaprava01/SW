@@ -65,11 +65,16 @@ class AuthService {
    */
   public async refreshSession(): Promise<string | null> {
     const refreshToken = await tokenStorage.getRefreshToken();
+    if (__DEV__) {
+      console.log(`[Auth] refresh_attempted=true, refresh_token_exists=${Boolean(refreshToken)}`);
+    }
     if (!refreshToken) {
       return null;
     }
 
     try {
+      // Clear access token before refresh request so stale Authorization header is not sent
+      apiClient.setAuthToken(null);
       const data = await apiClient.post<RefreshTokenResponse>('/auth/refresh', {
         refresh_token: refreshToken,
       });
@@ -80,8 +85,11 @@ class AuthService {
         return data.access_token;
       }
       return null;
-    } catch (err) {
-      if (__DEV__) console.warn('[AuthService] Token refresh failed:', err);
+    } catch (err: any) {
+      if (__DEV__) {
+        console.warn(`[Auth] Token refresh failed: ${err?.message || 'unknown error'}`);
+        console.log('[Auth] session_clearing_triggered=true');
+      }
       await tokenStorage.clearAllTokens();
       apiClient.setAuthToken(null);
       return null;
@@ -92,7 +100,16 @@ class AuthService {
    * Bootstrap authentication state on app launch.
    */
   public async restoreSession(): Promise<UserResponse | null> {
+    if (__DEV__) {
+      console.log('[Auth] session_initialization_running=true');
+    }
+
     const token = await tokenStorage.getAccessToken();
+    const hasToken = Boolean(token);
+    if (__DEV__) {
+      console.log(`[Auth] access_token_exists=${hasToken}`);
+    }
+
     if (!token) {
       return null;
     }
@@ -103,19 +120,28 @@ class AuthService {
       const user = await this.getMe();
       return user;
     } catch (err: any) {
-      if (__DEV__) console.warn('[AuthService] Stored token invalid/expired, attempting refresh...', err);
+      if (__DEV__) {
+        console.log(`[Auth] /auth/me verification failed: ${err?.message || 'invalid token'}, attempting refresh`);
+      }
       // Attempt token refresh
       const refreshedToken = await this.refreshSession();
       if (refreshedToken) {
         try {
           return await this.getMe();
-        } catch {
+        } catch (retryErr: any) {
+          if (__DEV__) {
+            console.warn(`[Auth] Retry /auth/me failed after refresh: ${retryErr?.message || 'error'}`);
+            console.log('[Auth] session_clearing_triggered=true');
+          }
           await tokenStorage.clearAllTokens();
           apiClient.setAuthToken(null);
           return null;
         }
       }
 
+      if (__DEV__) {
+        console.log('[Auth] session_clearing_triggered=true (refresh returned null)');
+      }
       await tokenStorage.clearAllTokens();
       apiClient.setAuthToken(null);
       return null;
@@ -126,10 +152,15 @@ class AuthService {
    * Terminate current authenticated session.
    */
   public async logout(): Promise<void> {
+    if (__DEV__) {
+      console.log('[Auth] session_clearing_triggered=true (user logout)');
+    }
     try {
       await apiClient.post<LogoutResponse>('/auth/logout');
-    } catch (err) {
-      if (__DEV__) console.warn('[AuthService] Logout API request failed (clearing local session anyway):', err);
+    } catch (err: any) {
+      if (__DEV__) {
+        console.warn(`[Auth] Logout API request failed (clearing local session anyway): ${err?.message || 'error'}`);
+      }
     } finally {
       await tokenStorage.clearAllTokens();
       apiClient.setAuthToken(null);
