@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { SakhiHeader } from '@/components/SakhiHeader';
 import { AskSakhiModal } from '@/components/AskSakhiModal';
 import { ProfileModal } from '@/components/ProfileModal';
@@ -25,6 +25,7 @@ import { JourneyRoadmapResponse } from '@/types/journey';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { is_new_user } = useLocalSearchParams<{ is_new_user?: string }>();
   const { userId, currentUser, isLoading, totalMonthlyIncome, totalMonthlySurplus } = useApp();
   const { triggerFirstTimePrompt } = useTutorial();
   const [askSakhiVisible, setAskSakhiVisible] = useState(false);
@@ -40,14 +41,14 @@ export default function HomeScreen() {
   useEffect(() => {
     if (!isLoading && !currentUser) {
       router.replace('/splash' as any);
-    } else if (currentUser) {
-      // Trigger tutorial prompt if user hasn't seen it yet
+    } else if (currentUser && is_new_user === 'true') {
+      // Trigger tutorial only for first-time newly registered accounts
       const timer = setTimeout(() => {
         triggerFirstTimePrompt();
-      }, 1200);
+      }, 600);
       return () => clearTimeout(timer);
     }
-  }, [isLoading, currentUser, router, triggerFirstTimePrompt]);
+  }, [isLoading, currentUser, router, is_new_user, triggerFirstTimePrompt]);
 
   const fetchDashboardData = useCallback(async () => {
     if (!userId) return;

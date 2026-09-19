@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -173,7 +173,7 @@ export default function OnboardingScreen() {
 
       if (response?.user) {
         await loginUser(response.user);
-        router.replace('/(tabs)');
+        router.replace('/(tabs)?is_new_user=true' as any);
       } else {
         throw new Error('Registration completed but user profile was not returned.');
       }

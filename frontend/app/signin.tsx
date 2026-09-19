@@ -13,6 +13,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useApp } from '@/context/AppContext';
 import { authService } from '@/services/authService';
+import { tokenStorage } from '@/services/tokenStorage';
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function SignInScreen() {
       });
 
       if (response?.user) {
+        await tokenStorage.setTourCompleted(response.user.id, true);
         await loginUser(response.user);
         router.replace('/(tabs)');
       } else {

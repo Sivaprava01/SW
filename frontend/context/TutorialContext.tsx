@@ -321,11 +321,12 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
   const closeCardTour = useCallback(
     (completed: boolean = true) => {
       setIsCardTourVisible(false);
-      if (completed) {
-        markTutorialSeen('basics');
+      markTutorialSeen('basics');
+      if (userId) {
+        tokenStorage.setTourCompleted(userId, true);
       }
     },
-    [markTutorialSeen]
+    [markTutorialSeen, userId]
   );
 
   // Spotlight Tutorial Flow controls
