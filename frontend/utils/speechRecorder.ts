@@ -30,8 +30,10 @@ class SpeechRecorderService {
       if (Platform.OS === 'web' && typeof navigator !== 'undefined' && navigator.mediaDevices) {
         let stream: any;
         try {
+          if (__DEV__) console.log('[SpeechRecorder] Requesting web getUserMedia audio stream...');
           stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         } catch (webPermErr: any) {
+          if (__DEV__) console.warn('[SpeechRecorder] Web microphone permission denied:', webPermErr);
           Alert.alert(
             language === 'te' ? 'మైక్రోఫోన్ అనుమతి' : language === 'hi' ? 'माइक्रोफ़ोन अनुमति' : 'Microphone Access',
             language === 'te'
@@ -40,7 +42,14 @@ class SpeechRecorderService {
               ? 'कृपया अपने ब्राउज़र एड्रेस बार में लॉक (Lock) आइकन पर टैप करके माइक्रोफ़ोन की अनुमति दें।'
               : 'Please allow microphone access in your browser address bar (lock/mic icon) to speak.'
           );
-          throw webPermErr;
+          callbacks?.onError?.(
+            language === 'te'
+              ? 'మైక్రోఫోన్ అనుమతి తిరస్కరించబడింది.'
+              : language === 'hi'
+              ? 'माइक्रोफ़ोन अनुमति अस्वीकृत।'
+              : 'Microphone permission denied.'
+          );
+          return;
         }
         this.currentStream = stream;
 
@@ -74,7 +83,12 @@ class SpeechRecorderService {
 
             const reader = new FileReader();
             reader.onloadend = async () => {
-              const base64data = (reader.result as string) || '';
+              let base64data = (reader.result as string) || '';
+              if (base64data.startsWith('data:')) {
+                base64data = base64data.split(',')[1] || base64data;
+              }
+              base64data = base64data.replace(/[\r\n\s]+/g, '');
+
               const format = mimeType.includes('webm')
                 ? 'webm'
                 : mimeType.includes('mp4')
@@ -82,6 +96,7 @@ class SpeechRecorderService {
                 : 'ogg';
 
               try {
+                if (__DEV__) console.log('[SpeechRecorder] Sending web audio for transcription...');
                 const transRes = await voiceService.transcribeSpeech({
                   audio_base64: base64data,
                   language,
@@ -89,6 +104,7 @@ class SpeechRecorderService {
                 });
 
                 if (transRes.transcript && transRes.transcript.trim()) {
+                  if (__DEV__) console.log('[SpeechRecorder] Web STT transcript:', transRes.transcript.trim());
                   callbacks?.onTranscript?.(transRes.transcript.trim());
                 } else {
                   callbacks?.onError?.(
@@ -100,7 +116,7 @@ class SpeechRecorderService {
                   );
                 }
               } catch (err: any) {
-                if (__DEV__) console.warn('[SpeechRecorder] STT failed:', err);
+                if (__DEV__) console.warn('[SpeechRecorder] Web STT failed:', err);
                 callbacks?.onError?.(err?.message || 'Transcription service error');
               }
             };
@@ -116,10 +132,26 @@ class SpeechRecorderService {
         callbacks?.onStart?.();
       } else {
         // Native (Android/iOS) using expo-audio SDK 57
-        const { AudioRecorder, setAudioModeAsync, requestRecordingPermissionsAsync, getRecordingPermissionsAsync, RecordingPresets } = await import('expo-audio');
+        const {
+          AudioModule,
+          setAudioModeAsync,
+          getRecordingPermissionsAsync,
+          requestRecordingPermissionsAsync,
+          RecordingPresets,
+        } = await import('expo-audio');
+
+        if (__DEV__) console.log('[SpeechRecorder] Checking native recording permissions...');
         let perm = await getRecordingPermissionsAsync();
+        if (__DEV__) {
+          console.log('[SpeechRecorder] Initial permission status:', perm.status, 'granted:', perm.granted);
+        }
+
         if (!perm.granted) {
+          if (__DEV__) console.log('[SpeechRecorder] Requesting runtime permission...');
           perm = await requestRecordingPermissionsAsync();
+          if (__DEV__) {
+            console.log('[SpeechRecorder] Requested permission status:', perm.status, 'granted:', perm.granted);
+          }
         }
 
         if (!perm.granted) {
@@ -141,36 +173,54 @@ class SpeechRecorderService {
 
           callbacks?.onError?.(
             language === 'te'
-              ? 'మైక్రోఫోన్ అనుమతి తిరస్కరించబడింది.'
+              ? 'మైక్రోఫోన్ అనుమతి తిరస్కరించబడింది. దయచేసి సెట్టింగ్స్‌లో అనుమతించండి.'
               : language === 'hi'
-              ? 'माइक्रोफ़ोन अनुमति अस्वीकृत।'
-              : 'Microphone permission denied.'
+              ? 'माइक्रोफ़ोन अनुमति अस्वीकृत। कृपया सेटिंग्स में अनुमति दें।'
+              : 'Microphone permission is required. Please allow microphone access in Android settings.'
           );
           return;
         }
 
+        if (__DEV__) console.log('[SpeechRecorder] Configuring audio mode for recording...');
         await setAudioModeAsync({
           allowsRecording: true,
           playsInSilentMode: true,
+          interruptionMode: 'doNotMix',
         });
 
-        const recorder = new AudioRecorder(RecordingPresets.HIGH_QUALITY);
+        if (__DEV__) console.log('[SpeechRecorder] Creating native AudioRecorder instance...');
+        const recorder = new AudioModule.AudioRecorder(RecordingPresets.HIGH_QUALITY);
         await recorder.prepareToRecordAsync();
         recorder.record();
         this.nativeRecorder = recorder;
         this.isRecordingState = true;
+        if (__DEV__) console.log('[SpeechRecorder] Native recording started successfully');
         callbacks?.onStart?.();
       }
     } catch (err: any) {
       this.isRecordingState = false;
-      if (__DEV__) console.warn('[SpeechRecorder] Start error:', err);
-      callbacks?.onError?.(
-        language === 'te'
-          ? 'మైక్రోఫోన్ ప్రారంభించలేకపోయాము. దయచేసి అనుమతులు తనిఖీ చేయండి.'
-          : language === 'hi'
-          ? 'माइक्रोफ़ोन शुरू नहीं हो सका। कृपया अनुमतियाँ जांचें।'
-          : 'Microphone access denied or unavailable.'
-      );
+      if (__DEV__) console.error('[SpeechRecorder] Start error:', err);
+
+      const isPermError =
+        err?.message?.toLowerCase().includes('permission') || err?.code === 'E_NO_PERMISSIONS';
+
+      if (isPermError) {
+        callbacks?.onError?.(
+          language === 'te'
+            ? 'మైక్రోఫోన్ అనుమతి అవసరం. దయచేసి సెట్టింగ్స్‌లో అనుమతించండి.'
+            : language === 'hi'
+            ? 'माइक्रोफ़ोन अनुमति आवश्यक है। कृपया सेटिंग्स में अनुमति दें।'
+            : 'Microphone permission is required. Please allow microphone access in Android settings.'
+        );
+      } else {
+        callbacks?.onError?.(
+          language === 'te'
+            ? 'మైక్రోఫోన్ ప్రారంభించలేకపోయాము. దయచేసి మళ్లీ ప్రయత్నించండి.'
+            : language === 'hi'
+            ? 'माइक्रोफ़ोन शुरू नहीं हो सका। कृपया पुनः प्रयास करें।'
+            : 'Unable to start the microphone. Please try again.'
+        );
+      }
     }
   }
 
@@ -192,44 +242,86 @@ class SpeechRecorderService {
 
       if (this.nativeRecorder) {
         try {
-          await this.nativeRecorder.stop();
-          const uri = this.nativeRecorder.uri;
+          const recorder = this.nativeRecorder;
           this.nativeRecorder = null;
 
-          if (uri) {
-            // Read URI as base64
-            const response = await fetch(uri);
-            const blob = await response.blob();
-            const reader = new FileReader();
-            reader.onloadend = async () => {
-              const base64data = (reader.result as string) || '';
-              try {
-                const transRes = await voiceService.transcribeSpeech({
-                  audio_base64: base64data,
-                  language,
-                  audio_format: 'm4a',
-                });
-                if (transRes.transcript && transRes.transcript.trim()) {
-                  callbacks?.onTranscript?.(transRes.transcript.trim());
-                } else {
-                  callbacks?.onError?.(
-                    language === 'te'
-                      ? 'మాట స్పష్టంగా వినపడలేదు. దయచేసి మళ్లీ మాట్లాడండి.'
-                      : language === 'hi'
-                      ? 'आवाज़ स्पष्ट नहीं सुनाई दी। कृपया पुनः बोलें।'
-                      : 'No speech recognized. Please speak clearly.'
-                  );
-                }
-              } catch (err: any) {
-                if (__DEV__) console.warn('[SpeechRecorder] Native STT failed:', err);
-                callbacks?.onError?.(err?.message || 'Transcription failed');
-              }
-            };
-            reader.readAsDataURL(blob);
+          if (__DEV__) console.log('[SpeechRecorder] Stopping native recorder...');
+          await recorder.stop();
+          const uri = recorder.uri;
+          if (__DEV__) console.log('[SpeechRecorder] Recording stopped. Output URI:', uri);
+
+          if (!uri) {
+            callbacks?.onError?.(
+              language === 'te'
+                ? 'ఆడియో రికార్డింగ్ ఫైల్ లభించలేదు.'
+                : language === 'hi'
+                ? 'ऑडियो रिकॉर्डिंग फ़ाइल नहीं मिली।'
+                : 'Recording file unavailable.'
+            );
+            return;
           }
+
+          // Read URI as blob -> base64
+          const response = await fetch(uri);
+          const blob = await response.blob();
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+            let base64data = (reader.result as string) || '';
+            if (base64data.startsWith('data:')) {
+              base64data = base64data.split(',')[1] || base64data;
+            }
+            base64data = base64data.replace(/[\r\n\s]+/g, '');
+
+            if (!base64data) {
+              callbacks?.onError?.(
+                language === 'te'
+                  ? 'ఆడియో డేటా ఖాళీగా ఉంది.'
+                  : language === 'hi'
+                  ? 'ऑडियो डेटा खाली है।'
+                  : 'Recorded audio data is empty.'
+              );
+              return;
+            }
+
+            try {
+              if (__DEV__) {
+                console.log('[SpeechRecorder] Sending audio for transcription, base64 length:', base64data.length);
+              }
+              const transRes = await voiceService.transcribeSpeech({
+                audio_base64: base64data,
+                language,
+                audio_format: 'm4a',
+              });
+
+              if (transRes.transcript && transRes.transcript.trim()) {
+                if (__DEV__) {
+                  console.log('[SpeechRecorder] Native STT transcript:', transRes.transcript.trim());
+                }
+                callbacks?.onTranscript?.(transRes.transcript.trim());
+              } else {
+                callbacks?.onError?.(
+                  language === 'te'
+                    ? 'మాట స్పష్టంగా వినపడలేదు. దయచేసి మళ్లీ మాట్లాడండి.'
+                    : language === 'hi'
+                    ? 'आवाज़ स्पष्ट नहीं सुनाई दी। कृपया पुनः बोलें।'
+                    : 'No speech recognized. Please speak clearly.'
+                );
+              }
+            } catch (err: any) {
+              if (__DEV__) console.error('[SpeechRecorder] Native STT failed:', err);
+              callbacks?.onError?.(
+                language === 'te'
+                  ? 'సర్వర్ అనువాదం విఫలమైంది: ' + (err?.message || 'నెట్‌వర్క్ లోపం')
+                  : language === 'hi'
+                  ? 'ट्रांसक्रिप्शन विफल: ' + (err?.message || 'नेटवर्क त्रुटि')
+                  : 'Transcription failed: ' + (err?.message || 'Network error')
+              );
+            }
+          };
+          reader.readAsDataURL(blob);
         } catch (err: any) {
-          if (__DEV__) console.warn('[SpeechRecorder] Native stop error:', err);
-          callbacks?.onError?.('Native recording stop error: ' + err.message);
+          if (__DEV__) console.error('[SpeechRecorder] Native stop error:', err);
+          callbacks?.onError?.('Recording stop error: ' + err.message);
         }
       }
     }
