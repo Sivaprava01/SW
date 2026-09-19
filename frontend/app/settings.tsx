@@ -8,6 +8,7 @@ import {
   Switch,
   Linking,
   Alert,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -132,8 +133,12 @@ export default function SettingsScreen() {
         <View className="bg-surface-container-low rounded-xl p-4 shadow-sm mb-4 gap-4">
           <View className="flex-row items-center gap-3">
             <View className="relative">
-              <View className={`w-16 h-16 rounded-full ${getTintBgClass()} items-center justify-center shadow-sm`}>
-                <Text className="text-on-primary font-headline-md text-[24px] font-bold">L</Text>
+              <View className="w-16 h-16 rounded-full bg-surface-container-high items-center justify-center shadow-sm overflow-hidden border border-surface-container-highest/60">
+                <Image
+                  source={require('@/assets/images/app-logo-emblem.png')}
+                  style={{ width: 56, height: 56 }}
+                  resizeMode="contain"
+                />
               </View>
               <TouchableOpacity className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-secondary items-center justify-center shadow-sm">
                 <MaterialIcons name="photo-camera" size={16} color="#ffffff" />

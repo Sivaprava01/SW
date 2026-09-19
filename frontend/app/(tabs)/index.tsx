@@ -98,7 +98,7 @@ export default function HomeScreen() {
       {/* Header */}
       <SakhiHeader
         subtitle="Dashboard"
-        hideAvatar={true}
+        hideAvatar={false}
         onPressProfile={() => setProfileVisible(true)}
         onPressMenu={() => router.push('/settings' as any)}
       />

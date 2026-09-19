@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Dimensions,
+  Image,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTutorial } from '@/context/TutorialContext';
@@ -111,8 +112,12 @@ export function TutorialTooltip({
       {/* Main Content */}
       <View className="py-2.5">
         <View className="flex-row items-center mb-1">
-          <View className="w-7 h-7 rounded-lg bg-primary-container items-center justify-center mr-2 shadow-xs">
-            <Text className="text-sm font-bold text-on-primary">स</Text>
+          <View className="w-7 h-7 rounded-lg bg-surface-container-lowest items-center justify-center mr-2 shadow-xs overflow-hidden border border-surface-container-highest/60">
+            <Image
+              source={require('@/assets/images/app-logo-emblem.png')}
+              style={{ width: 24, height: 24 }}
+              resizeMode="contain"
+            />
           </View>
           <Text className="text-base font-bold text-on-surface flex-1">{titleText}</Text>
         </View>
