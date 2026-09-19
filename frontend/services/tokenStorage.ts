@@ -184,6 +184,49 @@ class TokenStorage {
       if (__DEV__) console.warn('[TokenStorage] Error resetting tour completion:', err);
     }
   }
+
+  /**
+   * Retrieve completed financial journey level numbers for a specific account.
+   */
+  public async getCompletedLevels(userId: number): Promise<number[]> {
+    const key = `sakhi_completed_levels_${userId}`;
+    try {
+      let raw: string | null = null;
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          raw = window.localStorage.getItem(key);
+        }
+      } else {
+        raw = await SecureStore.getItemAsync(key);
+      }
+      if (raw) {
+        return JSON.parse(raw);
+      }
+      return [];
+    } catch (err) {
+      if (__DEV__) console.warn('[TokenStorage] Error reading completed levels:', err);
+      return [];
+    }
+  }
+
+  /**
+   * Persist completed financial journey level numbers for a specific account.
+   */
+  public async setCompletedLevels(userId: number, levels: number[]): Promise<void> {
+    const key = `sakhi_completed_levels_${userId}`;
+    try {
+      const serialized = JSON.stringify(levels);
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.setItem(key, serialized);
+        }
+      } else {
+        await SecureStore.setItemAsync(key, serialized);
+      }
+    } catch (err) {
+      if (__DEV__) console.warn('[TokenStorage] Error saving completed levels:', err);
+    }
+  }
 }
 
 export const tokenStorage = new TokenStorage();
