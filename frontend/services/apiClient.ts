@@ -78,13 +78,21 @@ class ApiClient {
       ...((fetchOptions.headers as Record<string, string>) || {}),
     };
 
-    // Automatically inject JWT Bearer Authorization header if token is set
-    if (this.authToken && !headers['Authorization']) {
+    // Do not attach Bearer token to unauthenticated auth routes or health check
+    const isPublicAuthRoute =
+      path.includes('/auth/login') ||
+      path.includes('/auth/register') ||
+      path.includes('/auth/refresh') ||
+      path.includes('/health');
+
+    // Automatically inject JWT Bearer Authorization header if token is set and not a public route
+    if (this.authToken && !headers['Authorization'] && !isPublicAuthRoute) {
       headers['Authorization'] = `Bearer ${this.authToken}`;
     }
 
     if (__DEV__) {
-      console.log(`[API Request] ${fetchOptions.method || 'GET'} ${url}`);
+      const hasAuth = !!headers['Authorization'] || (!!this.authToken && !isPublicAuthRoute);
+      console.log(`[API Request] ${fetchOptions.method || 'GET'} ${url} [auth_header_present=${hasAuth}]`);
     }
 
     try {
@@ -135,19 +143,25 @@ class ApiClient {
     } catch (error: any) {
       clearTimeout(timer);
 
-      if (error.name === 'AbortError') {
-        const timeoutError = new ApiError(
-          `Request timed out after ${timeoutMs / 1000}s`,
-          408
-        );
-        if (__DEV__) {
-          console.warn(`[API Timeout] ${url}`, timeoutError);
-        }
-        throw timeoutError;
-      }
-
       if (error instanceof ApiError) {
         throw error;
+      }
+
+      const isCancellation =
+        error.name === 'AbortError' ||
+        (typeof error.message === 'string' &&
+          (error.message.toLowerCase().includes('cancel') || error.message.toLowerCase().includes('aborted')));
+
+      if (isCancellation) {
+        const cancelError = new ApiError(
+          error.message || 'Request was cancelled',
+          499,
+          error
+        );
+        if (__DEV__) {
+          console.log(`[API Cancelled] ${url}: ${error.message || 'cancelled'}`);
+        }
+        throw cancelError;
       }
 
       const networkError = new ApiError(

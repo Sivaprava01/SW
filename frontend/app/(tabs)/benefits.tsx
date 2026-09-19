@@ -96,7 +96,10 @@ export default function BenefitsScreen() {
       setIsLoadingCatalog(true);
       const list = await schemeService.getSchemes();
       setCatalogSchemes(list);
-    } catch (err) {
+    } catch (err: any) {
+      if (err?.status === 499 || err?.message?.includes('cancelled')) {
+        return;
+      }
       if (__DEV__) console.warn('[BenefitsScreen] Failed to load catalog:', err);
     } finally {
       setIsLoadingCatalog(false);

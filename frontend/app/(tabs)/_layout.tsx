@@ -1,7 +1,20 @@
-import { Tabs } from 'expo-router';
+import { Tabs, Redirect } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useApp } from '@/context/AppContext';
 
 export default function TabLayout() {
+  const { currentUser, isLoading } = useApp();
+
+  // Wait for session bootstrap to complete before rendering tab tree
+  if (isLoading) {
+    return null;
+  }
+
+  // Redirect to splash / sign in if not authenticated
+  if (!currentUser) {
+    return <Redirect href="/splash" />;
+  }
+
   return (
     <Tabs
       screenOptions={{
