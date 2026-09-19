@@ -22,7 +22,7 @@ type CreateGoalModalProps = {
 };
 
 export function CreateDreamPotModal({ visible, onClose, initialGoal, onSaveGoal }: CreateGoalModalProps) {
-  const { createGoal, updateGoal, financialSummary } = useApp();
+  const { createGoal, updateGoal, totalMonthlySurplus } = useApp();
 
   const [selectedCategory, setSelectedCategory] = useState('Education');
   const [goalTitle, setGoalTitle] = useState("Daughter's College Admission");
@@ -44,10 +44,10 @@ export function CreateDreamPotModal({ visible, onClose, initialGoal, onSaveGoal 
     }
   }, [initialGoal, visible]);
 
-  const monthlySurplus = financialSummary?.monthly_surplus ?? 4200;
+  const monthlySurplus = totalMonthlySurplus;
   const monthlyRequired = Math.round(targetAmount / (durationMonths || 1));
   const surplusPercentage = Math.min(100, Math.round((monthlyRequired / (monthlySurplus || 1)) * 100));
-  const isSafe = monthlyRequired <= (monthlySurplus > 0 ? monthlySurplus * 0.9 : 3800);
+  const isSafe = monthlySurplus > 0 ? monthlyRequired <= monthlySurplus * 0.9 : true;
 
   const categories = [
     { id: 'Education', label: 'Education', icon: 'school' as const },
@@ -266,30 +266,6 @@ export function CreateDreamPotModal({ visible, onClose, initialGoal, onSaveGoal 
                   {surplusPercentage}% of ₹{monthlySurplus.toLocaleString('en-IN')} surplus
                 </Text>
               </View>
-            </View>
-          </View>
-
-          {/* Step 5: Destination Account */}
-          <View className="mb-4">
-            <View className="flex-row items-center mb-1.5">
-              <View className="w-5 h-5 rounded-full bg-primary items-center justify-center mr-1.5">
-                <Text className="text-[11px] font-bold text-on-primary">5</Text>
-              </View>
-              <Text className="text-sm font-bold text-on-surface">Destination Account</Text>
-            </View>
-            <View className="bg-surface-container-low rounded-xl p-3 flex-row items-center justify-between border border-surface-container-highest/60">
-              <View className="flex-row items-center flex-1">
-                <View className="w-9 h-9 rounded-full bg-secondary-fixed items-center justify-center mr-2.5">
-                  <MaterialIcons name="account-balance" size={20} color="#410000" />
-                </View>
-                <View className="flex-col flex-1">
-                  <View className="flex-row items-center space-x-1">
-                    <Text className="text-xs font-bold text-on-surface">Post Office RD / Mahila Samman</Text>
-                  </View>
-                  <Text className="text-[10px] font-bold text-secondary">7.5% APY • Safe Govt Scheme</Text>
-                </View>
-              </View>
-              <MaterialIcons name="check-circle" size={18} color="#9d4300" />
             </View>
           </View>
 

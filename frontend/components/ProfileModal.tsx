@@ -56,7 +56,7 @@ export function ProfileModal({ visible, onClose }: ProfileModalProps) {
   const age = currentUser?.age || 28;
   const isSHG = currentUser?.is_shg_member ?? true;
   const shgName = currentUser?.shg_name || 'SERP TG-48209';
-  const income = currentUser?.monthly_income ?? 18500;
+  const income = currentUser?.monthly_income ?? 0;
 
   return (
     <Modal

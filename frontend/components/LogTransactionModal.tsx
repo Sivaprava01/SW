@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useApp } from '@/context/AppContext';
+import { speechRecorder } from '@/utils/speechRecorder';
 
 type LogTransactionModalProps = {
   visible: boolean;
@@ -20,17 +21,54 @@ type LogTransactionModalProps = {
 };
 
 export function LogTransactionModal({ visible, onClose, onSave }: LogTransactionModalProps) {
-  const { logTransaction, financialSummary } = useApp();
+  const { logTransaction, totalMonthlySurplus, language } = useApp();
   const [txType, setTxType] = useState<'income' | 'expense'>('income');
   const [amount, setAmount] = useState('1400');
   const [selectedCategory, setSelectedCategory] = useState('Shop Sales / Market');
   const [note, setNote] = useState('Weekly handloom bazaar sales');
-  const [isListening, setIsListening] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const [sttError, setSttError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [calendarMonth, setCalendarMonth] = useState(new Date().getMonth());
   const [calendarYear, setCalendarYear] = useState(new Date().getFullYear());
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleToggleSpeech = async () => {
+    setSttError(null);
+    const activeLang = language || 'te';
+
+    if (isRecording) {
+      await speechRecorder.stop(activeLang, {
+        onStop: () => setIsRecording(false),
+        onTranscribing: () => setIsTranscribing(true),
+        onTranscript: (transcribedText) => {
+          setIsTranscribing(false);
+          setNote(transcribedText);
+        },
+        onError: (err) => {
+          setIsTranscribing(false);
+          setSttError(err);
+        },
+      });
+    } else {
+      await speechRecorder.start(activeLang, {
+        onStart: () => setIsRecording(true),
+        onStop: () => setIsRecording(false),
+        onTranscribing: () => setIsTranscribing(true),
+        onTranscript: (transcribedText) => {
+          setIsTranscribing(false);
+          setNote(transcribedText);
+        },
+        onError: (err) => {
+          setIsRecording(false);
+          setIsTranscribing(false);
+          setSttError(err);
+        },
+      });
+    }
+  };
 
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -81,7 +119,7 @@ export function LogTransactionModal({ visible, onClose, onSave }: LogTransaction
   };
 
   const numAmount = parseInt(amount, 10) || 0;
-  const baseSurplus = financialSummary?.monthly_surplus ?? 4200;
+  const baseSurplus = totalMonthlySurplus;
   const projectedSurplus = txType === 'income' ? baseSurplus + numAmount : Math.max(0, baseSurplus - numAmount);
 
   const incomeCategories = [
@@ -391,16 +429,39 @@ export function LogTransactionModal({ visible, onClose, onSave }: LogTransaction
                 className="flex-1 text-xs text-on-surface"
               />
               <TouchableOpacity
-                onPress={() => setIsListening(!isListening)}
+                onPress={handleToggleSpeech}
+                disabled={isTranscribing}
                 className={`w-9 h-9 rounded-full ${
-                  isListening ? 'bg-secondary' : 'bg-primary-container'
+                  isRecording ? 'bg-secondary' : isTranscribing ? 'bg-amber-600' : 'bg-primary-container'
                 } items-center justify-center active:scale-90 shadow-sm ml-1.5`}>
-                <MaterialIcons name={isListening ? 'graphic-eq' : 'mic'} size={18} color="#ffffff" />
+                {isTranscribing ? (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                ) : (
+                  <MaterialIcons name={isRecording ? 'graphic-eq' : 'mic'} size={18} color="#ffffff" />
+                )}
               </TouchableOpacity>
             </View>
-            {isListening && (
-              <Text className="text-[10px] text-primary font-semibold mt-1">
-                Listening in Telugu / Hindi... speak now
+            {isRecording && (
+              <Text className="text-[10px] text-secondary font-semibold mt-1">
+                {language === 'te'
+                  ? '🎙️ వింటున్నాము... మీ వివరణ చెప్పండి'
+                  : language === 'hi'
+                  ? '🎙️ सुन रहे हैं... अपना नोट बोलें'
+                  : '🎙️ Listening... speak your note now'}
+              </Text>
+            )}
+            {isTranscribing && (
+              <Text className="text-[10px] text-amber-700 font-semibold mt-1">
+                {language === 'te'
+                  ? 'లిప్యంతరీకరణ జరుగుతోంది...'
+                  : language === 'hi'
+                  ? 'टेक्स्ट में बदला जा रहा है...'
+                  : 'Transcribing speech to text...'}
+              </Text>
+            )}
+            {sttError && (
+              <Text className="text-[10px] text-error font-medium mt-1">
+                {sttError}
               </Text>
             )}
           </View>
