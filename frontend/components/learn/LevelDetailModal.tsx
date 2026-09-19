@@ -7,17 +7,17 @@ import {
   ScrollView,
   ActivityIndicator,
   StyleSheet,
-  Dimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
-import { JourneyLevelData } from '@/constants/journeyLevels';
+import { LearnLevelData } from '@/constants/learnLevels';
+import { getLearnAudio } from '@/constants/learnAudio';
 import { useApp } from '@/context/AppContext';
 import { voiceService } from '@/services/voiceService';
 import { audioPlayer } from '@/services/audioPlayer';
 
 interface LevelDetailModalProps {
-  level: JourneyLevelData | null;
+  level: LearnLevelData | null;
   visible: boolean;
   isCompleted: boolean;
   onClose: () => void;
@@ -41,7 +41,7 @@ export function LevelDetailModal({
 
   const audioRequestTokenRef = useRef<number>(0);
 
-  const trackId = level ? `journey-level-${level.levelNumber}-${activeLang}` : 'level-audio';
+  const trackId = level ? `learn-level-${level.levelNumber}-${activeLang}` : 'learn-audio';
 
   // Audio status subscriber
   useEffect(() => {
@@ -67,7 +67,7 @@ export function LevelDetailModal({
     }
   }, [visible]);
 
-  // Indic voice speech synthesis for level explanation
+  // Play pre-bundled static audio or dynamic fallback
   const handleToggleVoice = async () => {
     if (!level) return;
 
@@ -77,12 +77,23 @@ export function LevelDetailModal({
     }
 
     const currentToken = ++audioRequestTokenRef.current;
-    const textToSpeak = `${level.title[activeLang]}. ${level.explanation[activeLang]}`;
+    const staticAsset = getLearnAudio(level.levelNumber, activeLang);
 
     try {
       setIsLoadingAudio(true);
       audioPlayer.stop();
 
+      // First try bundled static audio for instant, offline playback
+      if (staticAsset) {
+        await audioPlayer.playAsset(staticAsset, trackId);
+        if (audioRequestTokenRef.current === currentToken) {
+          setIsLoadingAudio(false);
+        }
+        return;
+      }
+
+      // Dynamic fallback via voiceService if asset is unavailable
+      const textToSpeak = `${level.title[activeLang]}. ${level.explanation[activeLang]}`;
       const res = await voiceService.synthesizeSpeech({
         text: textToSpeak,
         language: activeLang,
@@ -99,7 +110,7 @@ export function LevelDetailModal({
     } catch (err) {
       if (audioRequestTokenRef.current === currentToken) {
         setIsLoadingAudio(false);
-        if (__DEV__) console.warn('[LevelDetailModal] Voice synthesis error:', err);
+        if (__DEV__) console.warn('[LevelDetailModal] Audio playback error:', err);
       }
     }
   };
@@ -123,12 +134,12 @@ export function LevelDetailModal({
   const tierName = level.tierName[activeLang] || level.tierName.en;
   const summary = level.summary[activeLang] || level.summary.en;
   const explanation = level.explanation[activeLang] || level.explanation.en;
-  const takeaways = level.keyTakeaways[activeLang] || level.keyTakeaways.en;
+  const takeaways = (level.keyTakeaways && level.keyTakeaways[activeLang]) || level.keyTakeaways?.en || [];
 
   const labels = {
     levelPrefix: activeLang === 'te' ? 'లెవెల్' : activeLang === 'hi' ? 'स्तर' : 'Level',
-    listenVoice: activeLang === 'te' ? 'వాయిస్ వినండి' : activeLang === 'hi' ? 'ऑडियो सुनें' : 'Listen Voice',
-    playing: activeLang === 'te' ? 'ప్లే అవుతోంది...' : activeLang === 'hi' ? 'चल रहा है...' : 'Playing...',
+    listenVoice: activeLang === 'te' ? '🔊 పాఠం వినండి' : activeLang === 'hi' ? '🔊 पाठ सुनें' : '🔊 Listen to Lesson',
+    playing: activeLang === 'te' ? '⏸️ ప్లే అవుతోంది...' : activeLang === 'hi' ? '⏸️ चल रहा है...' : '⏸️ Playing...',
     keyTakeaways: activeLang === 'te' ? 'ముఖ్యమైన ఆచరణాత్మక నియమాలు' : activeLang === 'hi' ? 'महत्वपूर्ण व्यावहारिक नियम' : 'Key Practical Rules',
     markComplete: activeLang === 'te' ? 'పూర్తయింది (తర్వాతి లెవెల్ అన్‌లాక్) ✓' : activeLang === 'hi' ? 'पूरा हुआ (अगला स्तर खोलें) ✓' : 'Mark Complete & Unlock Next Level ✓',
     completedBadge: activeLang === 'te' ? 'ఈ లెవెల్ పూర్తయింది' : activeLang === 'hi' ? 'यह स्तर पूरा हो चुका है' : 'Level Completed',
@@ -248,35 +259,37 @@ export function LevelDetailModal({
               </View>
             </TouchableOpacity>
 
-            {/* Plain-Language Text Explanation */}
+            {/* Plain-Language Text Explanation (1 Real Meaningful Paragraph) */}
             <View className="bg-surface-container-lowest rounded-2xl p-4 shadow-xs border border-surface-container-highest/60 mb-4">
-              <Text className="text-[13px] text-on-surface leading-relaxed font-normal">
+              <Text className="text-[14px] text-on-surface leading-relaxed font-normal">
                 {explanation}
               </Text>
             </View>
 
-            {/* Key Takeaways Section */}
-            <View className="bg-surface-container-low rounded-2xl p-4 shadow-xs border border-surface-container-highest/60 mb-4">
-              <View className="flex-row items-center mb-2.5">
-                <MaterialIcons name="lightbulb" size={16} color="#9d4300" />
-                <Text className="text-xs font-bold text-primary ml-1.5 uppercase tracking-wider">
-                  {labels.keyTakeaways}
-                </Text>
-              </View>
+            {/* Key Takeaways Section (if available) */}
+            {takeaways && takeaways.length > 0 && (
+              <View className="bg-surface-container-low rounded-2xl p-4 shadow-xs border border-surface-container-highest/60 mb-4">
+                <View className="flex-row items-center mb-2.5">
+                  <MaterialIcons name="lightbulb" size={16} color="#9d4300" />
+                  <Text className="text-xs font-bold text-primary ml-1.5 uppercase tracking-wider">
+                    {labels.keyTakeaways}
+                  </Text>
+                </View>
 
-              <View className="flex-col gap-2">
-                {takeaways.map((pt, ptIdx) => (
-                  <View key={ptIdx} className="flex-row items-start">
-                    <View className="w-4 h-4 rounded-full bg-primary/15 items-center justify-center mr-2 mt-0.5 flex-shrink-0">
-                      <MaterialIcons name="check" size={10} color="#9d4300" />
+                <View className="flex-col gap-2">
+                  {takeaways.map((pt, ptIdx) => (
+                    <View key={ptIdx} className="flex-row items-start">
+                      <View className="w-4 h-4 rounded-full bg-primary/15 items-center justify-center mr-2 mt-0.5 flex-shrink-0">
+                        <MaterialIcons name="check" size={10} color="#9d4300" />
+                      </View>
+                      <Text className="text-xs text-on-surface flex-1 leading-relaxed font-medium">
+                        {pt}
+                      </Text>
                     </View>
-                    <Text className="text-xs text-on-surface flex-1 leading-relaxed font-medium">
-                      {pt}
-                    </Text>
-                  </View>
-                ))}
+                  ))}
+                </View>
               </View>
-            </View>
+            )}
 
             {/* Complete Level CTA Button */}
             <TouchableOpacity

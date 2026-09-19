@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   View,
@@ -95,7 +95,7 @@ export function JourneyStageDetailModal({
   const getStatusBadge = () => {
     if (stage.status === 'completed') {
       return (
-        <View className="bg-primary-fixed px-3 py-1 rounded-full flex-row items-center">
+        <View className="bg-primary-fixed px-3 py-1 rounded-full flex-row items-center flex-shrink-0">
           <MaterialIcons name="check-circle" size={14} color="#9d4300" />
           <Text className="text-xs font-bold text-primary-on-fixed ml-1">
             {L.completed[lang]} (100%)
@@ -105,16 +105,16 @@ export function JourneyStageDetailModal({
     }
     if (stage.status === 'in_progress') {
       return (
-        <View className="bg-primary px-3 py-1 rounded-full flex-row items-center">
+        <View className="bg-primary px-3 py-1 rounded-full flex-row items-center flex-shrink-0">
           <MaterialIcons name="trending-up" size={14} color="#ffffff" />
           <Text className="text-xs font-bold text-on-primary ml-1">
-            {L.inProgress[lang]} ({progressPct}%)
+            {L.inProgress[lang]} ({progressPct}% )
           </Text>
         </View>
       );
     }
     return (
-      <View className="bg-surface-container-high px-3 py-1 rounded-full flex-row items-center">
+      <View className="bg-surface-container-high px-3 py-1 rounded-full flex-row items-center flex-shrink-0">
         <MaterialIcons name="lock" size={14} color="#8c7164" />
         <Text className="text-xs font-bold text-on-surface-variant ml-1">
           {L.locked[lang]}
@@ -126,24 +126,26 @@ export function JourneyStageDetailModal({
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
       <SafeAreaView className="flex-1 bg-surface" edges={['top', 'bottom']}>
-        {/* Header */}
-        <View className="bg-surface-container-low px-4 py-3 border-b border-surface-container-highest shadow-sm flex-row items-center justify-between">
-          <View className="flex-row items-center">
-            <View className="w-9 h-9 rounded-full bg-primary items-center justify-center mr-2.5 shadow-xs">
-              <Text className="text-sm font-bold text-on-primary">
+        {/* Header (Responsive wrapping) */}
+        <View className="bg-surface-container-low px-4 py-3 border-b border-surface-container-highest shadow-sm flex-row items-center justify-between gap-2">
+          <View className="flex-row items-center flex-1 min-w-0 mr-1">
+            <View className="w-9 h-9 rounded-full bg-primary items-center justify-center mr-2.5 shadow-xs flex-shrink-0">
+              <Text className="text-sm font-bold text-on-primary font-mono">
                 {String(stage.stage_number).padStart(2, '0')}
               </Text>
             </View>
-            <View className="flex-col">
-              <Text className="text-[11px] font-bold text-primary uppercase tracking-wider">
+            <View className="flex-col flex-1 min-w-0">
+              <Text className="text-[11px] font-bold text-primary uppercase tracking-wider truncate">
                 {L.stage[lang]} {stage.stage_number} {L.ofSeven[lang]}
               </Text>
-              <Text className="text-sm font-bold text-on-surface">{stageTitle}</Text>
+              <Text className="text-sm font-bold text-on-surface truncate" numberOfLines={1}>
+                {stageTitle}
+              </Text>
             </View>
           </View>
           <TouchableOpacity
             onPress={onClose}
-            className="w-9 h-9 rounded-full bg-surface-container-high items-center justify-center active:scale-95"
+            className="w-9 h-9 rounded-full bg-surface-container-high items-center justify-center active:scale-95 flex-shrink-0"
             accessibilityLabel={L.close[lang]}>
             <MaterialIcons name="close" size={20} color="#221a0e" />
           </TouchableOpacity>
@@ -152,13 +154,13 @@ export function JourneyStageDetailModal({
         <ScrollView className="flex-1 px-4 py-4" contentContainerStyle={{ paddingBottom: 40 }}>
           {/* Status & Progress Card */}
           <View className="bg-surface-container-lowest p-4 rounded-2xl shadow-xs border border-surface-container-highest/60 mb-4">
-            <View className="flex-row items-center justify-between mb-3">
+            <View className="flex-row items-center justify-between mb-3 gap-2 flex-wrap">
               <Text className="text-xs font-bold text-on-surface">{L.currentStatus[lang]}</Text>
               {getStatusBadge()}
             </View>
 
             {/* Progress bar */}
-            <View className="w-full h-3 rounded-full bg-surface-container-high overflow-hidden mb-2">
+            <View className="w-full h-3 rounded-full bg-surface-container-high overflow-hidden mb-2.5">
               <View
                 className="h-full bg-primary rounded-full"
                 style={{ width: `${Math.min(100, Math.max(stage.status === 'in_progress' ? 10 : 0, progressPct))}%` }}
@@ -166,8 +168,8 @@ export function JourneyStageDetailModal({
             </View>
 
             {/* Target Metric row */}
-            <View className="flex-row items-center justify-between bg-surface-container-low p-3 rounded-xl border border-surface-container-highest/40">
-              <View className="flex-col">
+            <View className="flex-row items-center justify-between bg-surface-container-low p-3 rounded-xl border border-surface-container-highest/40 gap-2 flex-wrap">
+              <View className="flex-col flex-1 min-w-0">
                 <Text className="text-[10px] uppercase tracking-wider font-bold text-on-surface-variant">
                   {stage.target_metric_label || L.targetMetric[lang]}
                 </Text>
@@ -176,7 +178,7 @@ export function JourneyStageDetailModal({
                 </Text>
               </View>
               {stage.unlocked_badge && (
-                <View className="bg-primary-fixed px-2.5 py-1 rounded-lg flex-row items-center">
+                <View className="bg-primary-fixed px-2.5 py-1 rounded-lg flex-row items-center flex-shrink-0">
                   <MaterialIcons name="military-tech" size={16} color="#9d4300" />
                   <Text className="text-[11px] font-bold text-primary-on-fixed ml-1">
                     {stage.unlocked_badge}
@@ -190,12 +192,12 @@ export function JourneyStageDetailModal({
           <View className="bg-surface-container-lowest p-4 rounded-2xl shadow-xs border border-surface-container-highest/60 mb-4">
             <View className="flex-row items-center mb-2">
               <MaterialIcons name="lightbulb" size={18} color="#9d4300" />
-              <Text className="text-sm font-bold text-on-surface ml-1.5">
+              <Text className="text-sm font-bold text-on-surface ml-1.5 flex-1 min-w-0 flex-shrink">
                 {lang === 'te'
                   ? 'ఈ దశ యొక్క ప్రాముఖ్యత'
                   : lang === 'hi'
                   ? 'इस चरण का महत्व'
-                  : 'Stage Significance & Practical Strategy'}
+                  : 'Stage Significance & Strategy'}
               </Text>
             </View>
             <Text className="text-xs text-on-surface leading-relaxed">{stageSubtitle}</Text>
