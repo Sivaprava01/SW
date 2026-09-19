@@ -25,7 +25,6 @@ export default function SettingsScreen() {
 
   // State initialized from currentUser
   const [showStatePicker, setShowStatePicker] = useState(false);
-  const [tintTheme, setTintTheme] = useState<'primary' | 'secondary' | 'tertiary' | 'primary-container'>('primary');
   const [fullName, setFullName] = useState(currentUser?.name || 'Member');
   const [monthlyIncome, setMonthlyIncome] = useState(
     currentUser?.monthly_income ? currentUser.monthly_income.toString() : '18500'
@@ -55,18 +54,7 @@ export default function SettingsScreen() {
     }
   }, [currentUser, setOperatingState]);
 
-  const getTintBgClass = () => {
-    switch (tintTheme) {
-      case 'secondary':
-        return 'bg-secondary';
-      case 'tertiary':
-        return 'bg-tertiary';
-      case 'primary-container':
-        return 'bg-primary-container';
-      default:
-        return 'bg-primary';
-    }
-  };
+
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -153,36 +141,7 @@ export default function SettingsScreen() {
             </View>
           </View>
 
-          {/* Profile Tint Theme */}
-          <View className="gap-1">
-            <Text className="font-label-sm text-[11px] text-on-surface-variant tracking-wider uppercase font-semibold">Profile Tint Theme</Text>
-            <View className="flex-row items-center gap-3 mt-1">
-              <TouchableOpacity
-                onPress={() => setTintTheme('primary')}
-                className="w-9 h-9 rounded-full bg-primary items-center justify-center shadow-sm"
-              >
-                {tintTheme === 'primary' && <MaterialIcons name="check" size={18} color="#ffffff" />}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setTintTheme('secondary')}
-                className="w-9 h-9 rounded-full bg-secondary items-center justify-center shadow-sm"
-              >
-                {tintTheme === 'secondary' && <MaterialIcons name="check" size={18} color="#ffffff" />}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setTintTheme('tertiary')}
-                className="w-9 h-9 rounded-full bg-tertiary items-center justify-center shadow-sm"
-              >
-                {tintTheme === 'tertiary' && <MaterialIcons name="check" size={18} color="#ffffff" />}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setTintTheme('primary-container')}
-                className="w-9 h-9 rounded-full bg-primary-container items-center justify-center shadow-sm"
-              >
-                {tintTheme === 'primary-container' && <MaterialIcons name="check" size={18} color="#ffffff" />}
-              </TouchableOpacity>
-            </View>
-          </View>
+
 
           {/* Form Inputs */}
           <View className="gap-3 pt-1">

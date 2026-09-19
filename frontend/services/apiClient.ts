@@ -1,5 +1,6 @@
-import { API_CONFIG } from '@/constants/api';
+import { API_CONFIG, getApiBaseUrl } from '@/constants/api';
 import { ApiErrorDetail } from '@/types/api';
+import { Platform } from 'react-native';
 
 export class ApiError extends Error {
   status: number;
@@ -19,19 +20,24 @@ export interface RequestOptions extends RequestInit {
 }
 
 class ApiClient {
-  private baseUrl: string;
+  private customBaseUrl: string | null = null;
   private authToken: string | null = null;
 
-  constructor(baseUrl: string = API_CONFIG.BASE_URL) {
-    this.baseUrl = baseUrl;
+  constructor(baseUrl?: string) {
+    if (baseUrl) {
+      this.customBaseUrl = baseUrl;
+    }
   }
 
   public setBaseUrl(newUrl: string) {
-    this.baseUrl = newUrl;
+    this.customBaseUrl = newUrl;
   }
 
   public getBaseUrl(): string {
-    return this.baseUrl;
+    if (this.customBaseUrl) {
+      return this.customBaseUrl;
+    }
+    return API_CONFIG.BASE_URL;
   }
 
   public setAuthToken(token: string | null) {
@@ -43,11 +49,12 @@ class ApiClient {
   }
 
   private buildUrl(path: string, params?: Record<string, string | number | boolean | undefined | null>): string {
+    const base = this.getBaseUrl();
     let cleanPath = path.startsWith('/') ? path : `/${path}`;
-    if (this.baseUrl.endsWith('/api/v1') && cleanPath.startsWith('/api/v1/')) {
+    if (base.endsWith('/api/v1') && cleanPath.startsWith('/api/v1/')) {
       cleanPath = cleanPath.substring('/api/v1'.length);
     }
-    let url = `${this.baseUrl}${cleanPath}`;
+    let url = `${base}${cleanPath}`;
 
     if (params) {
       const searchParams = new URLSearchParams();
