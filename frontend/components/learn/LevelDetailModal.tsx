@@ -129,9 +129,12 @@ export function LevelDetailModal({
     levelPrefix: activeLang === 'te' ? 'లెవెల్' : activeLang === 'hi' ? 'स्तर' : 'Level',
     listenVoice: activeLang === 'te' ? 'వాయిస్ వినండి' : activeLang === 'hi' ? 'ऑडियो सुनें' : 'Listen Voice',
     playing: activeLang === 'te' ? 'ప్లే అవుతోంది...' : activeLang === 'hi' ? 'चल रहा है...' : 'Playing...',
-    keyTakeaways: activeLang === 'te' ? 'ముఖ్యమైన అంశాలు' : activeLang === 'hi' ? 'महत्वपूर्ण बातें' : 'Key Practical Rules',
+    keyTakeaways: activeLang === 'te' ? 'ముఖ్యమైన ఆచరణాత్మక నియమాలు' : activeLang === 'hi' ? 'महत्वपूर्ण व्यावहारिक नियम' : 'Key Practical Rules',
     markComplete: activeLang === 'te' ? 'పూర్తయింది (తర్వాతి లెవెల్ అన్‌లాక్) ✓' : activeLang === 'hi' ? 'पूरा हुआ (अगला स्तर खोलें) ✓' : 'Mark Complete & Unlock Next Level ✓',
-    completedBadge: activeLang === 'te' ? 'ఈ లెవెల్ పూర్తి అయింది' : activeLang === 'hi' ? 'यह स्तर पूरा हो चुका है' : 'Level Completed',
+    completedBadge: activeLang === 'te' ? 'ఈ లెవెల్ పూర్తయింది' : activeLang === 'hi' ? 'यह स्तर पूरा हो चुका है' : 'Level Completed',
+    completedBtn: activeLang === 'te' ? 'మళ్లీ పూర్తి చేయండి ✓' : activeLang === 'hi' ? 'दोबारा पूरा करें ✓' : 'Completed ✓',
+    voiceSubtext: activeLang === 'te' ? 'తెలుగులో స్పష్టమైన ఆడియో వివరణ' : activeLang === 'hi' ? 'हिंदी में स्पष्ट ऑडियो स्पष्टीकरण' : 'Clear audio narration in English',
+    closeA11y: activeLang === 'te' ? 'లెవెల్ వివరాలు మూసివేయండి' : activeLang === 'hi' ? 'स्तर का विवरण बंद करें' : 'Close Level Details',
   };
 
   return (
@@ -184,7 +187,7 @@ export function LevelDetailModal({
 
             <TouchableOpacity
               onPress={onClose}
-              accessibilityLabel="Close Level Details"
+              accessibilityLabel={labels.closeA11y}
               className="w-8 h-8 rounded-full bg-surface-container-high items-center justify-center active:scale-95"
             >
               <MaterialIcons name="close" size={18} color="#584237" />
@@ -228,7 +231,7 @@ export function LevelDetailModal({
                     {isPlayingAudio ? labels.playing : labels.listenVoice}
                   </Text>
                   <Text className="text-[10px] text-on-surface-variant font-medium">
-                    {activeLang === 'te' ? 'తెలుగులో స్వచ్ఛమైన వాయిస్ వివరణ' : activeLang === 'hi' ? 'हिंदी में स्पष्ट ऑडियो स्पष्टीकरण' : 'Clear speech in English'}
+                    {labels.voiceSubtext}
                   </Text>
                 </View>
               </View>
@@ -297,7 +300,7 @@ export function LevelDetailModal({
                       isCompleted ? 'text-on-surface' : 'text-white'
                     }`}
                   >
-                    {isCompleted ? (activeLang === 'te' ? 'మళ్లీ పూర్తి చేయండి ✓' : activeLang === 'hi' ? 'दोबारा पूरा करें ✓' : 'Completed ✓') : labels.markComplete}
+                    {isCompleted ? labels.completedBtn : labels.markComplete}
                   </Text>
                 </>
               )}

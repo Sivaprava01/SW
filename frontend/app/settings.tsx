@@ -20,10 +20,18 @@ import { TUTORIAL_DEFINITIONS } from '@/constants/tutorialSteps';
 
 export default function SettingsScreen() {
   const router = useRouter();
-  const { currentUser, operatingState, setOperatingState, updateUserPreferences, logoutUser } = useApp();
+  const {
+    currentUser,
+    operatingState,
+    setOperatingState,
+    updateUserPreferences,
+    logoutUser,
+    language: appLanguage,
+    setLanguage: setAppLanguage,
+  } = useApp();
   const { openCardTour, startTutorial } = useTutorial();
 
-  // State initialized from currentUser
+  // State initialized from currentUser or appLanguage
   const [showStatePicker, setShowStatePicker] = useState(false);
   const [fullName, setFullName] = useState(currentUser?.name || 'Member');
   const [monthlyIncome, setMonthlyIncome] = useState(
@@ -32,7 +40,7 @@ export default function SettingsScreen() {
   const [age, setAge] = useState(currentUser?.age ? currentUser.age.toString() : '28');
   const [shgActive, setShgActive] = useState(currentUser?.is_shg_member ?? true);
   const [language, setLanguage] = useState<'en' | 'hi' | 'te'>(
-    (currentUser?.primary_language as 'en' | 'hi' | 'te') || 'te'
+    (currentUser?.primary_language as 'en' | 'hi' | 'te') || appLanguage || 'te'
   );
   const [appearance, setAppearance] = useState<'light' | 'dark'>('light');
   const [isSaving, setIsSaving] = useState(false);
@@ -45,14 +53,21 @@ export default function SettingsScreen() {
       setMonthlyIncome(currentUser.monthly_income.toString());
       setAge(currentUser.age.toString());
       setShgActive(currentUser.is_shg_member);
-      if (currentUser.primary_language) {
-        setLanguage(currentUser.primary_language as 'en' | 'hi' | 'te');
+      if (currentUser.primary_language && ['en', 'hi', 'te'].includes(currentUser.primary_language)) {
+        const lang = currentUser.primary_language as 'en' | 'hi' | 'te';
+        setLanguage(lang);
+        setAppLanguage(lang);
       }
       if (currentUser.state) {
         setOperatingState(currentUser.state);
       }
     }
-  }, [currentUser, setOperatingState]);
+  }, [currentUser, setOperatingState, setAppLanguage]);
+
+  const handleSelectLanguage = (selectedLang: 'en' | 'hi' | 'te') => {
+    setLanguage(selectedLang);
+    setAppLanguage(selectedLang);
+  };
 
 
 
@@ -285,7 +300,7 @@ export default function SettingsScreen() {
           <View className="flex-row gap-2">
             {/* English */}
             <TouchableOpacity
-              onPress={() => setLanguage('en')}
+              onPress={() => handleSelectLanguage('en')}
               className={`flex-1 items-center justify-center p-2.5 rounded-xl ${
                 language === 'en' ? 'bg-primary shadow-sm' : 'bg-surface-container-lowest shadow-sm'
               } h-20 active:scale-95`}
@@ -305,7 +320,7 @@ export default function SettingsScreen() {
 
             {/* Hindi */}
             <TouchableOpacity
-              onPress={() => setLanguage('hi')}
+              onPress={() => handleSelectLanguage('hi')}
               className={`flex-1 items-center justify-center p-2.5 rounded-xl ${
                 language === 'hi' ? 'bg-primary shadow-sm' : 'bg-surface-container-lowest shadow-sm'
               } h-20 active:scale-95`}
@@ -325,7 +340,7 @@ export default function SettingsScreen() {
 
             {/* Telugu (Selected) */}
             <TouchableOpacity
-              onPress={() => setLanguage('te')}
+              onPress={() => handleSelectLanguage('te')}
               className={`flex-1 items-center justify-center p-2.5 rounded-xl ${
                 language === 'te' ? 'bg-primary shadow-sm' : 'bg-surface-container-lowest shadow-sm'
               } h-20 active:scale-95`}

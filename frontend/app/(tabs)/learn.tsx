@@ -137,14 +137,16 @@ export default function LearnScreen() {
   }, [selectedTierFilter]);
 
   const labels = {
+    badgeMap: activeLang === 'te' ? '50-దశల ప్రయాణ పటం' : activeLang === 'hi' ? '50-स्तरीय यात्रा मैप' : '50-Level Journey Map',
     title: activeLang === 'te' ? 'ఆర్థిక అభ్యాస ప్రయాణం' : activeLang === 'hi' ? 'वित्तीय शिक्षा यात्रा' : 'Financial Learning Journey',
     subtitle: activeLang === 'te' ? 'దశలవారీగా నేర్చుకోండి. ప్రతి పాఠంతో స్వయం సమృద్ధి సాధించండి.' : activeLang === 'hi' ? 'कदम दर कदम सीखें और हर पाठ के साथ आत्मविश्वास बढ़ाएं।' : 'Learn step by step. Build confidence with every lesson.',
     progressText: (curr: number, total: number) =>
       activeLang === 'te' ? `లెవెల్ ${curr} / ${total} అన్‌లాక్ అయింది` : activeLang === 'hi' ? `स्तर ${curr} / ${total} खुला है` : `Level ${curr} of ${total} Unlocked`,
     completedStat: (done: number, total: number) =>
       activeLang === 'te' ? `${done} / ${total} లెవెల్స్ పూర్తి` : activeLang === 'hi' ? `${done} / ${total} स्तर पूरे` : `${done} of ${total} Completed`,
-    allTiers: activeLang === 'te' ? 'అన్ని దశలు (All Tiers)' : activeLang === 'hi' ? 'सभी स्तर (All Tiers)' : 'All 15 Levels',
+    allTiers: activeLang === 'te' ? 'అన్ని 50 లెవెల్స్ (All Tiers)' : activeLang === 'hi' ? 'सभी 50 स्तर (All Tiers)' : 'All 50 Levels',
     voiceBadge: activeLang === 'te' ? 'వాయిస్ & స్క్రిప్ట్' : activeLang === 'hi' ? 'ऑडियो और भाषा' : 'Voice & Text',
+    askSakhi: activeLang === 'te' ? 'సఖిని సందేహం అడగండి' : activeLang === 'hi' ? 'सखी से सवाल पूछें' : 'Ask Sakhi a Doubt',
   };
 
   return (
@@ -175,7 +177,7 @@ export default function LearnScreen() {
               <View className="flex-row items-center bg-primary-fixed px-2.5 py-0.5 rounded-full">
                 <MaterialIcons name="explore" size={13} color="#341100" />
                 <Text className="text-[10px] font-bold text-primary-on-fixed ml-1 uppercase tracking-wider">
-                  15-Level Journey Map
+                  {labels.badgeMap}
                 </Text>
               </View>
 
@@ -304,7 +306,7 @@ export default function LearnScreen() {
         >
           <MaterialIcons name="auto-awesome" size={20} color="#ffffff" />
           <Text className="text-on-primary font-headline-sm text-[14px] font-bold ml-1.5">
-            Ask Sakhi a Doubt
+            {labels.askSakhi}
           </Text>
         </TouchableOpacity>
       </View>

@@ -47,11 +47,16 @@ export function LevelJourneyMap({
     }
   };
 
-  // Milestone checkpoints after specific tier completion
+  // Milestone checkpoints after specific tier completion across all 8 tiers
   const tierMilestones: { [levelNum: number]: string } = {
-    5: activeLang === 'te' ? 'మైలురాయి 1: నగదు నిర్వహణ విజేత 🏆' : activeLang === 'hi' ? 'पड़ाव 1: आय-व्यय के विजेता 🏆' : 'Tier 1 Milestone: Cashflow Master 🏆',
-    10: activeLang === 'te' ? 'మైలురాయి 2: కుటుంబ రక్షణ కవచం సిద్ధం 🛡️' : activeLang === 'hi' ? 'पड़ाव 2: सुरक्षा कवच तैयार 🛡️' : 'Tier 2 Milestone: Safety Shield Activated 🛡️',
-    15: activeLang === 'te' ? 'మహా మైలురాయి: సఖి ఆర్థిక పట్టభద్రురాలు 🎓' : activeLang === 'hi' ? 'महा पड़ाव: सखी वित्तीय आत्मनिर्भरता ग्रेजुएट 🎓' : 'Grand Milestone: Sakhi Financial Graduate 🎓',
+    6: activeLang === 'te' ? 'మైలురాయి 1: నగదు & బడ్జెట్ విజేత 🏆' : activeLang === 'hi' ? 'पड़ाव 1: आय-व्यय और बजट विजेता 🏆' : 'Tier 1 Milestone: Cashflow Master 🏆',
+    13: activeLang === 'te' ? 'మైలురాయి 2: 3-నెలల అత్యవసర రక్షణ కవచం సిద్ధం 🛡️' : activeLang === 'hi' ? 'पड़ाव 2: 3 महीने का सुरक्षा कवच तैयार 🛡️' : 'Tier 2 Milestone: Safety Shield Activated 🛡️',
+    19: activeLang === 'te' ? 'మైలురాయి 3: డిజిటల్ బ్యాంకింగ్ & యూపీఐ రక్షకురాలు 📱' : activeLang === 'hi' ? 'पड़ाव 3: डिजिटल बैंकिंग और सुरक्षित यूपीआई चैंपियन 📱' : 'Tier 3 Milestone: Digital Banking & UPI Champion 📱',
+    26: activeLang === 'te' ? 'మైలురాయి 4: అప్పుల విముక్తి & సంఘం రుణ విజేత 🤝' : activeLang === 'hi' ? 'पड़ाव 4: कर्ज मुक्ति और समूह ऋण विजेता 🤝' : 'Tier 4 Milestone: Debt-Free & Smart Borrower 🤝',
+    33: activeLang === 'te' ? 'మైలురాయి 5: సంపద సృష్టికర్త & చక్రవడ్డీ సాధకురాలు 📈' : activeLang === 'hi' ? 'पड़ाव 5: धन संचय और चक्रवृद्धि निवेशक 📈' : 'Tier 5 Milestone: Wealth Builder & Investor 📈',
+    39: activeLang === 'te' ? 'మైలురాయి 6: కుటుంబ సమగ్ర బీమా రక్షణ 🏛️' : activeLang === 'hi' ? 'पड़ाव 6: संपूर्ण पारिवारिक बीमा सुरक्षा 🏛️' : 'Tier 6 Milestone: Family Insured & Protected 🏛️',
+    45: activeLang === 'te' ? 'మైలురాయి 7: లఖ్‌పతి దీదీ వ్యాపార నాయకురాలు 🌟' : activeLang === 'hi' ? 'पड़ाव 7: लखपति दीदी महिला उद्यमी लीडर 🌟' : 'Tier 7 Milestone: Lakhpati Didi Enterprise Leader 🌟',
+    50: activeLang === 'te' ? 'మహా మైలురాయి: సఖి సంపూర్ణ ఆర్థిక స్వావలంబన సాధకురాలు 🎓' : activeLang === 'hi' ? 'महा पड़ाव: सखी प्रमाणित वित्तीय आत्मनिर्भरता लीडर 🎓' : 'Grand Milestone: Sakhi Certified Financial Leader 🎓',
   };
 
   return (
@@ -83,7 +88,13 @@ export function LevelJourneyMap({
                 onPress={() => onSelectLevel(level)}
                 disabled={isLocked}
                 activeOpacity={0.85}
-                accessibilityLabel={`Level ${level.levelNumber}: ${title}`}
+                accessibilityLabel={
+                  activeLang === 'te'
+                    ? `లెవెల్ ${level.levelNumber}: ${title}`
+                    : activeLang === 'hi'
+                    ? `स्तर ${level.levelNumber}: ${title}`
+                    : `Level ${level.levelNumber}: ${title}`
+                }
                 style={[
                   styles.nodeButton,
                   isCompleted && styles.nodeCompleted,
