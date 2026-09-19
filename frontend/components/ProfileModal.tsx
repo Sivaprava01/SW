@@ -54,8 +54,8 @@ export function ProfileModal({ visible, onClose }: ProfileModalProps) {
   const district = currentUser?.district ? `, ${currentUser.district}` : '';
   const locality = currentUser?.locality_type === 'urban' ? 'Urban Town' : 'Rural Village';
   const age = currentUser?.age || 28;
-  const isSHG = currentUser?.is_shg_member ?? true;
-  const shgName = currentUser?.shg_name || 'SERP TG-48209';
+  const isSHG = Boolean(currentUser?.is_shg_member);
+  const shgName = currentUser?.shg_name ? currentUser.shg_name.trim() : '';
   const income = currentUser?.monthly_income ?? 0;
 
   return (
@@ -99,12 +99,14 @@ export function ProfileModal({ visible, onClose }: ProfileModalProps) {
               {occupation} • {locality}{district}, {state}
             </Text>
 
-            <View className="mt-2 flex-row items-center bg-surface-container-low px-3 py-1.5 rounded-full border border-surface-container-highest/60">
-              <MaterialIcons name="diversity-3" size={16} color="#9d4300" />
-              <Text className="text-xs font-bold text-primary ml-1.5">
-                {isSHG ? `Active SHG Member (${shgName})` : 'Independent Member'}
-              </Text>
-            </View>
+            {isSHG && (
+              <View className="mt-2 flex-row items-center bg-surface-container-low px-3 py-1.5 rounded-full border border-surface-container-highest/60">
+                <MaterialIcons name="diversity-3" size={16} color="#9d4300" />
+                <Text className="text-xs font-bold text-primary ml-1.5">
+                  {shgName ? `Active SHG Member (${shgName})` : 'Active SHG Member'}
+                </Text>
+              </View>
+            )}
           </View>
 
           {/* Card 1: Declared Monthly Income */}

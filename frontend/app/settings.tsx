@@ -38,11 +38,10 @@ export default function SettingsScreen() {
     currentUser?.monthly_income != null ? currentUser.monthly_income.toString() : '0'
   );
   const [age, setAge] = useState(currentUser?.age ? currentUser.age.toString() : '28');
-  const [shgActive, setShgActive] = useState(currentUser?.is_shg_member ?? true);
+  const [shgActive, setShgActive] = useState(Boolean(currentUser?.is_shg_member));
   const [language, setLanguage] = useState<'en' | 'hi' | 'te'>(
     (currentUser?.primary_language as 'en' | 'hi' | 'te') || appLanguage || 'te'
   );
-  const [appearance, setAppearance] = useState<'light' | 'dark'>('light');
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
@@ -52,7 +51,7 @@ export default function SettingsScreen() {
       setFullName(currentUser.name);
       setMonthlyIncome(currentUser.monthly_income.toString());
       setAge(currentUser.age.toString());
-      setShgActive(currentUser.is_shg_member);
+      setShgActive(Boolean(currentUser.is_shg_member));
       if (currentUser.primary_language && ['en', 'hi', 'te'].includes(currentUser.primary_language)) {
         const lang = currentUser.primary_language as 'en' | 'hi' | 'te';
         setLanguage(lang);
@@ -152,7 +151,11 @@ export default function SettingsScreen() {
                 <Text className="font-headline-sm text-[18px] font-bold text-on-surface">{fullName}</Text>
                 <MaterialIcons name="verified" size={20} color="#9d4300" />
               </View>
-              <Text className="font-body-sm text-[12px] text-on-surface-variant font-mono">SERP TG-48209 · Active Member</Text>
+              {shgActive && currentUser?.shg_name ? (
+                <Text className="font-body-sm text-[12px] text-on-surface-variant font-mono">{currentUser.shg_name} · Active Member</Text>
+              ) : shgActive ? (
+                <Text className="font-body-sm text-[12px] text-on-surface-variant font-mono">SHG · Active Member</Text>
+              ) : null}
             </View>
           </View>
 
@@ -368,32 +371,6 @@ export default function SettingsScreen() {
             <View className="bg-surface-container px-2.5 py-1 rounded-full">
               <Text className="font-label-sm text-[12px] text-primary font-semibold">Normal (Clear)</Text>
             </View>
-          </View>
-
-          {/* Appearance Mode */}
-          <View className="flex-row gap-2">
-            <TouchableOpacity
-              onPress={() => setAppearance('light')}
-              className={`flex-1 flex-row items-center justify-center gap-2 py-2.5 px-3 rounded-lg shadow-sm ${
-                appearance === 'light' ? 'bg-primary' : 'bg-surface-container-lowest'
-              }`}
-            >
-              <Text className="text-[16px]">☀️</Text>
-              <Text className={`font-headline-sm text-[14px] font-bold ${appearance === 'light' ? 'text-on-primary' : 'text-on-surface'}`}>
-                Light Mode
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setAppearance('dark')}
-              className={`flex-1 flex-row items-center justify-center gap-2 py-2.5 px-3 rounded-lg shadow-sm ${
-                appearance === 'dark' ? 'bg-primary' : 'bg-surface-container-lowest'
-              }`}
-            >
-              <Text className="text-[16px]">🌙</Text>
-              <Text className={`font-headline-sm text-[14px] font-bold ${appearance === 'dark' ? 'text-on-primary' : 'text-on-surface'}`}>
-                Dark Mode
-              </Text>
-            </TouchableOpacity>
           </View>
         </View>
 
