@@ -11,6 +11,7 @@ import { AnimatedTutorialPointer } from './AnimatedTutorialPointer';
 import { TutorialTooltip } from './TutorialTooltip';
 import { TutorialCompletionModal } from './TutorialCompletionModal';
 import { TutorialPromptModal } from './TutorialPromptModal';
+import { SwipeableCardTourModal } from '@/components/tour/SwipeableCardTourModal';
 
 export function TutorialOverlay() {
   const {
@@ -18,6 +19,8 @@ export function TutorialOverlay() {
     currentStep,
     activeTargetLayout,
     onTargetAction,
+    isCardTourVisible,
+    closeCardTour,
   } = useTutorial();
 
   const windowDimensions = Dimensions.get('window');
@@ -126,10 +129,16 @@ export function TutorialOverlay() {
         </View>
       )}
 
+      {/* Swipeable Full-Screen Card Onboarding Tour Modal */}
+      <SwipeableCardTourModal
+        visible={isCardTourVisible}
+        onClose={closeCardTour}
+      />
+
       {/* Completion Modal */}
       <TutorialCompletionModal />
 
-      {/* First-Time Welcome Prompt Modal */}
+      {/* Legacy/Optional Prompt Modal */}
       <TutorialPromptModal />
     </>
   );

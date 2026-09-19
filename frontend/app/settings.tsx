@@ -20,7 +20,7 @@ import { TUTORIAL_DEFINITIONS } from '@/constants/tutorialSteps';
 export default function SettingsScreen() {
   const router = useRouter();
   const { currentUser, operatingState, setOperatingState, updateUserPreferences, logoutUser } = useApp();
-  const { startTutorial } = useTutorial();
+  const { openCardTour, startTutorial } = useTutorial();
 
   // State initialized from currentUser
   const [showStatePicker, setShowStatePicker] = useState(false);
@@ -430,7 +430,7 @@ export default function SettingsScreen() {
             onPress={() => {
               router.push('/(tabs)' as any);
               setTimeout(() => {
-                startTutorial('basics');
+                openCardTour();
               }, 250);
             }}
             className="w-full flex-row items-center justify-between p-3 bg-primary-container rounded-lg shadow-sm active:scale-98"

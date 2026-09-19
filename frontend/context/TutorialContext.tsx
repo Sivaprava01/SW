@@ -37,8 +37,11 @@ type TutorialContextType = {
   isLoadingVoice: boolean;
   showCompletionModal: boolean;
   showPromptModal: boolean;
+  isCardTourVisible: boolean;
 
   // Actions
+  openCardTour: () => void;
+  closeCardTour: (completed?: boolean) => void;
   startTutorial: (tutorialId: string, startStepIndex?: number) => void;
   stopTutorial: () => void;
   nextStep: () => void;
@@ -76,6 +79,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
   const [isLoadingVoice, setIsLoadingVoice] = useState<boolean>(false);
   const [showCompletionModal, setShowCompletionModal] = useState<boolean>(false);
   const [showPromptModal, setShowPromptModal] = useState<boolean>(false);
+  const [isCardTourVisible, setIsCardTourVisible] = useState<boolean>(false);
 
   const [seenTutorials, setSeenTutorials] = useState<Set<string>>(new Set());
 
@@ -153,7 +157,6 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
     setIsLoadingVoice(true);
 
     try {
-      // Synthesize complete sentence as ONE coherent utterance (no character-by-character)
       const res = await voiceService.synthesizeSpeech({
         text: textToSpeak,
         language: currentLang,
@@ -161,7 +164,6 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
         audio_format: 'mp3',
       });
 
-      // Guard: If step changed while network synthesis was in flight, discard response immediately
       if (audioRequestTokenRef.current !== currentToken) {
         if (__DEV__) console.log(`[TutorialContext] Discarded stale audio response for step ${currentStep.id}`);
         return;
@@ -196,7 +198,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
     setActiveTargetLayout(null);
   }, [currentStep]);
 
-  // Step change effect: handles routing, layout measurement, and EXACTLY ONE voice trigger
+  // Step change effect: handles routing, layout measurement, and voice trigger
   const currentStepId = currentStep?.id;
   const currentStepRoute = currentStep?.route;
   const currentStepVoiceEnabled = currentStep?.voiceEnabled;
@@ -209,7 +211,6 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
 
     setState('SHOWING_STEP');
 
-    // Route navigation if specified
     if (currentStepRoute) {
       try {
         router.push(currentStepRoute as any);
@@ -218,7 +219,6 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    // Refresh layout and trigger voice once per step
     const measureTimer = setTimeout(() => {
       refreshActiveLayout();
       setState('WAITING_FOR_USER_ACTION');
@@ -309,7 +309,26 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
     });
   }, [userId]);
 
-  // Flow controls
+  // Card Tour Flow Controls
+  const openCardTour = useCallback(() => {
+    stopCurrentStepAudio();
+    setShowPromptModal(false);
+    setShowCompletionModal(false);
+    setActiveTutorial(null);
+    setIsCardTourVisible(true);
+  }, [stopCurrentStepAudio]);
+
+  const closeCardTour = useCallback(
+    (completed: boolean = true) => {
+      setIsCardTourVisible(false);
+      if (completed) {
+        markTutorialSeen('basics');
+      }
+    },
+    [markTutorialSeen]
+  );
+
+  // Spotlight Tutorial Flow controls
   const startTutorial = useCallback(
     (tutorialId: string, startStepIndex: number = 0) => {
       const def = TUTORIAL_DEFINITIONS[tutorialId];
@@ -321,6 +340,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
       stopCurrentStepAudio();
       setShowCompletionModal(false);
       setShowPromptModal(false);
+      setIsCardTourVisible(false);
       lastSpokenStepKeyRef.current = null;
       setActiveTutorial(tutorialId);
       setCurrentStepIndex(startStepIndex);
@@ -398,15 +418,15 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
 
   const dismissPromptModal = useCallback(() => {
     setShowPromptModal(false);
-    // Explicit dismissal persists completion so it never re-prompts this account
     markTutorialSeen('basics');
   }, [markTutorialSeen]);
 
+  // Trigger post-login swipeable card tour on first login for an account
   const triggerFirstTimePrompt = useCallback(async () => {
     if (!userId) return;
     const completed = await tokenStorage.getTourCompleted(userId);
     if (!completed && !seenTutorials.has('basics')) {
-      setShowPromptModal(true);
+      setIsCardTourVisible(true);
     }
   }, [userId, seenTutorials]);
 
@@ -424,7 +444,10 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
         isLoadingVoice,
         showCompletionModal,
         showPromptModal,
+        isCardTourVisible,
 
+        openCardTour,
+        closeCardTour,
         startTutorial,
         stopTutorial,
         nextStep,

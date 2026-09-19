@@ -15,11 +15,18 @@ import { TUTORIAL_DEFINITIONS } from '@/constants/tutorialSteps';
 export default function TourScreen() {
   const router = useRouter();
   const { language } = useApp();
-  const { startTutorial, hasSeenTutorial } = useTutorial();
+  const { openCardTour, startTutorial, hasSeenTutorial } = useTutorial();
 
   const currentLang = language || 'te';
 
   const handleLaunchTutorial = (tutorialId: string) => {
+    if (tutorialId === 'basics') {
+      router.replace('/(tabs)' as any);
+      setTimeout(() => {
+        openCardTour();
+      }, 200);
+      return;
+    }
     // Navigate to tabs first, then launch tutorial
     router.replace('/(tabs)' as any);
     setTimeout(() => {
