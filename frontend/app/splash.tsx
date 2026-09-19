@@ -122,17 +122,14 @@ export default function SplashScreen() {
         {/* Main Hero Card */}
         <View className="items-center text-center">
           {/* Logo */}
-          <View className="relative mb-3.5">
-            <View className="w-28 h-28 rounded-full bg-surface-container-lowest items-center justify-center shadow-md p-1 border border-surface-container-highest/60 overflow-hidden">
+          <View className="mb-4">
+            <View className="w-36 h-36 rounded-3xl bg-surface-container-lowest items-center justify-center shadow-md p-2.5 border border-surface-container-highest/60">
               <Image
                 source={require('@/assets/images/app-logo.png')}
-                style={{ width: 92, height: 92 }}
+                style={{ width: 124, height: 124 }}
                 resizeMode="contain"
                 accessibilityLabel="Sakhi Logo"
               />
-            </View>
-            <View className="absolute -bottom-1 -right-1 bg-primary rounded-full p-1 shadow-xs">
-              <MaterialIcons name="verified" size={16} color="#ffffff" />
             </View>
           </View>
 
