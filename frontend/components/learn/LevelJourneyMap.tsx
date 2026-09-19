@@ -49,14 +49,9 @@ export function LevelJourneyMap({
 
   // Milestone checkpoints after specific tier completion
   const tierMilestones: { [levelNum: number]: string } = {
-    6: 'Tier 1 Milestone: Cashflow Master 🏆',
-    13: 'Tier 2 Milestone: Safety Shield 🛡️',
-    19: 'Tier 3 Milestone: Digital Banking Leader 📱',
-    26: 'Tier 4 Milestone: Debt-Free Champion 🎯',
-    33: 'Tier 5 Milestone: Wealth Builder 📈',
-    39: 'Tier 6 Milestone: Family Shield 🏥',
-    45: 'Tier 7 Milestone: Village Entrepreneur 👩‍💼',
-    50: 'Grand Milestone: Sakhi Certified Financial Leader 🎓',
+    5: activeLang === 'te' ? 'మైలురాయి 1: నగదు నిర్వహణ విజేత 🏆' : activeLang === 'hi' ? 'पड़ाव 1: आय-व्यय के विजेता 🏆' : 'Tier 1 Milestone: Cashflow Master 🏆',
+    10: activeLang === 'te' ? 'మైలురాయి 2: కుటుంబ రక్షణ కవచం సిద్ధం 🛡️' : activeLang === 'hi' ? 'पड़ाव 2: सुरक्षा कवच तैयार 🛡️' : 'Tier 2 Milestone: Safety Shield Activated 🛡️',
+    15: activeLang === 'te' ? 'మహా మైలురాయి: సఖి ఆర్థిక పట్టభద్రురాలు 🎓' : activeLang === 'hi' ? 'महा पड़ाव: सखी वित्तीय आत्मनिर्भरता ग्रेजुएट 🎓' : 'Grand Milestone: Sakhi Financial Graduate 🎓',
   };
 
   return (

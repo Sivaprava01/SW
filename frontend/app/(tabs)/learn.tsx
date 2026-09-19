@@ -143,7 +143,7 @@ export default function LearnScreen() {
       activeLang === 'te' ? `లెవెల్ ${curr} / ${total} అన్‌లాక్ అయింది` : activeLang === 'hi' ? `स्तर ${curr} / ${total} खुला है` : `Level ${curr} of ${total} Unlocked`,
     completedStat: (done: number, total: number) =>
       activeLang === 'te' ? `${done} / ${total} లెవెల్స్ పూర్తి` : activeLang === 'hi' ? `${done} / ${total} स्तर पूरे` : `${done} of ${total} Completed`,
-    allTiers: activeLang === 'te' ? 'అన్ని దశలు (All Tiers)' : activeLang === 'hi' ? 'सभी स्तर (All Tiers)' : 'All 50 Levels',
+    allTiers: activeLang === 'te' ? 'అన్ని దశలు (All Tiers)' : activeLang === 'hi' ? 'सभी स्तर (All Tiers)' : 'All 15 Levels',
     voiceBadge: activeLang === 'te' ? 'వాయిస్ & స్క్రిప్ట్' : activeLang === 'hi' ? 'ऑडियो और भाषा' : 'Voice & Text',
   };
 
@@ -175,7 +175,7 @@ export default function LearnScreen() {
               <View className="flex-row items-center bg-primary-fixed px-2.5 py-0.5 rounded-full">
                 <MaterialIcons name="explore" size={13} color="#341100" />
                 <Text className="text-[10px] font-bold text-primary-on-fixed ml-1 uppercase tracking-wider">
-                  50-Level Journey Map
+                  15-Level Journey Map
                 </Text>
               </View>
 
