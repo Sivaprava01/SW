@@ -17,7 +17,14 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ],
+      "package": "com.sivaprava01.Sakhi"
     },
     "web": {
       "bundler": "metro",
@@ -39,6 +46,14 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "apiUrl": "https://sw-6ihx.onrender.com/api/v1",
+      "router": {},
+      "eas": {
+        "projectId": "c3b5be29-4d52-49fa-8921-c831e4fa1d53"
+      }
+    },
+    "owner": "sivaprava01"
   }
 }
