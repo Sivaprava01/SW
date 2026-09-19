@@ -17,6 +17,7 @@ import {
 import { TUTORIAL_DEFINITIONS } from '@/constants/tutorialSteps';
 import { voiceService } from '@/services/voiceService';
 import { audioPlayer } from '@/services/audioPlayer';
+import { tokenStorage } from '@/services/tokenStorage';
 import { useApp } from '@/context/AppContext';
 
 type TargetRegistryItem = {
@@ -49,7 +50,7 @@ type TutorialContextType = {
   stopCurrentStepAudio: () => void;
   dismissCompletionModal: () => void;
   dismissPromptModal: () => void;
-  triggerFirstTimePrompt: () => void;
+  triggerFirstTimePrompt: () => Promise<void>;
 
   // Target Registry
   registerTarget: (id: string, getLayout: () => Promise<TargetLayout | null>) => void;
@@ -57,13 +58,14 @@ type TutorialContextType = {
   reportTargetLayout: (id: string, layout: TargetLayout) => void;
   refreshActiveLayout: () => Promise<void>;
   hasSeenTutorial: (tutorialId: string) => boolean;
+  resetTourForActiveUser: () => Promise<void>;
 };
 
 const TutorialContext = createContext<TutorialContextType | undefined>(undefined);
 
 export function TutorialProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const { language } = useApp();
+  const { language, userId } = useApp();
 
   const [activeTutorial, setActiveTutorial] = useState<string | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
@@ -79,6 +81,29 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
 
   // Registry of targets currently mounted in the tree
   const targetRegistryRef = useRef<Map<string, TargetRegistryItem>>(new Map());
+
+  // Concurrency & Token Guards for Audio Orchestration
+  const audioRequestTokenRef = useRef<number>(0);
+  const lastSpokenStepKeyRef = useRef<string | null>(null);
+
+  // Load account-specific persistent tour completion when userId changes
+  useEffect(() => {
+    if (!userId) {
+      setSeenTutorials(new Set());
+      return;
+    }
+
+    let isMounted = true;
+    tokenStorage.getTourCompleted(userId).then((completed) => {
+      if (isMounted && completed) {
+        setSeenTutorials((prev) => new Set(prev).add('basics'));
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [userId]);
 
   const activeDefinition: TutorialDefinition | null = activeTutorial
     ? TUTORIAL_DEFINITIONS[activeTutorial] || null
@@ -105,9 +130,12 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, [currentAudioId]);
 
-  // Audio Playback
+  // Audio Playback & Cancellation
   const stopCurrentStepAudio = useCallback(() => {
+    audioRequestTokenRef.current += 1;
     audioPlayer.stop();
+    setIsLoadingVoice(false);
+    setIsPlayingVoice(false);
   }, []);
 
   const playCurrentStepAudio = useCallback(async () => {
@@ -116,20 +144,38 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
     const textToSpeak = currentStep.text[currentLang] || currentStep.text.en;
     if (!textToSpeak) return;
 
+    // Token guard: invalidate any previous pending synthesis requests
+    const currentToken = ++audioRequestTokenRef.current;
+    const stepAudioKey = `${currentStep.id}-${currentLang}`;
+    lastSpokenStepKeyRef.current = stepAudioKey;
+
+    stopCurrentStepAudio();
+    setIsLoadingVoice(true);
+
     try {
-      setIsLoadingVoice(true);
+      // Synthesize complete sentence as ONE coherent utterance (no character-by-character)
       const res = await voiceService.synthesizeSpeech({
         text: textToSpeak,
         language: currentLang,
         speed: 1.0,
         audio_format: 'mp3',
       });
+
+      // Guard: If step changed while network synthesis was in flight, discard response immediately
+      if (audioRequestTokenRef.current !== currentToken) {
+        if (__DEV__) console.log(`[TutorialContext] Discarded stale audio response for step ${currentStep.id}`);
+        return;
+      }
+
+      setIsLoadingVoice(false);
       await audioPlayer.playBase64(res.audio_base64, 'mp3', `tutorial-step-${currentStep.id}`);
     } catch (err) {
-      if (__DEV__) console.warn('[TutorialContext] Audio synthesis error:', err);
-      setIsLoadingVoice(false);
+      if (audioRequestTokenRef.current === currentToken) {
+        setIsLoadingVoice(false);
+        if (__DEV__) console.warn('[TutorialContext] Audio synthesis error:', err);
+      }
     }
-  }, [currentStep, isVoiceEnabled, language]);
+  }, [currentStep, isVoiceEnabled, language, stopCurrentStepAudio]);
 
   // Measure and update active target layout
   const refreshActiveLayout = useCallback(async () => {
@@ -147,49 +193,65 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    // If not found yet, set null temporarily (it will re-register on mount/layout)
     setActiveTargetLayout(null);
   }, [currentStep]);
 
-  // Step change effect: handles routing, measuring layout, playing narration
+  // Step change effect: handles routing, layout measurement, and EXACTLY ONE voice trigger
+  const currentStepId = currentStep?.id;
+  const currentStepRoute = currentStep?.route;
+  const currentStepVoiceEnabled = currentStep?.voiceEnabled;
+
   useEffect(() => {
-    if (!currentStep || state === 'IDLE' || state === 'COMPLETED') {
+    if (!currentStepId || !activeTutorial) {
+      lastSpokenStepKeyRef.current = null;
       return;
     }
 
     setState('SHOWING_STEP');
 
     // Route navigation if specified
-    if (currentStep.route) {
+    if (currentStepRoute) {
       try {
-        router.push(currentStep.route as any);
+        router.push(currentStepRoute as any);
       } catch (err) {
         if (__DEV__) console.warn('[TutorialContext] Navigation error:', err);
       }
     }
 
-    // Refresh layout with small delay to allow screen animation to settle
+    // Refresh layout and trigger voice once per step
     const measureTimer = setTimeout(() => {
       refreshActiveLayout();
       setState('WAITING_FOR_USER_ACTION');
 
-      // Auto play audio narration if enabled
-      if (currentStep.voiceEnabled && isVoiceEnabled) {
-        playCurrentStepAudio();
+      if (currentStepVoiceEnabled && isVoiceEnabled) {
+        const stepAudioKey = `${currentStepId}-${language || 'te'}`;
+        if (lastSpokenStepKeyRef.current !== stepAudioKey) {
+          playCurrentStepAudio();
+        }
       }
-    }, 350);
+    }, 250);
 
     return () => {
       clearTimeout(measureTimer);
       stopCurrentStepAudio();
     };
-  }, [currentStep, isVoiceEnabled, playCurrentStepAudio, refreshActiveLayout, router, state, stopCurrentStepAudio]);
+  }, [
+    currentStepId,
+    currentStepRoute,
+    currentStepVoiceEnabled,
+    activeTutorial,
+    isVoiceEnabled,
+    language,
+    playCurrentStepAudio,
+    refreshActiveLayout,
+    router,
+    stopCurrentStepAudio,
+  ]);
 
   // Target Registry functions
   const registerTarget = useCallback(
     (id: string, getLayout: () => Promise<TargetLayout | null>) => {
       targetRegistryRef.current.set(id, { getLayout });
-      // If the registered target matches current active step, measure it immediately
       if (currentStep && currentStep.targetId === id) {
         getLayout().then((layout) => {
           if (layout) {
@@ -218,6 +280,35 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
     [currentStep]
   );
 
+  // Persistence helpers
+  const markTutorialSeen = useCallback(
+    (tutorialId: string) => {
+      setSeenTutorials((prev) => new Set(prev).add(tutorialId));
+      if (userId && tutorialId === 'basics') {
+        tokenStorage.setTourCompleted(userId, true);
+      }
+    },
+    [userId]
+  );
+
+  const hasSeenTutorial = useCallback(
+    (tutorialId: string) => {
+      return seenTutorials.has(tutorialId);
+    },
+    [seenTutorials]
+  );
+
+  const resetTourForActiveUser = useCallback(async () => {
+    if (userId) {
+      await tokenStorage.resetTourCompleted(userId);
+    }
+    setSeenTutorials((prev) => {
+      const next = new Set(prev);
+      next.delete('basics');
+      return next;
+    });
+  }, [userId]);
+
   // Flow controls
   const startTutorial = useCallback(
     (tutorialId: string, startStepIndex: number = 0) => {
@@ -230,6 +321,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
       stopCurrentStepAudio();
       setShowCompletionModal(false);
       setShowPromptModal(false);
+      lastSpokenStepKeyRef.current = null;
       setActiveTutorial(tutorialId);
       setCurrentStepIndex(startStepIndex);
       setState('SHOWING_STEP');
@@ -239,31 +331,21 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
 
   const stopTutorial = useCallback(() => {
     stopCurrentStepAudio();
+    lastSpokenStepKeyRef.current = null;
     setActiveTutorial(null);
     setCurrentStepIndex(0);
     setState('IDLE');
     setActiveTargetLayout(null);
   }, [stopCurrentStepAudio]);
 
-  const markTutorialSeen = useCallback((tutorialId: string) => {
-    setSeenTutorials((prev) => new Set(prev).add(tutorialId));
-  }, []);
-
-  const hasSeenTutorial = useCallback(
-    (tutorialId: string) => {
-      return seenTutorials.has(tutorialId);
-    },
-    [seenTutorials]
-  );
-
   const nextStep = useCallback(() => {
     stopCurrentStepAudio();
+    lastSpokenStepKeyRef.current = null;
     if (!activeDefinition) return;
 
     if (currentStepIndex < activeDefinition.steps.length - 1) {
       setCurrentStepIndex((prev) => prev + 1);
     } else {
-      // Completed!
       markTutorialSeen(activeDefinition.id);
       setState('COMPLETED');
       setShowCompletionModal(true);
@@ -273,6 +355,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
 
   const prevStep = useCallback(() => {
     stopCurrentStepAudio();
+    lastSpokenStepKeyRef.current = null;
     if (currentStepIndex > 0) {
       setCurrentStepIndex((prev) => prev - 1);
     }
@@ -291,7 +374,6 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
       if (state !== 'WAITING_FOR_USER_ACTION' && state !== 'SHOWING_STEP') return;
       if (currentStep && currentStep.targetId === targetId) {
         setState('ACTION_COMPLETED');
-        // Advance to next step after action
         setTimeout(() => {
           nextStep();
         }, 150);
@@ -316,13 +398,17 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
 
   const dismissPromptModal = useCallback(() => {
     setShowPromptModal(false);
-  }, []);
+    // Explicit dismissal persists completion so it never re-prompts this account
+    markTutorialSeen('basics');
+  }, [markTutorialSeen]);
 
-  const triggerFirstTimePrompt = useCallback(() => {
-    if (!seenTutorials.has('basics')) {
+  const triggerFirstTimePrompt = useCallback(async () => {
+    if (!userId) return;
+    const completed = await tokenStorage.getTourCompleted(userId);
+    if (!completed && !seenTutorials.has('basics')) {
       setShowPromptModal(true);
     }
-  }, [seenTutorials]);
+  }, [userId, seenTutorials]);
 
   return (
     <TutorialContext.Provider
@@ -357,6 +443,7 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
         reportTargetLayout,
         refreshActiveLayout,
         hasSeenTutorial,
+        resetTourForActiveUser,
       }}
     >
       {children}
