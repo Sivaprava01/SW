@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -428,11 +429,13 @@ export function AskSakhiModal({ visible, onClose }: AskSakhiModalProps) {
         {/* Header Section */}
         <View className="px-4 py-3 bg-surface-container-low border-b border-surface-container-highest flex-row items-center justify-between shadow-sm">
           <View className="flex-row items-center flex-1 min-w-0 mr-2">
-            <View className="relative mr-3 flex-shrink-0">
-              <View className="w-11 h-11 rounded-full bg-primary-container/20 items-center justify-center">
-                <View className="w-8 h-8 rounded-full bg-primary-container items-center justify-center shadow-md">
-                  <MaterialIcons name="face-3" size={18} color="#ffffff" />
-                </View>
+            <View className="relative mr-2.5 flex-shrink-0">
+              <View className="w-10 h-10 rounded-full bg-surface-container-high items-center justify-center shadow-xs overflow-hidden border border-surface-container-highest/60">
+                <Image
+                  source={require('@/assets/images/app-logo-emblem.png')}
+                  style={{ width: 36, height: 36 }}
+                  resizeMode="contain"
+                />
               </View>
             </View>
             <View className="flex-col min-w-0">
