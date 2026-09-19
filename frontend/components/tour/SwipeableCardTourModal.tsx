@@ -12,6 +12,7 @@ import {
   NativeScrollEvent,
   ViewToken,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -289,8 +290,12 @@ export function SwipeableCardTourModal({ visible, onClose }: SwipeableCardTourMo
         <View className="w-full px-5 py-2 flex-row items-center justify-between z-10">
           {/* Logo & Step Counter */}
           <View className="flex-row items-center gap-2">
-            <View className="w-8 h-8 rounded-xl bg-primary items-center justify-center shadow-xs">
-              <Text className="text-sm font-bold text-white">स</Text>
+            <View className="w-8 h-8 rounded-full bg-surface-container-high items-center justify-center shadow-xs border border-surface-container-highest/60 overflow-hidden">
+              <Image
+                source={require('@/assets/images/app-logo-emblem.png')}
+                style={{ width: 28, height: 28 }}
+                resizeMode="contain"
+              />
             </View>
             <View className="bg-surface-container-high px-2.5 py-1 rounded-full border border-surface-container-highest/60">
               <Text className="text-[11px] font-bold text-primary font-mono">

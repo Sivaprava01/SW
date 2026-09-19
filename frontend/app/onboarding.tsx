@@ -7,6 +7,7 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -181,8 +182,12 @@ export default function OnboardingScreen() {
         {/* Mascot & Greeting Card */}
         <View className="bg-surface-container-lowest rounded-xl p-4 shadow-xs border border-surface-container-highest/60 mb-3.5 flex-col gap-3">
           <View className="flex-row items-center gap-3">
-            <View className="w-12 h-12 rounded-full bg-primary-container items-center justify-center shadow-sm">
-              <Text className="text-2xl font-bold text-on-primary">स</Text>
+            <View className="w-12 h-12 rounded-full bg-surface-container-high items-center justify-center shadow-xs border border-surface-container-highest/60 overflow-hidden">
+              <Image
+                source={require('@/assets/images/app-logo-emblem.png')}
+                style={{ width: 42, height: 42 }}
+                resizeMode="contain"
+              />
             </View>
             <View className="flex-col flex-1 min-w-0">
               <Text className="text-base font-bold text-on-surface">

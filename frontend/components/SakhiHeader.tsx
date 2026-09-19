@@ -51,16 +51,23 @@ export function SakhiHeader({
       }`}>
       <View className="flex-row items-center flex-1 min-w-0 mr-2">
         {logoOnly ? (
-          <Image
-            source={require('@/assets/images/app-logo.png')}
-            style={{ width: 44, height: 44 }}
-            resizeMode="contain"
-          />
+          <View className="flex-row items-center gap-2">
+            <Image
+              source={require('@/assets/images/app-logo-emblem.png')}
+              style={{ width: 36, height: 36 }}
+              resizeMode="contain"
+            />
+            <Text className="text-xl font-bold text-[#103b2a] tracking-tight">Sakhi</Text>
+          </View>
         ) : (
           <>
             {!hideAvatar && (
-              <View className="w-10 h-10 rounded-full bg-primary-container items-center justify-center shadow-sm flex-shrink-0 mr-2.5">
-                <Text className="text-on-primary font-bold text-lg">{displayInitial}</Text>
+              <View className="w-10 h-10 rounded-full bg-surface-container-high items-center justify-center shadow-xs flex-shrink-0 mr-2.5 overflow-hidden border border-surface-container-highest/60">
+                <Image
+                  source={require('@/assets/images/app-logo-emblem.png')}
+                  style={{ width: 36, height: 36 }}
+                  resizeMode="contain"
+                />
               </View>
             )}
             <View className="flex-col flex-1 min-w-0">

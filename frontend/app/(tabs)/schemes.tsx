@@ -18,6 +18,7 @@ import { voiceService } from '@/services/voiceService';
 import { audioPlayer } from '@/services/audioPlayer';
 import { SchemeMatchResponse, SchemeResponse } from '@/types/scheme';
 import { SchemeDetailModal } from '@/components/SchemeDetailModal';
+import { SchemeCard } from '@/components/SchemeCard';
 import { EligibilityMatcherModal } from '@/components/EligibilityMatcherModal';
 
 export default function SchemesScreen() {
@@ -313,119 +314,18 @@ export default function SchemesScreen() {
           )}
 
           {/* Scheme Cards Feed */}
-          <View className="space-y-4">
-            {filteredSchemes.map((scheme) => {
-              const isPlaying = playingAudioId === scheme.id;
-              const matchScore =
-                'match_score' in scheme && typeof (scheme as SchemeMatchResponse).match_score === 'number'
-                  ? Math.round((scheme as SchemeMatchResponse).match_score)
-                  : 100;
-
-              const matchReason =
-                'eligibility_reasons' in scheme && (scheme as SchemeMatchResponse).eligibility_reasons.length > 0
-                  ? (scheme as SchemeMatchResponse).eligibility_reasons[0]
-                  : scheme.target_beneficiaries;
-
-              return (
-                <View
-                  key={scheme.id}
-                  className="bg-white rounded-2xl p-4 border border-[#f1e0cc] shadow-sm mb-3"
-                >
-                  {/* Top Badge & Match */}
-                  <View className="flex-row items-center justify-between mb-2">
-                    <View className="px-2 py-0.5 rounded-full bg-[#f6e6d2]">
-                      <Text className="text-xs font-semibold text-[#584237]">
-                        {scheme.jurisdiction || 'Central'} • {scheme.category}
-                      </Text>
-                    </View>
-                    <View className="flex-row items-center px-2 py-0.5 rounded-full bg-[#ffdbca]">
-                      <MaterialIcons name="stars" size={13} color="#9d4300" />
-                      <Text className="text-xs font-bold text-[#9d4300] ml-1">
-                        {matchScore}% Match
-                      </Text>
-                    </View>
-                  </View>
-
-                  <Text className="text-lg font-bold text-[#221a0e] mb-1">
-                    {scheme.name}
-                  </Text>
-
-                  {/* Highlight Strip */}
-                  <View className="bg-[#fff1e3] p-2.5 rounded-xl flex-row items-center justify-between mb-2.5">
-                    <Text className="text-xs font-bold text-[#9d4300]">
-                      {scheme.benefit_amount_display}
-                    </Text>
-                    <View className="flex-row gap-1">
-                      <Text className="text-[11px] bg-white px-2 py-0.5 rounded text-[#584237]">
-                        {scheme.cost_or_premium}
-                      </Text>
-                    </View>
-                  </View>
-
-                  {/* Benefit */}
-                  <Text className="text-xs text-[#584237] leading-relaxed mb-3">
-                    <Text className="font-bold text-[#221a0e]">Benefit: </Text>
-                    {scheme.what_it_provides || scheme.description}
-                  </Text>
-
-                  {/* Why You Match */}
-                  <View className="bg-[#fcebd7] p-2.5 rounded-xl flex-row items-start mb-3">
-                    <MaterialIcons
-                      name="check-circle"
-                      size={16}
-                      color="#9d4300"
-                      style={{ marginTop: 2, marginRight: 6 }}
-                    />
-                    <Text className="text-xs text-[#584237] flex-1 leading-relaxed">
-                      <Text className="font-bold text-[#9d4300]">Why You Match: </Text>
-                      {matchReason}
-                    </Text>
-                  </View>
-
-                  {/* Action Buttons */}
-                  <View className="flex-row items-center justify-between pt-1 border-t border-[#f1e0cc]">
-                    <TouchableOpacity
-                      onPress={() => toggleAudio(scheme)}
-                      disabled={loadingAudioId === scheme.id}
-                      className="flex-row items-center py-1.5"
-                    >
-                      {loadingAudioId === scheme.id ? (
-                        <ActivityIndicator size="small" color="#9d4300" style={{ marginRight: 4 }} />
-                      ) : (
-                        <MaterialIcons
-                          name={isPlaying ? 'pause-circle' : 'volume-up'}
-                          size={18}
-                          color={isPlaying ? '#b3291b' : '#9d4300'}
-                        />
-                      )}
-                      <Text
-                        className={`text-xs font-bold ml-1 ${
-                          isPlaying ? 'text-[#b3291b]' : 'text-[#9d4300]'
-                        }`}
-                      >
-                        {isPlaying
-                          ? 'వింటున్నారు...'
-                          : language === 'te'
-                          ? 'తెలుగులో వినండి'
-                          : language === 'hi'
-                          ? 'हिंदी में सुनें'
-                          : 'Listen in English'}
-                      </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      onPress={() => handleOpenDetail(scheme)}
-                      className="px-3 py-1.5 rounded-lg bg-[#f6e6d2] flex-row items-center"
-                    >
-                      <Text className="text-xs font-bold text-[#221a0e] mr-1">
-                        Details & Source
-                      </Text>
-                      <MaterialIcons name="open-in-new" size={14} color="#221a0e" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              );
-            })}
+          <View className="flex-col gap-3.5 mb-4">
+            {filteredSchemes.map((scheme) => (
+              <SchemeCard
+                key={scheme.id}
+                scheme={scheme}
+                isPlayingAudio={playingAudioId === scheme.id}
+                isLoadingAudio={loadingAudioId === scheme.id}
+                onToggleAudio={toggleAudio}
+                onOpenDetail={handleOpenDetail}
+                language={language}
+              />
+            ))}
           </View>
         </View>
       </ScrollView>

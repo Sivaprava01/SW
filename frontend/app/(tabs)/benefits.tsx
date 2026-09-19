@@ -14,6 +14,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { SakhiHeader } from '@/components/SakhiHeader';
 import { SchemeDetailModal } from '@/components/SchemeDetailModal';
+import { SchemeCard } from '@/components/SchemeCard';
 import { EligibilityMatcherModal } from '@/components/EligibilityMatcherModal';
 import { AskSakhiModal } from '@/components/AskSakhiModal';
 import { ProfileModal } from '@/components/ProfileModal';
@@ -310,93 +311,18 @@ export default function BenefitsScreen() {
           )}
 
           {/* Schemes Feed */}
-          <View className="flex-col gap-3 mb-4">
+          <View className="flex-col gap-3.5 mb-4">
             {filteredSchemes.map((scheme, idx) => {
-              const matchScore =
-                'match_score' in scheme && typeof (scheme as SchemeMatchResponse).match_score === 'number'
-                  ? `${Math.round((scheme as SchemeMatchResponse).match_score)}% Match`
-                  : 'Verified';
-
-              const tags: string[] = [
-                scheme.category,
-                scheme.jurisdiction,
-                scheme.requires_shg ? 'SHG Livelihood' : 'Central Program',
-              ].filter(Boolean);
-
               const cardContent = (
-                <View
+                <SchemeCard
                   key={scheme.id}
-                  className="rounded-xl bg-surface-container-lowest p-3.5 shadow-xs border border-surface-container-highest/60 flex-col gap-2.5">
-                  <View className="flex-row items-start justify-between">
-                    <View className="flex-col flex-1 mr-2">
-                      <View className="flex-row items-center gap-1.5 mb-1 flex-wrap">
-                        {tags.slice(0, 2).map((t, idx) => (
-                          <View key={idx} className="bg-surface-container-high px-2 py-0.5 rounded-full">
-                            <Text className="text-[10px] text-on-surface-variant font-medium uppercase">{t}</Text>
-                          </View>
-                        ))}
-                      </View>
-                      <Text className="text-sm font-bold text-on-surface">{scheme.name}</Text>
-                      {scheme.short_name && scheme.short_name !== scheme.name && (
-                        <Text className="text-[11px] text-on-surface-variant">{scheme.short_name}</Text>
-                      )}
-                    </View>
-                    <View className="bg-primary-fixed px-2.5 py-1 rounded-full flex-row items-center">
-                      <MaterialIcons name="stars" size={13} color="#9d4300" />
-                      <Text className="text-[10px] font-bold text-primary-on-fixed ml-1">{matchScore}</Text>
-                    </View>
-                  </View>
-
-                  {/* Benefit Banner */}
-                  <View className="bg-surface-container-low p-2.5 rounded-lg flex-row items-center justify-between border border-surface-container-highest/40">
-                    <View className="flex-row items-center flex-1 mr-2">
-                      <MaterialIcons name="currency-rupee" size={15} color="#9d4300" />
-                      <Text className="text-xs font-bold text-on-surface ml-1 truncate">
-                        {scheme.benefit_amount_display}
-                      </Text>
-                    </View>
-                    <Text className="text-[11px] text-on-surface-variant font-medium">
-                      {scheme.cost_or_premium}
-                    </Text>
-                  </View>
-
-                  {/* Action Buttons */}
-                  <View className="flex-row items-center justify-between pt-1 border-t border-surface-container-highest/40">
-                    <TouchableOpacity
-                      onPress={() => toggleAudio(scheme)}
-                      disabled={loadingAudioId === scheme.id}
-                      className="flex-row items-center active:scale-95">
-                      {loadingAudioId === scheme.id ? (
-                        <ActivityIndicator size="small" color="#9d4300" style={{ marginRight: 4 }} />
-                      ) : (
-                        <MaterialIcons
-                          name={playingAudioId === scheme.id ? 'pause-circle' : 'volume-up'}
-                          size={16}
-                          color={playingAudioId === scheme.id ? '#b3291b' : '#9d4300'}
-                        />
-                      )}
-                      <Text
-                        className={`text-xs font-bold ml-1 ${
-                          playingAudioId === scheme.id ? 'text-secondary' : 'text-primary'
-                        }`}>
-                        {playingAudioId === scheme.id
-                          ? 'వింటున్నారు...'
-                          : language === 'te'
-                          ? 'తెలుగులో వినండి'
-                          : language === 'hi'
-                          ? 'हिंदी में सुनें'
-                          : 'Listen in English'}
-                      </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      onPress={() => handleOpenDetail(scheme)}
-                      className="h-8 px-3 rounded-lg bg-surface-container-high flex-row items-center active:scale-95">
-                      <Text className="text-xs font-bold text-on-surface mr-1">Details & Source</Text>
-                      <MaterialIcons name="open-in-new" size={14} color="#584237" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
+                  scheme={scheme}
+                  isPlayingAudio={playingAudioId === scheme.id}
+                  isLoadingAudio={loadingAudioId === scheme.id}
+                  onToggleAudio={toggleAudio}
+                  onOpenDetail={handleOpenDetail}
+                  language={language}
+                />
               );
 
               if (idx === 0) {
@@ -404,8 +330,7 @@ export default function BenefitsScreen() {
                   <TutorialTarget
                     key={scheme.id}
                     id="schemes-first-card"
-                    onTargetPress={() => handleOpenDetail(scheme)}
-                  >
+                    onTargetPress={() => handleOpenDetail(scheme)}>
                     {cardContent}
                   </TutorialTarget>
                 );

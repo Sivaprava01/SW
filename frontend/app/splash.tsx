@@ -79,12 +79,15 @@ export default function SplashScreen() {
     <SafeAreaView className="flex-1 bg-surface justify-between px-4 py-3" edges={['top', 'bottom']}>
       {/* Top Bar */}
       <View className="flex-row items-center justify-between">
-        <Image
-          source={require('@/assets/images/app-logo.png')}
-          style={{ width: 36, height: 36 }}
-          resizeMode="contain"
-          accessibilityLabel="Sakhi Logo"
-        />
+        <View className="flex-row items-center gap-2">
+          <Image
+            source={require('@/assets/images/app-logo-emblem.png')}
+            style={{ width: 36, height: 36 }}
+            resizeMode="contain"
+            accessibilityLabel="Sakhi Logo"
+          />
+          <Text className="text-lg font-bold text-[#103b2a]">Sakhi</Text>
+        </View>
 
         {/* Language Switcher */}
         <View className="flex-row items-center bg-surface-container-low p-0.5 rounded-lg border border-surface-container-highest/60">
@@ -120,10 +123,10 @@ export default function SplashScreen() {
         <View className="items-center text-center">
           {/* Logo */}
           <View className="relative mb-3.5">
-            <View className="w-24 h-24 rounded-2xl bg-surface-container-lowest items-center justify-center shadow-md p-2 border border-surface-container-highest/60">
+            <View className="w-28 h-28 rounded-full bg-surface-container-lowest items-center justify-center shadow-md p-1 border border-surface-container-highest/60 overflow-hidden">
               <Image
                 source={require('@/assets/images/app-logo.png')}
-                style={{ width: 72, height: 72 }}
+                style={{ width: 92, height: 92 }}
                 resizeMode="contain"
                 accessibilityLabel="Sakhi Logo"
               />

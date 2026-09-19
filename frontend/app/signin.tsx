@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -134,8 +135,12 @@ export default function SignInScreen() {
       <ScrollView className="flex-1 px-4 py-4" contentContainerStyle={{ paddingBottom: 40 }} keyboardShouldPersistTaps="handled">
         {/* Mascot & Greeting */}
         <View className="bg-surface-container-lowest rounded-2xl p-4 shadow-xs border border-surface-container-highest/60 mb-5 flex-row items-center gap-3.5">
-          <View className="w-14 h-14 rounded-2xl bg-primary-container items-center justify-center shadow-sm">
-            <Text className="text-2xl font-bold text-on-primary">स</Text>
+          <View className="w-14 h-14 rounded-full bg-surface-container-high items-center justify-center shadow-xs border border-surface-container-highest/60 overflow-hidden">
+            <Image
+              source={require('@/assets/images/app-logo-emblem.png')}
+              style={{ width: 48, height: 48 }}
+              resizeMode="contain"
+            />
           </View>
           <View className="flex-1 min-w-0">
             <Text className="text-lg font-bold text-on-surface">
