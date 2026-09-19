@@ -128,11 +128,25 @@ class ApiClient {
       if (!response.ok) {
         let errorMessage = `HTTP Error ${response.status}`;
         if (data && typeof data === 'object') {
-          if (typeof data.detail === 'string') {
+          if (data.error && typeof data.error === 'object') {
+            if (typeof data.error.message === 'string') {
+              errorMessage = data.error.message;
+            }
+            if (Array.isArray(data.error.details) && data.error.details.length > 0) {
+              const fieldErrors = data.error.details
+                .map((d: any) => (d.loc ? `${d.loc[d.loc.length - 1]}: ${d.msg}` : d.msg || JSON.stringify(d)))
+                .join(', ');
+              if (fieldErrors) {
+                errorMessage = `${errorMessage} (${fieldErrors})`;
+              }
+            }
+          } else if (typeof data.detail === 'string') {
             errorMessage = data.detail;
           } else if (Array.isArray(data.detail)) {
-            errorMessage = data.detail.map((d: any) => d.msg || JSON.stringify(d)).join(', ');
-          } else if (data.message) {
+            errorMessage = data.detail
+              .map((d: any) => (d.loc ? `${d.loc[d.loc.length - 1]}: ${d.msg}` : d.msg || JSON.stringify(d)))
+              .join(', ');
+          } else if (typeof data.message === 'string') {
             errorMessage = data.message;
           }
         }

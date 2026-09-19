@@ -25,7 +25,10 @@ export default function SignInScreen() {
   const [authError, setAuthError] = useState<string | null>(null);
 
   const handleSignIn = async () => {
-    const cleanMobile = mobileNumber.trim();
+    let cleanMobile = mobileNumber.replace(/[^0-9]/g, '');
+    if (cleanMobile.startsWith('91') && cleanMobile.length === 12) {
+      cleanMobile = cleanMobile.substring(2);
+    }
     const cleanPassword = password.trim();
 
     if (!cleanMobile) {
@@ -77,13 +80,15 @@ export default function SignInScreen() {
         throw new Error('Authentication succeeded but user profile was not returned.');
       }
     } catch (err: any) {
-      const genericError =
+      const is401 = err?.status === 401 || (typeof err?.message === 'string' && err.message.toLowerCase().includes('invalid mobile'));
+      const invalidCredentialsMsg =
         language === 'te'
           ? 'చెల్లని మొబైల్ నంబర్ లేదా పాస్‌వర్డ్. దయచేసి మళ్లీ ప్రయత్నించండి.'
           : language === 'hi'
           ? 'अमान्य मोबाइल नंबर या पासवर्ड। कृपया पुनः प्रयास करें।'
           : 'Invalid mobile number or password. Please try again.';
-      setAuthError(err?.message && !err.message.includes('401') ? err.message : genericError);
+
+      setAuthError(is401 ? invalidCredentialsMsg : err?.message || invalidCredentialsMsg);
     } finally {
       setIsSubmitting(false);
     }
