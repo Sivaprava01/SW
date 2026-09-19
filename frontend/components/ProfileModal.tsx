@@ -46,8 +46,8 @@ export function ProfileModal({ visible, onClose }: ProfileModalProps) {
     );
   };
 
-  const name = currentUser?.name || 'Lakshmi Devi';
-  const initial = name ? name.trim().charAt(0).toUpperCase() : 'L';
+  const name = currentUser?.name || 'Member';
+  const initial = name ? name.trim().charAt(0).toUpperCase() : 'M';
   const occupation = currentUser?.occupation || 'Tailoring & Micro-Retail';
   const state = currentUser?.state || operatingState;
   const district = currentUser?.district ? `, ${currentUser.district}` : '';

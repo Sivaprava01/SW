@@ -85,13 +85,3 @@ def init_db() -> None:
         except Exception as e:
             logger.warning(f"Database column migration note: {e}")
 
-        # 3. Ensure Lakshmi demo user has password hash set if null
-        try:
-            lakshmi_hash = hash_password("lakshmi123")
-            conn.execute(
-                text("UPDATE users SET hashed_password = :pwd_hash WHERE phone_number = '9876543210' AND (hashed_password IS NULL OR hashed_password = '')"),
-                {"pwd_hash": lakshmi_hash}
-            )
-        except Exception as e:
-            logger.warning(f"Demo user password migration note: {e}")
-

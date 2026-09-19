@@ -25,7 +25,7 @@ export default function SettingsScreen() {
   // State initialized from currentUser
   const [showStatePicker, setShowStatePicker] = useState(false);
   const [tintTheme, setTintTheme] = useState<'primary' | 'secondary' | 'tertiary' | 'primary-container'>('primary');
-  const [fullName, setFullName] = useState(currentUser?.name || 'Lakshmi Devi');
+  const [fullName, setFullName] = useState(currentUser?.name || 'Member');
   const [monthlyIncome, setMonthlyIncome] = useState(
     currentUser?.monthly_income ? currentUser.monthly_income.toString() : '18500'
   );
@@ -73,7 +73,7 @@ export default function SettingsScreen() {
       const parsedIncome = parseFloat(monthlyIncome.replace(/,/g, '')) || 18500;
       const parsedAge = parseInt(age, 10) || 28;
       await updateUserPreferences({
-        name: fullName.trim() || 'Lakshmi Devi',
+        name: fullName.trim() || 'Member',
         monthly_income: parsedIncome,
         age: parsedAge,
         is_shg_member: shgActive,

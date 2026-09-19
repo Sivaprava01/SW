@@ -171,7 +171,7 @@ export default function SchemesScreen() {
     setDetailVisible(true);
   };
 
-  const userName = currentUser?.name || 'Lakshmi';
+  const userName = currentUser?.name || 'Member';
   const userAge = currentUser?.age || 28;
   const userState = currentUser?.state || 'Telangana';
 

@@ -125,7 +125,7 @@ export function AskSakhiModal({ visible, onClose }: AskSakhiModalProps) {
           id: 'welcome-en',
           sender: 'sakhi',
           time: timeStr,
-          text: `Namaste ${currentUser?.name || 'Lakshmi'}! I am your Sakhi companion. I can help you analyze your surplus, plan debt payoff, and find government schemes.`,
+          text: `Namaste ${currentUser?.name || 'Sister'}! I am your Sakhi companion. I can help you analyze your surplus, plan debt payoff, and find government schemes.`,
           audioLabel: 'Listen in English',
           suggestedFollowups: [
             'What is my monthly surplus?',
@@ -647,7 +647,7 @@ export function AskSakhiModal({ visible, onClose }: AskSakhiModalProps) {
                       <Text className="text-[10px] text-on-surface-variant mr-1.5">{item.time}</Text>
                     )}
                     <Text className="text-xs font-bold text-on-surface">
-                      {currentUser?.name || 'Lakshmi'} (You)
+                      {currentUser?.name || 'You'} (You)
                     </Text>
                   </View>
                   <View className="max-w-[85%] bg-primary-container rounded-2xl rounded-tr-xs p-3.5 shadow-sm">
